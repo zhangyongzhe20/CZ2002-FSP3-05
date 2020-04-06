@@ -1,4 +1,5 @@
 public class MenuItem {
+
     private String name;
     private String description;
     private double price;
@@ -31,5 +32,10 @@ public class MenuItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "[name=" + name + ", description=" + description + ",  price=" + price + "]";
     }
 }

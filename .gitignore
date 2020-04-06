@@ -1,0 +1,8 @@
+/.metadata/
+.vpprefdata/
+*.bak_*
+.lock
+.project
+my_locals
+VC_workspace_java.code-workspace
+cz2002 project.iml
