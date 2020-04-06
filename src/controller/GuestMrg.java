@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GuestManager {
+public class GuestMrg {
 
 	public static void printGuestMenu(ArrayList<Guest> guestList) {
 		Scanner sc = new Scanner(System.in);

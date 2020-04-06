@@ -26,10 +26,14 @@ public class Guest {
         this.guestRoom = guestRoom;
     }
 
+
     public String getGuestName() {
         return guestName;
     }
 
+    /*
+     * @param the guestName to set
+     */
     public void setGuestName(String guestName) {
         this.guestName = guestName;
     }
@@ -38,6 +42,9 @@ public class Guest {
         return creditCard;
     }
 
+    /*
+     * @param the creditCard to set
+     */
     public void setCreditCard(String creditCard) {
         this.creditCard = creditCard;
     }
@@ -46,6 +53,9 @@ public class Guest {
         return address;
     }
 
+    /*
+     * @param the address to set
+     */
     public void setAddress(String address) {
         this.address = address;
     }
@@ -54,6 +64,9 @@ public class Guest {
         return country;
     }
 
+    /*
+     * @param the country to set
+     */
     public void setCountry(String country) {
         this.country = country;
     }
@@ -62,6 +75,9 @@ public class Guest {
         return gender;
     }
 
+    /*
+     * @param the gender to set
+     */
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -70,6 +86,9 @@ public class Guest {
         return passport;
     }
 
+    /*
+     * @param the passport to set
+     */
     public void setPassport(String passport) {
         this.passport = passport;
     }
@@ -78,6 +97,9 @@ public class Guest {
         return nationality;
     }
 
+    /*
+     * @param the nationality to set
+     */
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
@@ -86,28 +108,32 @@ public class Guest {
         return contact;
     }
 
+    /*
+     * @param the contact to set
+     */
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    public LocalDateTime getLocalDateTime() {
-        return checkIn;
-    }
-
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.checkIn = localDateTime;
-    }
-
-    public Room getGuestRoom() {
-        return guestRoom;
-    }
-
-    public void setGuestRoom(Room guestRoom) {
-        this.guestRoom = guestRoom;
     }
 
     public LocalDateTime getCheckIn() {
         return checkIn;
     }
 
+    /*
+     * @param the checkIn to set
+     */
+    public void setCheckIn(LocalDateTime checkIn) {
+        this.checkIn = checkIn;
+    }
+
+    public Room getGuestRoom() {
+        return guestRoom;
+    }
+
+    /*
+     * @param the guestRoom to set
+     */
+    public void setGuestRoom(Room guestRoom) {
+        this.guestRoom = guestRoom;
+    }
 }

@@ -8,95 +8,124 @@ public class Room {
     private String facing;
     private boolean isSmoking;
     private boolean isAvailable;
-    private RoomService roomService;
+    private OrderMrg roomService;
     private Guest guest;
 
-    public Room(String roomType, double roomRateWeekday, double roomRateWeekend, int roomNumber, String bedType, boolean isWifi, String facing, boolean isSmoking, boolean isAvailable) {
+    /*
+     * @param the roomType to set
+     */
+    public void setRoomType(String roomType) {
         this.roomType = roomType;
+    }
+
+    /*
+     * @param the roomRateWeekday to set
+     */
+    public void setRoomRateWeekday(double roomRateWeekday) {
         this.roomRateWeekday = roomRateWeekday;
+    }
+
+    /*
+     * @param the roomRateWeekend to set
+     */
+    public void setRoomRateWeekend(double roomRateWeekend) {
         this.roomRateWeekend = roomRateWeekend;
+    }
+
+    /*
+     * @param the roomNumber to set
+     */
+    public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    /*
+     * @param the bedType to set
+     */
+    public void setBedType(String bedType) {
         this.bedType = bedType;
-        this.isWifi = isWifi;
+    }
+
+    /*
+     * @param the wifi to set
+     */
+    public void setWifi(boolean wifi) {
+        isWifi = wifi;
+    }
+
+    /*
+     * @param the facing to set
+     */
+    public void setFacing(String facing) {
         this.facing = facing;
-        this.isSmoking = isSmoking;
-        this.isAvailable = isAvailable;
+    }
+
+    /*
+     * @param the smoking to set
+     */
+    public void setSmoking(boolean smoking) {
+        isSmoking = smoking;
+    }
+
+    /*
+     * @param the available to set
+     */
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    /*
+     * @param the roomService to set
+     */
+    public void setRoomService(OrderMrg roomService) {
+        this.roomService = roomService;
+    }
+
+    /*
+     * @param the guest to set
+     */
+    public void setGuest(Guest guest) {
+        this.guest = guest;
     }
 
     public String getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(String roomType) {
-        this.roomType = roomType;
-    }
-
     public double getRoomRateWeekday() {
         return roomRateWeekday;
-    }
-
-    public void setRoomRateWeekday(double roomRateWeekday) {
-        this.roomRateWeekday = roomRateWeekday;
     }
 
     public double getRoomRateWeekend() {
         return roomRateWeekend;
     }
 
-    public void setRoomRateWeekend(double roomRateWeekend) {
-        this.roomRateWeekend = roomRateWeekend;
-    }
-
     public int getRoomNumber() {
         return roomNumber;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
     }
 
     public String getBedType() {
         return bedType;
     }
 
-    public void setBedType(String bedType) {
-        this.bedType = bedType;
-    }
-
     public boolean isWifi() {
         return isWifi;
-    }
-
-    public void setWifi(boolean wifi) {
-        isWifi = wifi;
     }
 
     public String getFacing() {
         return facing;
     }
 
-    public void setFacing(String facing) {
-        this.facing = facing;
-    }
-
     public boolean isSmoking() {
         return isSmoking;
     }
 
-    public void setSmoking(boolean smoking) {
-        isSmoking = smoking;
-    }
-
-    public boolean isAvailable(int roomNumber) {
+    public boolean isAvailable() {
         return isAvailable;
     }
 
-    public boolean isAvailable(String guestName) {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public OrderMrg getRoomService() {
+        return roomService;
     }
 
     public Guest getGuest() {
