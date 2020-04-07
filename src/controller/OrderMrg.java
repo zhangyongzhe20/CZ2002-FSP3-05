@@ -9,7 +9,7 @@ public class OrderMrg {
     List<MenuItem> menuItems;
     Map<Integer, List<Order>> roomOrders;
 
-// the construvtor may be replaced after loadData()
+// the constructor may be replaced after loadData()
     public OrderMrg() {
         roomOrders = new HashMap<Integer, ArrayList<Order>>();
         menuItems = new ArrayList<>();
