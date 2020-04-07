@@ -1,4 +1,4 @@
-public class ReservationManager {
+public class ReservationMrg {
     public static RoomMrg roomMrg;
     public static GuestMrg guestMrg;
 

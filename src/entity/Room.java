@@ -1,20 +1,43 @@
+import java.util.Date;
+
 public class Room {
-    private String roomType;
+	
+    private RoomType roomType;
     private double roomRateWeekday;
     private double roomRateWeekend;
     private int roomNumber;
-    private String bedType;
+    private BedType bedType;
     private boolean isWifi;
-    private String facing;
+    private Facing facing;
     private boolean isSmoking;
-    private boolean isAvailable;
     private OrderMrg roomService;
     private Guest guest;
-
+    private Date checkInDate;
+    private Date checkOutDate;
+    private RoomStatus roomStatus;
+    
+    
+    enum RoomStatus {
+    	VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE
+    }
+    
+    enum Facing {
+    	NORTH, SOUTH, EAST, WEST
+    }
+    
+    enum RoomType{
+    	SINGLE, DOUBLE, DELUXE, VIP
+    }
+    
+    enum BedType{
+    	SINGLE, DOUBLE, KING
+    }
+    
     /*
      * @param the roomType to set
      */
-    public void setRoomType(String roomType) {
+    
+    public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
 
@@ -42,7 +65,7 @@ public class Room {
     /*
      * @param the bedType to set
      */
-    public void setBedType(String bedType) {
+    public void setBedType(BedType bedType) {
         this.bedType = bedType;
     }
 
@@ -56,7 +79,7 @@ public class Room {
     /*
      * @param the facing to set
      */
-    public void setFacing(String facing) {
+    public void setFacing(Facing facing) {
         this.facing = facing;
     }
 
@@ -67,12 +90,6 @@ public class Room {
         isSmoking = smoking;
     }
 
-    /*
-     * @param the available to set
-     */
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
 
     /*
      * @param the roomService to set
@@ -88,7 +105,7 @@ public class Room {
         this.guest = guest;
     }
 
-    public String getRoomType() {
+    public RoomType getRoomType() {
         return roomType;
     }
 
@@ -104,7 +121,7 @@ public class Room {
         return roomNumber;
     }
 
-    public String getBedType() {
+    public BedType getBedType() {
         return bedType;
     }
 
@@ -112,7 +129,7 @@ public class Room {
         return isWifi;
     }
 
-    public String getFacing() {
+    public Facing getFacing() {
         return facing;
     }
 
@@ -120,9 +137,7 @@ public class Room {
         return isSmoking;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
+
 
     public OrderMrg getRoomService() {
         return roomService;
@@ -131,4 +146,30 @@ public class Room {
     public Guest getGuest() {
         return guest;
     }
+
+	public Date getCheckInDate() {
+		return checkInDate;
+	}
+
+	public void setCheckInDate(Date checkInDate) {
+		this.checkInDate = checkInDate;
+	}
+
+	public Date getCheckOutDate() {
+		return checkOutDate;
+	}
+
+	public void setCheckOutDate(Date checkOutDate) {
+		this.checkOutDate = checkOutDate;
+	}
+
+	public RoomStatus getRoomStatus() {
+		return this.roomStatus;
+	}
+
+	public void setRoomStatus(RoomStatus roomStatus) {
+		this.roomStatus = roomStatus;
+	}
+    
+    
 }

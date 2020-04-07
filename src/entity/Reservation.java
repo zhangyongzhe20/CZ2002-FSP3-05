@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class Reservation {
     private int reservationCode;
@@ -9,7 +10,7 @@ public class Reservation {
     private int numOfAdults;
     private int numOfChild;
     private String reservationStatus;
-    private Map<roomNumber, Guest> roomGuest;
+    private Map<Room, Guest> roomGuest;
 
     public int getReservationCode() {
         return reservationCode;
@@ -99,14 +100,14 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-    public Map<roomNumber, Guest> getRoomGuest() {
+    public Map<Room, Guest> getRoomGuest() {
         return roomGuest;
     }
 
     /*
      * @param the roomGuest to set
      */
-    public void setRoomGuest(Map<roomNumber, Guest> roomGuest) {
+    public void setRoomGuest(Map<Room, Guest> roomGuest) {
         this.roomGuest = roomGuest;
     }
 }
