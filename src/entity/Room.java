@@ -1,4 +1,5 @@
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 public class Room {
 	
@@ -11,9 +12,9 @@ public class Room {
     private Facing facing;
     private boolean isSmoking;
     private OrderMrg roomService;
-    private Guest guest;
-    private Date checkInDate;
-    private Date checkOutDate;
+    private String guestIC;
+    private LocalDateTime checkInDate;
+    private LocalDateTime checkOutDate;
     private RoomStatus roomStatus;
     
     
@@ -101,15 +102,21 @@ public class Room {
     /*
      * @param the guest to set
      */
-    public void setGuest(Guest guest) {
-        this.guest = guest;
-    }
+
 
     public RoomType getRoomType() {
         return roomType;
     }
 
-    public double getRoomRateWeekday() {
+    public String getGuestIC() {
+		return guestIC;
+	}
+
+	public void setGuestIC(String guestIC) {
+		this.guestIC = guestIC;
+	}
+
+	public double getRoomRateWeekday() {
         return roomRateWeekday;
     }
 
@@ -143,23 +150,20 @@ public class Room {
         return roomService;
     }
 
-    public Guest getGuest() {
-        return guest;
-    }
 
-	public Date getCheckInDate() {
+	public LocalDateTime getCheckInDate() {
 		return checkInDate;
 	}
 
-	public void setCheckInDate(Date checkInDate) {
+	public void setCheckInDate(LocalDateTime checkInDate) {
 		this.checkInDate = checkInDate;
 	}
 
-	public Date getCheckOutDate() {
+	public LocalDateTime getCheckOutDate() {
 		return checkOutDate;
 	}
 
-	public void setCheckOutDate(Date checkOutDate) {
+	public void setCheckOutDate(LocalDateTime checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
 
