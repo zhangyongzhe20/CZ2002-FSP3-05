@@ -1,37 +1,43 @@
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public class Reservation {
-    private int reservationCode;
-    private Guest guest;
+    private String reservationCode;
+    private String guestIC;
     private String paymentMethod;
-    private LocalDateTime checkin;
-    private LocalDateTime checkout;
+    private LocalDateTime checkIn;
+    private LocalDateTime checkOut;
     private int numOfAdults;
     private int numOfChild;
-    private String reservationStatus;
-    private Map<Room, Guest> roomGuest;
+    private ReservationStatus reservationStatus;
+    private List<Integer> roomList;
 
-    public int getReservationCode() {
+    
+    enum ReservationStatus {
+    	CONFIRMED, WAITLIST, CHECKIN, EXPIRED
+    }
+    
+    public String getReservationCode() {
         return reservationCode;
     }
 
     /*
      * @param the reservationCode to set
      */
-    public void setReservationCode(int reservationCode) {
+    public void setReservationCode(String reservationCode) {
         this.reservationCode = reservationCode;
     }
 
-    public Guest getGuest() {
-        return guest;
+    public String getGuestIC() {
+        return guestIC;
     }
 
     /*
      * @param the guest to set
      */
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setGuestIC(String guestIC) {
+        this.guestIC = guestIC;
     }
 
     public String getPaymentMethod() {
@@ -45,26 +51,26 @@ public class Reservation {
         this.paymentMethod = paymentMethod;
     }
 
-    public LocalDateTime getCheckin() {
-        return checkin;
+    public LocalDateTime getCheckIn() {
+        return checkIn;
     }
 
     /*
-     * @param the checkin to set
+     * @param the checkIn to set
      */
-    public void setCheckin(LocalDateTime checkin) {
-        this.checkin = checkin;
+    public void setCheckIn(LocalDateTime checkIn) {
+        this.checkIn = checkIn;
     }
 
-    public LocalDateTime getCheckout() {
-        return checkout;
+    public LocalDateTime getCheckOut() {
+        return checkOut;
     }
 
     /*
-     * @param the checkout to set
+     * @param the checkOut to set
      */
-    public void setCheckout(LocalDateTime checkout) {
-        this.checkout = checkout;
+    public void setCheckOut(LocalDateTime checkOut) {
+        this.checkOut = checkOut;
     }
 
     public int getNumOfAdults() {
@@ -89,25 +95,24 @@ public class Reservation {
         this.numOfChild = numOfChild;
     }
 
-    public String getReservationStatus() {
+    public ReservationStatus getReservationStatus() {
         return reservationStatus;
     }
 
     /*
      * @param the reservationStatus to set
      */
-    public void setReservationStatus(String reservationStatus) {
+    public void setReservationStatus(ReservationStatus reservationStatus) {
         this.reservationStatus = reservationStatus;
     }
 
-    public Map<Room, Guest> getRoomGuest() {
-        return roomGuest;
-    }
+	public List<Integer> getRoomList() {
+		return roomList;
+	}
 
-    /*
-     * @param the roomGuest to set
-     */
-    public void setRoomGuest(Map<Room, Guest> roomGuest) {
-        this.roomGuest = roomGuest;
-    }
+	public void setRoomList(List<Integer> roomList) {
+		this.roomList = roomList;
+	}
+    
 }
+    
