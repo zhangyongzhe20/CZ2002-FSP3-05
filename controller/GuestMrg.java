@@ -9,32 +9,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GuestMrg {
-
 		static List<Guest> guests = new ArrayList<Guest>();
 		final static String fileName = "guest_data.txt";
 	
-		 
+	
 	public static int guestExist(String data , String type , ArrayList<Guest> guestList) {
 	
 		return 1;
 	}
 	
-	public static void createGuest(/*Guest guest*/) {
-		List<Integer> roomNumList = new ArrayList<Integer>();
-    	roomNumList.add(1010);
-    	roomNumList.add(1011);
-    	roomNumList.add(1012);
-    	roomNumList.add(1013);
-	Guest g = new Guest("name","creditCard","address","country","Female","identityType","IC", "nationality", "contact", roomNumList);
-		
-	   guests.add(g);
-	   
-	   try {
-		writeGuestData();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	public static void createGuest(Guest guest) {
+	   guests.add(guest);
 	}
 	
 	public static void searchGuest(ArrayList<Guest> guestList) {
@@ -93,7 +78,5 @@ public class GuestMrg {
 		fileOut.close();
 		}
 	}
-	
-   
 }
 

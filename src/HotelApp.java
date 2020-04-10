@@ -1,28 +1,15 @@
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 public class HotelApp {
 	public static void main(String[] args) {
 		 //Load data from text file
-		 ArrayList<Guest> guestList = new ArrayList<Guest>();
-
-		 Scanner sc = new Scanner(System.in);
-		 int choice;
-		 do {		
-			 printMenu();
-			 choice = sc.nextInt();
-	    
-			 switch(choice) {
-			 	case 1:
-			 		GuestManager.printGuestMenu(guestList);
-			 	case 2:
-			 	case 3:
-			 	case 4:
-			 	case 5:
-			 	case 6:
-			 		}
-			 }while(choice !=6);
+			
+		
 	}
+		
+		 
 	
 	
 	public static void printMenu() {

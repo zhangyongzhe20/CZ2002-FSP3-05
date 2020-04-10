@@ -1,15 +1,19 @@
 package boundary;
 
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class guest_Boundary {
+public class Guest_Boundary {
     static Scanner sc = new Scanner(System.in);
-    static String id;
+    static String IC;
     static String name;
     static String address;
     static String country;
+    static String identityType;
     static String nationality;
-    static Character gender;
+    static String gender;
     static String contact;
     static String creditCard;
 
@@ -33,7 +37,7 @@ public class guest_Boundary {
 
         int selection = sc.nextInt();
         sc.nextLine();
-        id = id(selection);
+        identityType = identityType(selection);
         name = name();
         address = address();
         country=country();
@@ -50,16 +54,26 @@ public class guest_Boundary {
         "(No.) to edit a field and (No.) to edit a field.");
         confirm = sc.nextLine().charAt(0);
         switch(confirm){
-            case 'Y': break;
+            case 'Y':  
+            	List<Integer>roomNumList = new ArrayList<Integer>();
+            	roomNumList.add(1010);
+            	roomNumList.add(1011);
+            	roomNumList.add(1012);
+            	roomNumList.add(1013);
+            //	Guest guest = new Guest(name,  creditCard,  address,  country,  gender, identityType, IC,  nationality, contact, roomNumList);
+            	      
+            //	GuestMrg.createGuest(guest);
+            	break;
             case 'N': break;
-            case '1': id = id(selection); break;
-            case '2': name = name(); break;
-            case '3': address = address(); break;
-            case '4': country = country(); break;
-            case '5': nationality = nationality(); break;
-            case '6': gender  = gender (); break;
-            case '7': contact  = contact (); break;
-            case '8': creditCard  = creditCard(); break;
+            case '1': identityType = identityType(selection); break;
+            case '2':  IC = IC(); break;
+            case '3': name = name(); break;
+            case '4': address = address(); break;
+            case '5': country = country(); break;
+            case '6': nationality = nationality(); break;
+            case '7': gender  = gender (); break;
+            case '8': contact  = contact (); break;
+            case '9': creditCard  = creditCard(); break;
             default:
         }
     }
@@ -68,7 +82,7 @@ public class guest_Boundary {
 
 
 
-    public static String id(int selection){
+    public static String identityType(int selection){
         if(selection == 1){
          System.out.println("Passport:");
         }
@@ -78,7 +92,13 @@ public class guest_Boundary {
         String id = sc.nextLine();
         return id;
     }
-
+    
+    public static String IC(){
+        System.out.println("IC:");
+        String ic = sc.nextLine();
+        return ic;
+    }
+    
     public static String name(){
         System.out.println("Name:");
         String name = sc.nextLine();
@@ -103,9 +123,9 @@ public class guest_Boundary {
         return nationality;
     }
 
-    public static Character gender(){
+    public static String gender(){
         System.out.println("Gender:");
-        Character gender = sc.nextLine().charAt(0);
+        String gender = sc.nextLine();
         return gender;
     }
 
@@ -122,14 +142,15 @@ public class guest_Boundary {
 
     public static void printGuestInfo() {
         String guestInfo = "Guest information:\n" +
-         "1." + id + "\n" +
-         "2." + name + "\n" +
-         "3." + address + "\n" +
-         "4." + country + "\n" +
-         "5." + nationality + "\n" +
-         "6." + gender + "\n" +
-         "7." + contact + "\n" +
-         "8." + creditCard;
+         "1." + identityType+ "\n" +
+         "2." + IC + "\n" +
+         "3." + name + "\n" +
+         "4." + address + "\n" +
+         "5." + country + "\n" +
+         "6." + nationality + "\n" +
+         "7." + gender + "\n" +
+         "8." + contact + "\n" +
+         "9." + creditCard;
         System.out.println(guestInfo);
     }
 

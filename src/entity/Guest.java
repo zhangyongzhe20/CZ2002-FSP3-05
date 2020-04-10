@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Guest {
 
@@ -7,11 +8,11 @@ public class Guest {
     private String address;
     private String country;
     private String gender;
-    private String passport;
+    private String identityType;
+    private String IC;
     private String nationality;
     private String contact;
-    private LocalDateTime checkIn;
-    private Room guestRoom;
+    private List<Integer> roomNumList;
 
 
     /**
@@ -23,17 +24,17 @@ public class Guest {
     /**
      * Constructor of Guest()
      */
-public Guest(String guestName, String creditCard, String address, String country, String gender, String passport, String nationality, String contact, LocalDateTime localDateTime, Room guestRoom) {
+public Guest(String guestName, String creditCard, String address, String country, String gender, String identityType,String IC, String nationality, String contact, List<Integer> roomNumList) {
         this.guestName = guestName;
         this.creditCard = creditCard;
         this.address = address;
         this.country = country;
         this.gender = gender;
-        this.passport = passport;
+        this.identityType = identityType;
+        this.IC = IC;
         this.nationality = nationality;
         this.contact = contact;
-        this.checkIn = localDateTime;
-        this.guestRoom = guestRoom;
+        this.roomNumList = roomNumList;
  }
 
     public String getGuestName() {
@@ -76,15 +77,24 @@ public Guest(String guestName, String creditCard, String address, String country
         this.gender = gender;
     }
 
-    public String getPassport() {
-        return passport;
-    }
+  
+    public String getIdentityType() {
+		return identityType;
+	}
 
-    public void setPassport(String passport) {
-        this.passport = passport;
-    }
+	public void setIdentityType(String identityType) {
+		this.identityType = identityType;
+	}
 
-    public String getNationality() {
+	public String getIC() {
+		return IC;
+	}
+
+	public void setIC(String iC) {
+		IC = iC;
+	}
+
+	public String getNationality() {
         return nationality;
     }
 
@@ -100,24 +110,16 @@ public Guest(String guestName, String creditCard, String address, String country
         this.contact = contact;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return checkIn;
-    }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.checkIn = localDateTime;
-    }
+	public List<Integer> getRoomNumList() {
+		return roomNumList;
+	}
 
-    public Room getGuestRoom() {
-        return guestRoom;
-    }
+	public void setRoomNumList(List<Integer> roomNumList) {
+		this.roomNumList = roomNumList;
+	}
 
-    public void setGuestRoom(Room guestRoom) {
-        this.guestRoom = guestRoom;
-    }
 
-    public LocalDateTime getCheckIn() {
-        return checkIn;
-    }
+    
 
 }
