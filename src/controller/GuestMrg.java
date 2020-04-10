@@ -1,99 +1,101 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class GuestMrg {
 
-		static List<Guest> guests = new ArrayList<Guest>();
-		final static String fileName = "guest_data.txt";
+	public static void printGuestMenu(ArrayList<Guest> guestList) {
+		Scanner sc = new Scanner(System.in);
+		int choice;
+		do {
+		System.out.println("               About Guest			 	   ");
+		System.out.println("===========================================");
+		System.out.println("1. Create New Guest");
+		System.out.println("2. Update Guest Details");
+		System.out.println("3. Search Guest Details");
+		System.out.println("4. Previous");
+		System.out.println("===========================================");
+		System.out.println("Enter your choice: ");
+	    choice = sc.nextInt();
+		GuestManager.selectedChoice(choice, guestList);
+		}while(choice !=4);
+		sc.close();
+	}
 	
-		 
+	public static void selectedChoice(int choice ,ArrayList<Guest> guestList) {
+		switch (choice) {
+		case 1:
+			System.out.println("Creating new guest");
+			GuestManager.createGuest(guestList);
+			break;
+		case 2:
+			System.out.println("updating guest deatils");
+			GuestManager.updateGuest(guestList);
+			break;
+		case 3:
+			System.out.println("Searching guest details");
+			GuestManager.searchGuest(guestList);
+			break;
+		case 4:
+			//update database
+			break;
+		}
+	}
+	
 	public static int guestExist(String data , String type , ArrayList<Guest> guestList) {
-	
-		return 1;
+		//return index if guest found on ArrayList<Guest> else -1 
+		int exist = -1;
+		if (type == "ic") {
+			    
+		 }else {
+			 
+		 }
+		 return exist;
 	}
 	
-	public static void createGuest(/*Guest guest*/) {
-		List<Integer> roomNumList = new ArrayList<Integer>();
-    	roomNumList.add(1010);
-    	roomNumList.add(1011);
-    	roomNumList.add(1012);
-    	roomNumList.add(1013);
-	Guest g = new Guest("name","creditCard","address","country","Female","identityType","IC", "nationality", "contact", roomNumList);
+	public static void createGuest(ArrayList<Guest> guestList) {
+		Scanner sc = new Scanner(System.in);
 		
-	   guests.add(g);
-	   
-	   try {
-		writeGuestData();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+		System.out.println("Enter guest IC number: ");
+		String ic = sc.nextLine();
+		 
+		if(GuestManager.guestExist(ic , "ic" ,  guestList) == -1) {
+			//Create new Guest Object , add to guestList
+		}else {
+			
+		}
+		sc.close();
 	}
 	
 	public static void searchGuest(ArrayList<Guest> guestList) {
-	
+		Scanner sc = new Scanner(System.in);
+		ArrayList<Guest> guestList2 = new ArrayList<Guest>();
+		
+		System.out.println("Enter guest name to be searched: ");
+		String name = sc.nextLine();
+		for(Guest guest : guestList) {
+			if (guest.getGuestName().compareToIgnoreCase(name) == 1) {
+				guestList2.add(guest);
+			}
+		}
+	    if(!guestList2.isEmpty()) {
+	    	
+	    }else {
+	    	
+	    }
+		sc.close();
 	}
 	public static void updateGuest(ArrayList<Guest> guestList) {
+		Scanner sc = new Scanner(System.in);
 		
+		System.out.println("Enter guest IC number: ");
+		String ic  = sc.nextLine();
+		int index = GuestManager.guestExist(ic , "ic" ,  guestList);
+		if(index != -1) {
+			//Found Guest and update guest in guestList
+		}else {
+			
+		}
+		sc.close();
 	}
-	
-	public static void loadGuestData() throws FileNotFoundException {
-	//Guest(String guestName, String creditCard, String address, String country, String gender, String identityType,String IC, String nationality, String contact, List<Integer> roomNumList) {
-		File file = new File(fileName);
-		try { 
-			file.createNewFile();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		Scanner sc = new Scanner (file);
-		String data;
-		while(sc.hasNextLine()) {
-			data = sc.nextLine();
-			String[] temp = data.split(",");
-			List<Integer> roomNumList = new ArrayList<Integer>();
-			if(temp.length > 8) {
-			for(int i = 8 ; i < temp.length;i ++) {
-			roomNumList.add(Integer.parseInt(temp[i]));
-		}
-			}else {
-			roomNumList = null;
-		}
-			Guest guest = new Guest(temp[0],temp[1], temp[2], temp[3], temp[4],temp[5],temp[6],temp[7],temp[8], roomNumList);
-			guests.add(guest);
-		}
-	}
-	
-	public static void writeGuestData() throws IOException {
-		 FileWriter fileWriter = new FileWriter(fileName);
-		PrintWriter fileOut = new PrintWriter(fileWriter);
-		if(guests.size() > 0) {
-		for(Guest guest : guests) {
-			fileOut.print(guest.getGuestName()+ ",");
-			fileOut.print(guest.getCreditCard()+ ",");
-			fileOut.print(guest.getAddress()+ ",");
-			fileOut.print(guest.getCountry()+ ",");
-			fileOut.print(guest.getGender()+ ",");
-			fileOut.print(guest.getIdentityType()+ ",");
-			fileOut.print(guest.getIC()+ ",");
-			fileOut.print(guest.getNationality()+ ",");
-			fileOut.print(guest.getContact()+ ",");
-			for(int i : guest.getRoomNumList()) {
-				fileOut.print(i+',');
-			}
-			fileOut.println();
-		}
-		fileOut.close();
-		}
-	}
-	
-   
 }
 
