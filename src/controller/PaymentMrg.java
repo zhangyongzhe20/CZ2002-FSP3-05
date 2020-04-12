@@ -1,4 +1,7 @@
+package controller;
+
 import java.util.HashMap;
+import entity.*;
 
 public class PaymentMrg {
     /**

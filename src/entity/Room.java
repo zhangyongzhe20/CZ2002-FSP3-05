@@ -1,3 +1,5 @@
+package entity;
+
 import java.time.LocalDateTime;
 
 
@@ -11,26 +13,25 @@ public class Room {
     private boolean isWifi;
     private Facing facing;
     private boolean isSmoking;
-    private OrderMrg roomService;
     private String guestIC;
     private LocalDateTime checkInDate;
     private LocalDateTime checkOutDate;
     private RoomStatus roomStatus;
     
     
-    enum RoomStatus {
+    public enum RoomStatus {
     	VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE
     }
     
-    enum Facing {
+    public enum Facing {
     	NORTH, SOUTH, EAST, WEST
     }
     
-    enum RoomType{
+    public enum RoomType{
     	SINGLE, DOUBLE, DELUXE, VIP
     }
     
-    enum BedType{
+    public enum BedType{
     	SINGLE, DOUBLE, KING
     }
     
@@ -90,18 +91,6 @@ public class Room {
     public void setSmoking(boolean smoking) {
         isSmoking = smoking;
     }
-
-
-    /*
-     * @param the roomService to set
-     */
-    public void setRoomService(OrderMrg roomService) {
-        this.roomService = roomService;
-    }
-
-    /*
-     * @param the guest to set
-     */
 
 
     public RoomType getRoomType() {

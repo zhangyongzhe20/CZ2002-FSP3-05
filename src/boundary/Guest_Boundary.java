@@ -1,6 +1,9 @@
 package boundary;
 
 
+
+import entity.Guest;
+import controller.GuestMrg;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +19,6 @@ public class Guest_Boundary {
     static String gender;
     static String contact;
     static String creditCard;
-
     public static void guestMain(){
         System.out.println(
        "Guest System\n" +
@@ -59,9 +61,8 @@ public class Guest_Boundary {
             	roomNumList.add(1011);
             	roomNumList.add(1012);
             	roomNumList.add(1013);
-            //	Guest guest = new Guest(name,  creditCard,  address,  country,  gender, identityType, IC,  nationality, contact, roomNumList);
-            	      
-            //	GuestMrg.createGuest(guest);
+            	Guest guest = new Guest(name,  creditCard,  address,  country,  gender, identityType, IC,  nationality, contact, roomNumList);      
+            	GuestMrg.createGuest(guest);
             	break;
             case 'N': break;
             case '1': identityType = identityType(selection); break;

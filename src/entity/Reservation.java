@@ -1,3 +1,5 @@
+package entity;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class Reservation {
     private List<Integer> roomList;
 
     
-    enum ReservationStatus {
+    public enum ReservationStatus {
     	CONFIRMED, WAITLIST, CHECKIN, EXPIRED
     }
     
