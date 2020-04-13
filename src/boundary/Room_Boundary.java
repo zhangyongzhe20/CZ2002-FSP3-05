@@ -2,12 +2,17 @@ package boundary;
 
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import controller.GuestMrg;
+import controller.ReservationMrg;
 import controller.RoomMrg;
 import entity.Guest;
+import entity.Reservation;
 import entity.Room;
 
 public class Room_Boundary {
@@ -18,7 +23,7 @@ public class Room_Boundary {
 		int choice = 0;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
-					+ "3. Search Room\n" + "4. Print Room Status Report\n");
+					+ "3. Search Room\n" + "4. Check In\n" + "5. Check Out\n" + "6. Print Room Status Report\n");
 			choice = sc.nextInt();
 			sc.hasNextLine();
 			switch (choice) {
@@ -48,8 +53,25 @@ public class Room_Boundary {
 				}
 
 				break;
-
 			case 4:
+				System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
+
+				int choice2 = sc.nextInt();
+				sc.nextLine();
+				switch (choice2) {
+				case 0:
+					break;
+				case 1:
+					WalkIncheckIn();
+					break;
+				case 2:
+					reservationCheckIn();
+					break;
+				}
+				break;
+			case 5:
+				// printCheckOutMenu();
+			case 6:
 				getRoomReport();
 			}
 		} while (choice != 0);
@@ -189,7 +211,73 @@ public class Room_Boundary {
 			System.out.println("No room found by the name " + name);
 		}
 	}
+	
+	
+	public static void WalkIncheckIn()  {
+    	System.out.println("Enter the guest IC: ");
+    	String ic = sc.nextLine();
+        Guest g = GuestMrg.searchGuestByIC(ic);
+        if(g != null) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm");
+        	
+        	LocalDateTime checkOut = LocalDateTime.now(); 
+        	LocalDateTime checkIn = LocalDateTime.now(); 
+        	
+        	checkIn = LocalDateTime.parse(checkIn.format(formatter) ,formatter);
+        	do {
+        	System.out.println("Enter the check out date in (DD/MM/YYYY HH:mm)");
+        	checkOut = LocalDateTime.parse(sc.nextLine(), formatter);
+        	}while(checkOut.isBefore(checkIn));
+        	
+        	System.out.println("Enter Room Type : SINGLE, DOUBLE, DELUXE, VIP  ");
+        	List<Room> RoomTypeList = RoomMrg.searchRoomByRoomType(sc.nextLine().toUpperCase());
+ 
+        	char confirm;
+        	do {
+        	System.out.println(" -------------------------------------------");
+        	List<Room> availableRoomList = new ArrayList<Room>();
+        	for(Room room : RoomTypeList) {
+           		if(room.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+           			availableRoomList.add(room);
+           		}
+        	}
+        	System.out.print("	Rooms: ");
+        	printRoomNumber(availableRoomList);
+        	String roomNum = sc.nextLine();
+        	Room selectedRoom = RoomMrg.searchRoomByNum(roomNum);
+        	//RoomMrg.printRoomInfo(selectedRoom);
+        	System.out.println(" -------------------------------------------");
+        	System.out.println("Press Y to confirm or N to discard");
+        	confirm = sc.nextLine().toUpperCase().charAt(0);
+        	
+        	if(confirm == 'Y') {
+        		RoomMrg.updateRoom(selectedRoom ,checkOut , checkIn , ic, Room.RoomStatus.OCCUPIED);
+        	}      
+        	}while(confirm != 'Y');
+        }
+     
+    }
+	
 
+    public static void reservationCheckIn() {
+    	System.out.println("Please enter the reservation code: ");
+    	String reservationCode = sc.nextLine();
+    	Reservation reservation = ReservationMrg.getReservationByCode(reservationCode);
+    	if(reservation != null) {
+    		if(reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
+    			RoomMrg.checkInReservedRoom(reservation);
+    			System.out.println("Sucessfully check in to the room");
+    		}else {
+    			System.out.println("Reservation is on "+ reservation.getReservationStatus());
+    		}
+    	}else {
+    		System.out.println("Reservation not found");
+    	}
+    	sc.close();
+    }
+    
+    
+    
 	public static void getRoomReport() {
 		int singleRoomTotal = 0;
 		int doubleRoomTotal = 0;
@@ -238,7 +326,7 @@ public class Room_Boundary {
 
 		}
 		System.out.println("Room type occupancy rate");
-		
+
 		System.out.println("Single: Number: " + singleRoomVacantCount + " out of " + singleRoomTotal);
 		System.out.print("	Rooms: ");
 		printRoomNumber(singleRoomList);
@@ -254,47 +342,44 @@ public class Room_Boundary {
 		System.out.println("VIP:    Number: " + vipRoomListVacantCount + " out of " + vipRoomListTotal);
 		System.out.print("	Rooms: ");
 		printRoomNumber(vipRoomList);
-		
-		
-		
-				List<Room>vacantList = new ArrayList<Room>();			
-				List<Room>occupiedList = new ArrayList<Room>();				
-				List<Room>reservedList = new ArrayList<Room>();
-				List<Room>maintenanceList = new ArrayList<Room>();
 
-				
+		List<Room> vacantList = new ArrayList<Room>();
+		List<Room> occupiedList = new ArrayList<Room>();
+		List<Room> reservedList = new ArrayList<Room>();
+		List<Room> maintenanceList = new ArrayList<Room>();
+
 		System.out.println("Room status");
-		
-		for(Room r : RoomMrg.rooms) {
-			if(r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+
+		for (Room r : RoomMrg.rooms) {
+			if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
 				vacantList.add(r);
 			}
-			if(r.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
+			if (r.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
 				occupiedList.add(r);
 			}
-			if(r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
+			if (r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
 				reservedList.add(r);
 			}
-			if(r.getRoomStatus().equals(Room.RoomStatus.UNDER_MAINTENANCE)){
+			if (r.getRoomStatus().equals(Room.RoomStatus.UNDER_MAINTENANCE)) {
 				maintenanceList.add(r);
 			}
 		}
 		System.out.println("Vacant: ");
 		System.out.print("	Room :");
 		printRoomNumber(vacantList);
-		
+
 		System.out.println("OCCUPIED: ");
 		System.out.print("	Room :");
 		printRoomNumber(vacantList);
-		
+
 		System.out.println("RESERVED: ");
 		System.out.print("	Room :");
 		printRoomNumber(vacantList);
-		
+
 		System.out.println("UNDER_MAINTENANCE: ");
 		System.out.print("	Room :");
 		printRoomNumber(vacantList);
-	}	
+	}
 
 	public static void enterRoomNum() {
 		System.out.println("Enter room number: ");
@@ -354,16 +439,16 @@ public class Room_Boundary {
 	}
 
 	public static void printRoomNumber(List<Room> list) {
-		if(list.isEmpty()) {
-			System.out.print("Contain no room");
-		}else {
-		for (Room r : list) {
-			String displayRoomNumber = r.getRoomNumber().substring(0, 2) + "-"
-					+ r.getRoomNumber().substring(2, r.getRoomNumber().length());
-			System.out.print(displayRoomNumber + " ");
+		if (list.isEmpty()) {
+			System.out.println("Contain no room");
+		} else {
+			for (Room r : list) {
+				String displayRoomNumber = r.getRoomNumber().substring(0, 2) + "-"
+						+ r.getRoomNumber().substring(2, r.getRoomNumber().length());
+				System.out.print(displayRoomNumber + " ");
+			}
+			System.out.println();
 		}
-		System.out.println();
-	}
 	}
 
 	public static void printRoomInfo(Room room) {
@@ -379,21 +464,23 @@ public class Room_Boundary {
 		System.out.println("9.Room Status: " + room.getRoomStatus());
 
 		if (room.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-			SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yyyy");
-			System.out.println("10.Check in Date: " + ft.format(room.getCheckInDate()));
-			System.out.println("11.Check out Date: " + ft.format(room.getCheckOutDate()));
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			System.out.println("10.Check in Date: " + formatter.format(room.getCheckInDate()));
+			System.out.println("11.Check out Date: " + formatter.format(room.getCheckOutDate()));
 		}
 		System.out.println(" -------------------------------------------");
 	}
 
 	public static void main(String[] args) {
-		//try {
-		//	RoomMrg.loadRoomData();
-		//} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-	//		e.printStackTrace();
-	//	}
-		//getRoomReport();
+		 try {
+		 RoomMrg.loadRoomData();
+		 GuestMrg.loadGuestData();
+		 } catch (FileNotFoundException e) {
+		 //TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
+		 getRoomReport();
+		 
 		roomMain();
 
 	}

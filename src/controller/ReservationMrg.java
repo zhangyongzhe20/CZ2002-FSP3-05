@@ -26,7 +26,7 @@ public class ReservationMrg {
     }
 
 
-    public static void makeReservation(String reservationCode,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<Integer> roomList){
+    public static void makeReservation(String reservationCode,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<String> roomList){
     		Reservation reservation = new Reservation();
     		reservation.setReservationCode(reservationCode);
     		reservation.setGuestIC(guestIC);
@@ -42,10 +42,10 @@ public class ReservationMrg {
 
     public static void cancelReservation(Reservation reservation){
     		reservations.remove(reservation);
-    		RoomMrg.updateRoom(reservation , RoomStatus.RESERVED);
+    		RoomMrg.cancelReservedRoom(reservation);
     }
 
-    public static void changeReservation(Reservation reservation ,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<Integer> roomList){
+    public static void changeReservation(Reservation reservation ,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<String> roomList){
     	 for (Reservation r : reservations) {
     		 if(r.equals(reservation)) {
     	    		r.setGuestIC(guestIC);

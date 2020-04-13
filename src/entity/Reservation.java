@@ -108,11 +108,11 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-	public List<Integer> getRoomList() {
+	public List<String> getRoomList() {
 		return roomList;
 	}
 
-	public void setRoomList(List<Integer> roomList) {
+	public void setRoomList(List<String> roomList) {
 		this.roomList = roomList;
 	}
     

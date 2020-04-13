@@ -61,10 +61,10 @@ public class GuestMrg {
 		while(sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
-			List<Integer> roomNumList = new ArrayList<Integer>();
+			List<String> roomNumList = new ArrayList<String>();
 			if(temp.length > 10) {
 			for(int i = 9 ; i < temp.length;i ++) {
-			roomNumList.add(Integer.parseInt(temp[i]));
+			roomNumList.add(temp[i]);
 		}
 			}else {
 			roomNumList = null;
