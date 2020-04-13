@@ -15,7 +15,7 @@ public class GuestMrg {
 
 		static List<Guest> guests = new ArrayList<Guest>();
 		final static String fileName = "guest_data.txt";
-	
+
 		 
 	public static int guestExist(String data , String type , ArrayList<Guest> guestList) {
 	
@@ -26,15 +26,29 @@ public class GuestMrg {
 	   guests.add(guest);
 	}
 	
-	public static void searchGuest(ArrayList<Guest> guestList) {
-	
+	public static Guest searchGuestByIC(String ic) {
+		Guest g = null;
+		for(Guest guest : guests) {
+			if( guest.getIC().equalsIgnoreCase(ic)) {
+				g = guest;
+		}
+	}
+		return g;
+	}
+	public static List<Guest> searchGuestByName(String name) {
+		List<Guest> guestList = new ArrayList<Guest>();
+		for(Guest guest : guests) {
+			if( guest.getGuestName().equalsIgnoreCase(name)) {
+				guestList.add(guest);
+		}
+	}
+		return guestList;
 	}
 	public static void updateGuest(ArrayList<Guest> guestList) {
 		
 	}
 	
 	public static void loadGuestData() throws FileNotFoundException {
-	//Guest(String guestName, String creditCard, String address, String country, String gender, String identityType,String IC, String nationality, String contact, List<Integer> roomNumList) {
 		File file = new File(fileName);
 		try { 
 			file.createNewFile();

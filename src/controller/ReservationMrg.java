@@ -1,7 +1,12 @@
+package controller;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+
+import entity.Reservation;
+import entity.Room.RoomStatus;
 
 public class ReservationMrg {
     public static List<Reservation> reservations;
@@ -37,7 +42,7 @@ public class ReservationMrg {
 
     public static void cancelReservation(Reservation reservation){
     		reservations.remove(reservation);
-    		RoomMrg.updateRoom(reservation , Room.RoomStatus.RESERVED);
+    		RoomMrg.updateRoom(reservation , RoomStatus.RESERVED);
     }
 
     public static void changeReservation(Reservation reservation ,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<Integer> roomList){

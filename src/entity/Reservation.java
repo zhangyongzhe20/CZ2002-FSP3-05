@@ -13,7 +13,7 @@ public class Reservation {
     private int numOfAdults;
     private int numOfChild;
     private ReservationStatus reservationStatus;
-    private List<Integer> roomList;
+    private List<String> roomList;
 
     
     public enum ReservationStatus {

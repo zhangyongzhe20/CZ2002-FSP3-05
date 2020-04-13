@@ -56,11 +56,11 @@ public class Guest_Boundary {
         confirm = sc.nextLine().charAt(0);
         switch(confirm){
             case 'Y':  
-            	List<Integer>roomNumList = new ArrayList<Integer>();
-            	roomNumList.add(1010);
-            	roomNumList.add(1011);
-            	roomNumList.add(1012);
-            	roomNumList.add(1013);
+            	List<String>roomNumList = new ArrayList<String>();
+            	roomNumList.add("10-10");
+            	roomNumList.add("10-11");
+            	roomNumList.add("10-12");
+            	roomNumList.add("10-13");
             	Guest guest = new Guest(name,  creditCard,  address,  country,  gender, identityType, IC,  nationality, contact, roomNumList);      
             	GuestMrg.createGuest(guest);
             	break;

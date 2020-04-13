@@ -11,7 +11,7 @@ public class OrderMrg {
 
 // the constructor may be replaced after loadData()
     public OrderMrg() {
-        roomOrders = new HashMap<Integer, ArrayList<Order>>();
+        roomOrders = new HashMap<Integer, List<Order>>();
         menuItems = new ArrayList<>();
 
     }
@@ -44,8 +44,8 @@ public class OrderMrg {
      * @param order
      * add/update order under the room_id
      */
-    public void createOrders(int room_id, Order order){
-         roomOrders.putIfAbsent(room_id, new ArrayList<order>());
+    public void createOrders(int room_id, Order ){
+         roomOrders.putIfAbsent(room_id, new List<Order>());
          roomOrders.get(room_id).add(order);
     }
 
