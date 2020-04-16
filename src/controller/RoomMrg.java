@@ -110,8 +110,7 @@ public class RoomMrg {
 		return bool;
 	}
 
-	public void updateRoom(Room room, LocalDateTime checkoutDate, LocalDateTime checkInDate, String nric,
-			Room.RoomStatus rs) {
+	public void updateRoom(Room room, LocalDateTime checkoutDate, LocalDateTime checkInDate, String nric,RoomStatus rs) {
 		for (Room r : rooms) {
 			if (r.equals(room)) {
 				r.setCheckInDate(checkInDate);
@@ -194,24 +193,6 @@ public class RoomMrg {
 		return r;
 	}
 
-	/*public void checkOut() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the room number: ");
-		String roomNum = sc.nextLine();
-		Room room = RoomMrg.searchRoomByNum(roomNum);
-		if (room != null) {
-			if (room.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-				RoomMrg.updateRoom(room, null, null, null, Room.RoomStatus.VACANT);
-			} else {
-				System.out.println("Room is not occupied");
-			}
-		} else {
-			System.out.println("Room not found");
-		}
-
-		sc.close();
-	}
-*/
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
