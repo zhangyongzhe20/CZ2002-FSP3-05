@@ -28,7 +28,7 @@ public class Guest_Boundary {
         "3. Find Guest\n");
     }
 
-    public static void createGuest(){
+    private static void createGuest(){
         Character confirm;
         System.out.println(
         "Create Guest\n" +
@@ -158,7 +158,7 @@ public class Guest_Boundary {
         guestMain();
         int selection = sc.nextInt();
         if(selection == 1){
-            createGuest();
+        	createGuest();
         }
         
     }

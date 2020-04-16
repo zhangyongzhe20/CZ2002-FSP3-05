@@ -16,24 +16,26 @@ import entity.Reservation;
 import entity.Room;
 
 public class Room_Boundary {
-	static Room room;
-	static Scanner sc = new Scanner(System.in);
-
-	public static void roomMain() {
+	private static Room room;
+	
+	
+	public void roomMain() {
+		Scanner sc = new Scanner(System.in);
 		int choice = 0;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
 					+ "3. Search Room\n" + "4. Check In\n" + "5. Check Out\n" + "6. Print Room Status Report\n");
 			choice = sc.nextInt();
 			sc.hasNextLine();
+			
 			switch (choice) {
 			case 0:
 				break;
 			case 1:
-				createRoom();
+				createRoomMenu();
 				break;
 			case 2:
-				updateRoomBydetails();
+				updateRoomBydetailsMenu();
 				break;
 			case 3:
 				System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Search Room by Room number\n"
@@ -45,10 +47,10 @@ public class Room_Boundary {
 				case 0:
 					break;
 				case 1:
-					searchRoomByRoomNum();
+					searchRoomByRoomNumMenu();
 					break;
 				case 2:
-					searchRoomByGuestName();
+					searchRoomByGuestNameMenu();
 					break;
 				}
 
@@ -62,23 +64,27 @@ public class Room_Boundary {
 				case 0:
 					break;
 				case 1:
-					WalkIncheckIn();
+					WalkIncheckInMenu();
 					break;
 				case 2:
-					reservationCheckIn();
+					reservationCheckInMenu();
 					break;
 				}
 				break;
 			case 5:
-				// printCheckOutMenu();
+				 printCheckOutMenu();
 			case 6:
-				getRoomReport();
+				getRoomReportMenu();
 			}
 		} while (choice != 0);
+		sc.close();
 	}
 
-	public static void createRoom() {
+	private void createRoomMenu() {
+		Scanner sc = new Scanner(System.in);
 		Character confirm;
+		RoomMrg roomMrg = new RoomMrg();
+		
 		System.out.println("Create Room");
 		room = new Room();
 		enterRoomNum();
@@ -97,7 +103,7 @@ public class Room_Boundary {
 			confirm = sc.nextLine().toUpperCase().charAt(0);
 			switch (confirm) {
 			case 'Y':
-				RoomMrg.createRoom(room);
+				roomMrg.createRoom(room);
 				break;
 			case 'N':
 				roomMain();
@@ -130,13 +136,17 @@ public class Room_Boundary {
 				break;
 			}
 		} while (!(confirm.equals('Y') || confirm.equals('N')));
+		sc.close();
 	}
 
-	public static void updateRoomBydetails() {
+	private void updateRoomBydetailsMenu() {
+		Scanner sc = new Scanner(System.in);
+		RoomMrg roomMrg = new RoomMrg();
+		
 		System.out.println("update Room");
 		System.out.println("Enter room number : ");
 		String roomNum = sc.nextLine();
-		room = RoomMrg.searchRoomByNum(roomNum);
+		room = roomMrg.searchRoomByNum(roomNum);
 		if (room != null) {
 			Character confirm;
 			enterRoomType();
@@ -154,7 +164,7 @@ public class Room_Boundary {
 				confirm = sc.nextLine().charAt(0);
 				switch (confirm) {
 				case 'Y':
-					boolean success = RoomMrg.updateRoom(room);
+					boolean success = roomMrg.updateRoom(room);
 					if (success) {
 						System.out.println("Sucessfully update room");
 					} else {
@@ -189,20 +199,30 @@ public class Room_Boundary {
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
 		}
-
+		sc.close();
 	}
 
-	public static void searchRoomByRoomNum() {
+	private void searchRoomByRoomNumMenu() {
+		Scanner sc = new Scanner(System.in);
+		RoomMrg roomMrg = new RoomMrg();
+		
 		System.out.println("Enter room number: ");
+		
 		String roomNum = sc.nextLine();
-		room = RoomMrg.searchRoomByNum(roomNum);
+		room = roomMrg.searchRoomByNum(roomNum);
 		printRoomInfo(room);
+		
+		sc.close();
 	}
 
-	public static void searchRoomByGuestName() {
+	public void searchRoomByGuestNameMenu() {
+		Scanner sc = new Scanner(System.in);
+		RoomMrg roomMrg = new RoomMrg();
+		
+		
 		System.out.println("Enter Guest Name: ");
 		String name = sc.nextLine();
-		List<Room> roomList = RoomMrg.searchRoomByGuestName(name);
+		List<Room> roomList = roomMrg.searchRoomByGuestName(name);
 		if (roomList.size() > 0) {
 			for (Room r : roomList) {
 				printRoomInfo(r);
@@ -210,10 +230,15 @@ public class Room_Boundary {
 		} else {
 			System.out.println("No room found by the name " + name);
 		}
+		sc.close();
 	}
 	
 	
-	public static void WalkIncheckIn()  {
+	public void WalkIncheckInMenu()  {
+		Scanner sc = new Scanner(System.in);
+		RoomMrg roomMrg = new RoomMrg();
+		
+		
     	System.out.println("Enter the guest IC: ");
     	String ic = sc.nextLine();
         Guest g = GuestMrg.searchGuestByIC(ic);
@@ -230,7 +255,7 @@ public class Room_Boundary {
         	}while(checkOut.isBefore(checkIn));
         	
         	System.out.println("Enter Room Type : SINGLE, DOUBLE, DELUXE, VIP  ");
-        	List<Room> RoomTypeList = RoomMrg.searchRoomByRoomType(sc.nextLine().toUpperCase());
+        	List<Room> RoomTypeList = roomMrg.searchRoomByRoomType(sc.nextLine().toUpperCase());
  
         	char confirm;
         	do {
@@ -244,28 +269,31 @@ public class Room_Boundary {
         	System.out.print("	Rooms: ");
         	printRoomNumber(availableRoomList);
         	String roomNum = sc.nextLine();
-        	Room selectedRoom = RoomMrg.searchRoomByNum(roomNum);
+        	Room selectedRoom = roomMrg.searchRoomByNum(roomNum);
         	//RoomMrg.printRoomInfo(selectedRoom);
         	System.out.println(" -------------------------------------------");
         	System.out.println("Press Y to confirm or N to discard");
         	confirm = sc.nextLine().toUpperCase().charAt(0);
         	
         	if(confirm == 'Y') {
-        		RoomMrg.updateRoom(selectedRoom ,checkOut , checkIn , ic, Room.RoomStatus.OCCUPIED);
+        		roomMrg.updateRoom(selectedRoom ,checkOut , checkIn , ic, Room.RoomStatus.OCCUPIED);
         	}      
         	}while(confirm != 'Y');
         }
-     
+     sc.close();
     }
 	
 
-    public static void reservationCheckIn() {
+    public static void reservationCheckInMenu() {
+    	Scanner sc = new Scanner(System.in);
+		RoomMrg roomMrg = new RoomMrg();
+		
     	System.out.println("Please enter the reservation code: ");
     	String reservationCode = sc.nextLine();
     	Reservation reservation = ReservationMrg.getReservationByCode(reservationCode);
     	if(reservation != null) {
     		if(reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
-    			RoomMrg.checkInReservedRoom(reservation);
+    			roomMrg.checkInReservedRoom(reservation);
     			System.out.println("Sucessfully check in to the room");
     		}else {
     			System.out.println("Reservation is on "+ reservation.getReservationStatus());
@@ -278,7 +306,7 @@ public class Room_Boundary {
     
     
     
-	public static void getRoomReport() {
+	private void getRoomReportMenu() {
 		int singleRoomTotal = 0;
 		int doubleRoomTotal = 0;
 		int deluxeRoomTotal = 0;
@@ -381,42 +409,69 @@ public class Room_Boundary {
 		printRoomNumber(vacantList);
 	}
 
-	public static void enterRoomNum() {
+	private void enterRoomNum() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter room number: ");
 		room.setRoomNumber(sc.nextLine());
+		
+		sc.close();
 	}
 
-	public static void enterRoomType() {
+	private void enterRoomType() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter room type: SINGLE, DOUBLE, DELUXE, VIP  ");
 		String roomType = sc.nextLine();
 		room.setRoomType(RoomMrg.strToRoomType(roomType));
+		
+		sc.close();
+		
 	}
 
-	public static void enterBedType() {
+	private void enterBedType() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter bed type: SINGLE, DOUBLE, KING ");
 		String bedType = sc.nextLine();
 		room.setBedType(RoomMrg.strToBedType(bedType));
+		
+		sc.close();
 	}
 
-	public static void enterFacing() {
+	private void enterFacing() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter facing: NORTH, SOUTH, EAST, WEST ");
 		String facing = sc.nextLine();
 		room.setFacing(RoomMrg.strToFacing(facing));
+		
+		sc.close();
 	}
 
-	public static void enterWeekdayRate() {
+	private void enterWeekdayRate() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter weekday rate: ");
 		room.setRoomRateWeekday(sc.nextDouble());
 		sc.nextLine();
+		
+		sc.close();
 	}
 
-	public static void enterWeekendRate() {
+	private void enterWeekendRate() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter weekend rate: ");
 		room.setRoomRateWeekend(sc.nextDouble());
 		sc.nextLine();
+		
+		sc.close();
 	}
 
-	public static void enterAllowSmoking() {
+	private void enterAllowSmoking() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter allow smoking: (Y/N) ");
 
 		boolean bool;
@@ -426,9 +481,12 @@ public class Room_Boundary {
 			bool = false;
 
 		room.setSmoking(bool);
+		sc.close();
 	}
 
-	public static void enterHasWifi() {
+	private void enterHasWifi() {
+		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Enter has wifi: (Y/N) ");
 		boolean bool;
 		if (sc.nextLine().equalsIgnoreCase("y"))
@@ -436,6 +494,7 @@ public class Room_Boundary {
 		else
 			bool = false;
 		room.setWifi(bool);
+		sc.close();
 	}
 
 	public static void printRoomNumber(List<Room> list) {
@@ -473,15 +532,17 @@ public class Room_Boundary {
 
 	public static void main(String[] args) {
 		 try {
-		 RoomMrg.loadRoomData();
+		 RoomMrg roomMrg = new RoomMrg();
+		 roomMrg.loadRoomData();
 		 GuestMrg.loadGuestData();
 		 } catch (FileNotFoundException e) {
 		 //TODO Auto-generated catch block
 		 e.printStackTrace();
 		 }
-		 getRoomReport();
 		 
-		roomMain();
+		Room_Boundary room_Boundary = new Room_Boundary();
+		room_Boundary.getRoomReportMenu();
+		room_Boundary.roomMain();
 
 	}
 }

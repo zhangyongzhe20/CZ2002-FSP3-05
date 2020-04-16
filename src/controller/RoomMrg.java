@@ -66,7 +66,7 @@ public class RoomMrg {
 		return facing;
 	}
 
-	public static Room.RoomStatus strToRoomStatus(String strRoomStatus) {
+	public static RoomStatus strToRoomStatus(String strRoomStatus) {
 		Room.RoomStatus roomStatus = null;
 		if (strRoomStatus.equalsIgnoreCase("VACANT")) {
 			roomStatus = Room.RoomStatus.VACANT;
@@ -80,7 +80,7 @@ public class RoomMrg {
 		return roomStatus;
 	}
 
-	public static void createRoom(Room room) {
+	public void createRoom(Room room) {
 		rooms.add(room);
 		for (Room s : rooms) {
 			System.out.println(s.getRoomNumber());
@@ -93,7 +93,7 @@ public class RoomMrg {
 		}
 	}
 
-	public static boolean updateRoom(Room room) {
+	public boolean updateRoom(Room room) {
 		boolean bool = false;
 		for (Room r : rooms) {
 			if (r.getRoomNumber() == room.getRoomNumber()) {
@@ -110,7 +110,7 @@ public class RoomMrg {
 		return bool;
 	}
 
-	public static void updateRoom(Room room, LocalDateTime checkoutDate, LocalDateTime checkInDate, String nric,
+	public void updateRoom(Room room, LocalDateTime checkoutDate, LocalDateTime checkInDate, String nric,
 			Room.RoomStatus rs) {
 		for (Room r : rooms) {
 			if (r.equals(room)) {
@@ -129,7 +129,7 @@ public class RoomMrg {
 		}
 	}
 
-	public static void checkInReservedRoom(Reservation reservation) {
+	public void checkInReservedRoom(Reservation reservation) {
 		if (reservation.getRoomList().size() < 0) {
 			for (String roomNum : reservation.getRoomList()) {
 				for (Room r : rooms) {
@@ -143,7 +143,7 @@ public class RoomMrg {
 		}
 	}
 
-	public static void cancelReservedRoom(Reservation reservation) {
+	public void cancelReservedRoom(Reservation reservation) {
 		if (reservation.getRoomList().size() < 0) {
 			for (String roomNum : reservation.getRoomList()) {
 				for (Room r : rooms) {
@@ -160,7 +160,7 @@ public class RoomMrg {
 		}
 	}
 
-	public static List<Room> searchRoomByGuestName(String name) {
+	public List<Room> searchRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
 		List<Guest> guestlist = GuestMrg.searchGuestByName(name);
 		for (Guest guest : guestlist) {
@@ -173,7 +173,7 @@ public class RoomMrg {
 		return roomList;
 	}
 
-	public static List<Room> searchRoomByRoomType(String StrRoomType) {
+	public List<Room> searchRoomByRoomType(String StrRoomType) {
 		Room.RoomType roomType = RoomMrg.strToRoomType(StrRoomType);
 		List<Room> roomList = new ArrayList<Room>();
 		for (Room room : rooms) {
@@ -184,7 +184,7 @@ public class RoomMrg {
 		return roomList;
 	}
 
-	public static Room searchRoomByNum(String roomNum) {
+	public  Room searchRoomByNum(String roomNum) {
 		Room r = null;
 		for (Room room : rooms) {
 			if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
@@ -194,7 +194,7 @@ public class RoomMrg {
 		return r;
 	}
 
-	public static void checkOut() {
+	/*public void checkOut() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the room number: ");
 		String roomNum = sc.nextLine();
@@ -211,8 +211,8 @@ public class RoomMrg {
 
 		sc.close();
 	}
-
-	public static void loadRoomData() throws FileNotFoundException {
+*/
+	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
 			file.createNewFile();
@@ -249,7 +249,7 @@ public class RoomMrg {
 		sc.close();
 	}
 
-	public static void writeRoomData() throws IOException {
+	public void writeRoomData() throws IOException {
 		FileWriter fileWriter = new FileWriter(fileName);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		if (rooms.size() > 0) {
