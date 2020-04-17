@@ -26,6 +26,15 @@ public class RoomMrg {
 	public static List<Room> rooms = new ArrayList<Room>();
 	final static String fileName = "room_data.txt";
 
+	public static RoomMrg getInstance() {
+		RoomMrg roomMrg = new RoomMrg();
+		return roomMrg;
+	}
+
+	public static Room createNewRoom() {
+		return new Room();
+	}
+
 	public static RoomType strToRoomType(String type) {
 		Room.RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
@@ -204,16 +213,135 @@ public class RoomMrg {
 		return r;
 	}
 
-	public List<Room> getAvailRoom(RoomStatus roomStatus,RoomType roomType,BedType bedType,boolean hasWifiBool,boolean allowSmokingBool){
+	public List<Room> getAvailRoom(RoomStatus roomStatus, RoomType roomType, BedType bedType, boolean hasWifiBool,
+			boolean allowSmokingBool) {
 		List<Room> returnList = new ArrayList<Room>();
-		for(Room room : rooms) {
-			if(room.getRoomStatus().equals(roomStatus) && room.getRoomType().equals(roomType) 
+		for (Room room : rooms) {
+			if (room.getRoomStatus().equals(roomStatus) && room.getRoomType().equals(roomType)
 					&& room.getBedType().equals(bedType) && room.isWifi() == hasWifiBool
 					&& room.isSmoking() == allowSmokingBool) {
 				returnList.add(room);
 			}
 		}
 		return returnList;
+	}
+
+	// For Room Boundary
+	public void getRoomReportMenu() {
+		int singleRoomTotal = 0;
+		int doubleRoomTotal = 0;
+		int deluxeRoomTotal = 0;
+		int vipRoomListTotal = 0;
+
+		int singleRoomVacantCount = 0;
+		int doubleRoomVacantCount = 0;
+		int deluxeRoomVacantCount = 0;
+		int vipRoomListVacantCount = 0;
+
+		List<Room> singleRoomList = new ArrayList<Room>();
+		List<Room> doubleRoomList = new ArrayList<Room>();
+		List<Room> deluxeRoomList = new ArrayList<Room>();
+		List<Room> vipRoomList = new ArrayList<Room>();
+
+		for (Room r : rooms) {
+			if (r.getRoomType().equals(Room.RoomType.SINGLE)) {
+				if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+					singleRoomList.add(r);
+					singleRoomVacantCount++;
+				}
+				singleRoomTotal++;
+			}
+			if (r.getRoomType().equals(Room.RoomType.DOUBLE)) {
+				if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+					doubleRoomList.add(r);
+					doubleRoomVacantCount++;
+				}
+				doubleRoomTotal++;
+			}
+			if (r.getRoomType().equals(Room.RoomType.DELUXE)) {
+				if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+					deluxeRoomList.add(r);
+					deluxeRoomVacantCount++;
+				}
+				deluxeRoomTotal++;
+			}
+			if (r.getRoomType().equals(Room.RoomType.VIP)) {
+				if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+					vipRoomList.add(r);
+					vipRoomListVacantCount++;
+				}
+				vipRoomListTotal++;
+			}
+
+		}
+		System.out.println("Room type occupancy rate");
+
+		System.out.println("Single: Number: " + singleRoomVacantCount + " out of " + singleRoomTotal);
+		System.out.print("	Rooms: ");
+		printRoomNumber(singleRoomList);
+
+		System.out.println("Double: Number: " + doubleRoomVacantCount + " out of " + doubleRoomTotal);
+		System.out.print("	Rooms: ");
+
+		printRoomNumber(doubleRoomList);
+
+		System.out.println("Deluxe: Number: " + deluxeRoomVacantCount + " out of " + deluxeRoomTotal);
+		System.out.print("	Rooms: ");
+		printRoomNumber(deluxeRoomList);
+
+		System.out.println("VIP:    Number: " + vipRoomListVacantCount + " out of " + vipRoomListTotal);
+		System.out.print("	Rooms: ");
+		printRoomNumber(vipRoomList);
+
+		List<Room> vacantList = new ArrayList<Room>();
+		List<Room> occupiedList = new ArrayList<Room>();
+		List<Room> reservedList = new ArrayList<Room>();
+		List<Room> maintenanceList = new ArrayList<Room>();
+
+		System.out.println("Room status");
+
+		for (Room r : rooms) {
+			if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+				vacantList.add(r);
+			}
+			if (r.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
+				occupiedList.add(r);
+			}
+			if (r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
+				reservedList.add(r);
+			}
+			if (r.getRoomStatus().equals(Room.RoomStatus.UNDER_MAINTENANCE)) {
+				maintenanceList.add(r);
+			}
+		}
+		System.out.println("Vacant: ");
+		System.out.print("	Room :");
+		printRoomNumber(vacantList);
+
+		System.out.println("OCCUPIED: ");
+		System.out.print("	Room :");
+		printRoomNumber(occupiedList);
+
+		System.out.println("RESERVED: ");
+		System.out.print("	Room :");
+		printRoomNumber(reservedList);
+
+		System.out.println("UNDER_MAINTENANCE: ");
+		System.out.print("	Room :");
+		printRoomNumber(maintenanceList);
+	}
+
+	public void printRoomNumber(List<Room> list) {
+		if (list.isEmpty()) {
+			System.out.println("Contain no room");
+		} else {
+			for (Room r : list) {
+				String displayRoomNumber = r.getRoomNumber().substring(0, 2) + "-"
+						+ r.getRoomNumber().substring(2, r.getRoomNumber().length());
+				System.out.print(displayRoomNumber + " ");
+			}
+			System.out.println();
+		}
 	}
 
 	public void loadRoomData() throws FileNotFoundException {

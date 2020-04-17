@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Room {
@@ -156,7 +157,26 @@ public class Room {
 
 	public void setRoomStatus(RoomStatus roomStatus) {
 		this.roomStatus = roomStatus;
-	}
+    }
     
+	public void printRoomInfo() {
+		System.out.println(" -------------------------------------------");
+		System.out.println("1.Room No: " + this.getRoomNumber());
+		System.out.println("2.Room Type: " + this.getRoomType());
+		System.out.println("3.Bed Type: " + this.getBedType());
+		System.out.println("4.Room Facing: " + this.getFacing());
+		System.out.println("5.Weekday Rate: $" + this.getRoomRateWeekday());
+		System.out.println("6.Weekend Rate: $" + this.getRoomRateWeekend());
+		System.out.println("7.Allowing Smoking: " + this.isSmoking());
+		System.out.println("8.Has Wifi: " + this.isWifi());
+		System.out.println("9.Room Status: " + this.getRoomStatus());
+
+		if (this.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			System.out.println("10.Check in Date: " + formatter.format(this.getCheckInDate()));
+			System.out.println("11.Check out Date: " + formatter.format(this.getCheckOutDate()));
+		}
+		System.out.println(" -------------------------------------------");
+	}
     
 }

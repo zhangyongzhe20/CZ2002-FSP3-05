@@ -6,7 +6,7 @@ import java.util.Map;
 import entity.*;
 
 public class OrderMrg {
-    List<MenuItem> menuItems;
+    Menu menu;
     Map<Integer, List<Order>> roomOrders;
 
 // the constructor may be replaced after loadData()
@@ -15,12 +15,10 @@ public class OrderMrg {
         menuItems = new ArrayList<>();
 
     }
-
     /**
      * read data from local storage
      */
     public void loadData(){
-
     }
 
     /**
@@ -76,17 +74,7 @@ public class OrderMrg {
     }
 
 
-    public void displayMenus(){
-        for(MenuItem menuitem_ : menuItems){
-            menuitem_.toString();
-        }
-    }
 
-    /**
-     * hotel stuff update the menu by calling this method
-     */
-    public void updateMenu(){
-    }
 
 
 

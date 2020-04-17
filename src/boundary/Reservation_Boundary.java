@@ -18,12 +18,11 @@ import entity.Room.BedType;
 import entity.Room.RoomType;
 
 public class Reservation_Boundary {
-	private static Reservation reservation;
+	private Reservation reservation = ReservationMrg.createNewReservation();
 	private Scanner sc = new Scanner(System.in);
-
+	private ReservationMrg reservationMrg = ReservationMrg.getInstance();
+	
 	public void reservationMain() {
-		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
-		Scanner sc = reservation_Boundary.sc;
 		int choice = 0;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n" + "1. Create Reservation\n"
@@ -38,7 +37,21 @@ public class Reservation_Boundary {
 				createReservationMenu();
 				break;
 			case 2:
-				// updateReservationMenu();
+				System.out.println("Reservation System\n" + "0. Return to Main Menu\n"
+						+ "1. Update Reservation By Details\n" + "2. Update Reservation WaitList\n");
+
+				int i = sc.nextInt();
+				sc.nextLine();
+				switch (i) {
+				case 0:
+					break;
+				case 1:
+					updateReservationDetails();
+					break;
+				case 2:
+					updateReservationStatus();
+					break;
+				}
 				break;
 			case 3:
 				// deleteReservationMenu();
@@ -68,9 +81,6 @@ public class Reservation_Boundary {
 	}
 
 	private void createReservationMenu() {
-		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
-		GuestMrg guestMrg = new GuestMrg();
-		Scanner sc = reservation_Boundary.sc;
 
 		Character confirm;
 		ReservationMrg reservationMrg = new ReservationMrg();
@@ -80,7 +90,7 @@ public class Reservation_Boundary {
 		reservation.setRoomList(new ArrayList<String>());
 		System.out.println("Enter Guest IC:");
 		String ic = sc.nextLine();
-		Guest g = guestMrg.searchGuestByIC(ic);
+		Guest g = GuestMrg.getInstance().searchGuestByIC(ic);
 		System.out.println(g.getIC());
 		if (g != null) {
 			reservation.setGuestIC(ic);
@@ -95,12 +105,16 @@ public class Reservation_Boundary {
 			do {
 			enterRoomNum();
 			System.out.println("Press Y to confirm," + "and any key to continue adding rooms");
+			if(reservation.getRoomList() != null && reservation.getRoomList().size()>0) {
+				reservation.setReservationStatus(Reservation.ReservationStatus.CONFIRMED);
+			}else {
+				reservation.setReservationStatus(Reservation.ReservationStatus.WAITLIST);			
+			}
 			c = sc.nextLine().toUpperCase().charAt(0);
 			}while(c != 'Y');
 			
-			reservation.setReservationStatus(Reservation.ReservationStatus.CONFIRMED);
 			do {
-				printReservationInfo(reservation);
+				reservation.printReservationInfo();
 				System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
 				confirm = sc.nextLine().toUpperCase().charAt(0);
 				switch (confirm) {
@@ -130,6 +144,55 @@ public class Reservation_Boundary {
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
 		}
 	}
+	
+	private void updateReservationDetails() {
+		System.out.println("Enter Reservation Code :");
+		String reservationCode = sc.nextLine();
+		reservation = reservationMrg.getReservationByCode(reservationCode);
+		if(reservation != null) {
+			if(!reservation.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)) {
+				char confirm;
+				do {
+					reservation.printReservationInfo();
+					System.out.println("Press Y to confirm," + "N to discard and "
+							+ "(No.) to edit a field.(Unable to edit Guest IC and Reservation Code)");
+					confirm = sc.nextLine().charAt(0);
+					switch (confirm) {
+						case 'Y':
+							boolean success = reservationMrg.updateReservation(reservation);
+							if (success) {
+								System.out.println("Sucessfully update Reservation");
+							} else {
+								System.out.println("Unable to update Reservation");
+							}
+							break;
+						case 'N':
+							break;
+						case '2':
+							enterCheckInDate();
+							break;
+						case '3':
+							enterCheckOutDate();
+							break;
+						case '4':
+							enterNumOfAdult();
+							break;
+						case '5':
+							enterNumOfChild();
+							break;
+						case '6':
+							enterRoomNum();	
+						default:
+							break;
+					}
+				} while (!(confirm == 'Y' || confirm == 'N'));
+			}else {
+			 System.out.println("Reservation had already expired");
+			}
+		}else {
+			System.out.println("Reservation does not exist by this Reservation code");
+		}
+	}
 
 	private void enterReservationCode() {
 		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
@@ -150,7 +213,7 @@ public class Reservation_Boundary {
 		} while (true);
 	}
 
-	private static void enterCheckInDate() {
+	private void enterCheckInDate() {
 		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
 		Scanner sc = reservation_Boundary.sc;
 		do {
@@ -172,7 +235,7 @@ public class Reservation_Boundary {
 		} while (true);
 	}
 
-	private static void enterCheckOutDate() {
+	private void enterCheckOutDate() {
 		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
 		Scanner sc = reservation_Boundary.sc;
 
@@ -302,7 +365,7 @@ public class Reservation_Boundary {
 				System.out.println("Room Number: " + room.getRoomNumber() + ", Weekday Rate: "+
 			+ room.getRoomRateWeekday() +", Weekend Rate: " + room.getRoomRateWeekend() + ", Facing: " + room.getFacing());
 			}
-		}
+		
 		String input;
 
 		do {
@@ -322,30 +385,11 @@ public class Reservation_Boundary {
 				}
 			}
 		}while(!input.equalsIgnoreCase("0"));
-	}
-	private void printReservationInfo(Reservation reservation) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		
-		System.out.println(" -------------------------------------------");
-		System.out.println("Guest IC: " + reservation.getGuestIC());
-		System.out.println("1.Reservation Code : " + reservation.getReservationCode());
-		
-		System.out.println("2.Check In Date: " + formatter.format(reservation.getCheckIn()));
-		System.out.println("3.Check Out Date: " + formatter.format(reservation.getCheckOut()));
-		System.out.println("4.Number of Adult(s): " + reservation.getNumOfAdults());
-		System.out.println("5.Number of Child(ren): " + reservation.getNumOfChild());
-		System.out.println("Reservation Status : " + reservation.getReservationStatus());
-		if (reservation.getRoomList() != null && reservation.getRoomList().size() > 0) {
-
-			System.out.print("6.Room Number : ");
-			for (String roomNum : reservation.getRoomList()) {
-				System.out.print(roomNum + "  ");
-			}
-
-			System.out.println();
+		}else {
+			System.out.println("No Available Room");
 		}
-		System.out.println(" -------------------------------------------");
 	}
+
 
 	public static void main(String[] args) {
 		try {
