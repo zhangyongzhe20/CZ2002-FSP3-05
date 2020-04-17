@@ -26,6 +26,10 @@ public class RoomMrg {
 	public static List<Room> rooms = new ArrayList<Room>();
 	final static String fileName = "room_data.txt";
 
+	public static RoomMrg getInstance() {
+		RoomMrg roomMrg = new RoomMrg();
+		return roomMrg;
+	}
 	public static RoomType strToRoomType(String type) {
 		Room.RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {

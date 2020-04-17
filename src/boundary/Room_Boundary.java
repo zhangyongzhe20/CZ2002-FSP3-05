@@ -17,7 +17,7 @@ import entity.Room;
 public class Room_Boundary {
 	
 	private Scanner sc = new Scanner(System.in);
-	RoomMrg roomMrg = new RoomMrg();
+	private RoomMrg roomMrg = RoomMrg.getInstance();
 	private static Room room = RoomMrg.createNewRoom();
 	public void roomMain() {
 		int choice = 0;
@@ -340,7 +340,7 @@ public class Room_Boundary {
 	public void reservationCheckInMenu() {
 		System.out.println("Please enter the reservation code: ");
 		String reservationCode = sc.nextLine();
-		Reservation reservation = ReservationMrg.getReservationByCode(reservationCode);
+		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(reservationCode);
 		if (reservation != null) {
 			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
 				roomMrg.checkInReservedRoom(reservation);
@@ -504,10 +504,8 @@ public class Room_Boundary {
 
 	public static void main(String[] args) {
 		try {
-			RoomMrg roomMrg = new RoomMrg();
-			GuestMrg guestMrg = new GuestMrg();
-			roomMrg.loadRoomData();
-			guestMrg.loadGuestData();
+			RoomMrg.getInstance().loadRoomData();
+			GuestMrg.getInstance().loadGuestData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

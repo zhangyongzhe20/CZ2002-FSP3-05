@@ -16,7 +16,10 @@ public class GuestMrg {
 		static List<Guest> guests = new ArrayList<Guest>();
 		final static String fileName = "guest_data.txt";
 
-		 
+	public static GuestMrg getInstance() {
+		GuestMrg guestMrg = new GuestMrg();
+		return guestMrg;
+	}
 	public  int guestExist(String data , String type , ArrayList<Guest> guestList) {
 	
 		return 1;

@@ -4,15 +4,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 import entity.Reservation;
 import entity.Reservation.ReservationStatus;
 import entity.Room;
-import entity.Room.RoomStatus;
+
 
 public class ReservationMrg {
     public static List<Reservation> reservations = new ArrayList<Reservation>();
+    
+    public static ReservationMrg getInstance() {
+    	ReservationMrg reservationMrg = new ReservationMrg();
+    	return reservationMrg;
+    }
     
     public static ReservationStatus strToReservationStatus(String StrReservationStatus) {
     	Reservation.ReservationStatus reservationStatus = null;
@@ -60,7 +65,7 @@ public class ReservationMrg {
     		 }
     	 }
     }
-    public static  Reservation getReservationByCode(String reservationCode) {
+    public Reservation getReservationByCode(String reservationCode) {
     	Reservation r = null;
     	for(Reservation reservation : reservations) {
     		if(reservation.getReservationCode().equals(reservationCode)) {
