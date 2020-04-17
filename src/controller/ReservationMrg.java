@@ -60,7 +60,7 @@ public class ReservationMrg {
     		 }
     	 }
     }
-    public  Reservation getReservationByCode(String reservationCode) {
+    public static  Reservation getReservationByCode(String reservationCode) {
     	Reservation r = null;
     	for(Reservation reservation : reservations) {
     		if(reservation.getReservationCode().equals(reservationCode)) {
