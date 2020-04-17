@@ -8,7 +8,7 @@ public class Room {
     private RoomType roomType;
     private double roomRateWeekday;
     private double roomRateWeekend;
-    private int roomNumber;
+    private String roomNumber;
     private BedType bedType;
     private boolean isWifi;
     private Facing facing;
@@ -60,7 +60,7 @@ public class Room {
     /*
      * @param the roomNumber to set
      */
-    public void setRoomNumber(int roomNumber) {
+    public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
     }
 
@@ -113,7 +113,7 @@ public class Room {
         return roomRateWeekend;
     }
 
-    public int getRoomNumber() {
+    public String getRoomNumber() {
         return roomNumber;
     }
 
@@ -131,12 +131,6 @@ public class Room {
 
     public boolean isSmoking() {
         return isSmoking;
-    }
-
-
-
-    public OrderMrg getRoomService() {
-        return roomService;
     }
 
 

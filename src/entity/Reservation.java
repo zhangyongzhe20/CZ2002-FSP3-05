@@ -2,18 +2,17 @@ package entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
-public class Reservation {
+
+public class Reservation{
     private String reservationCode;
     private String guestIC;
-    private String paymentMethod;
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
     private int numOfAdults;
     private int numOfChild;
     private ReservationStatus reservationStatus;
-    private List<Integer> roomList;
+    private List<String> roomList;
 
     
     public enum ReservationStatus {
@@ -41,18 +40,6 @@ public class Reservation {
     public void setGuestIC(String guestIC) {
         this.guestIC = guestIC;
     }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    /*
-     * @param the paymentMethod to set
-     */
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
     public LocalDateTime getCheckIn() {
         return checkIn;
     }
@@ -108,11 +95,11 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-	public List<Integer> getRoomList() {
+	public List<String> getRoomList() {
 		return roomList;
 	}
 
-	public void setRoomList(List<Integer> roomList) {
+	public void setRoomList(List<String> roomList) {
 		this.roomList = roomList;
 	}
     

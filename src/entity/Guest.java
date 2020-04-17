@@ -1,3 +1,5 @@
+package entity;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +15,7 @@ public class Guest {
     private String IC;
     private String nationality;
     private String contact;
-    private List<Integer> roomNumList;
+    private List<String> roomNumList;
 
 
     /**
@@ -25,7 +27,7 @@ public class Guest {
     /**
      * Constructor of Guest()
      */
-public Guest(String guestName, String creditCard, String address, String country, String gender, String identityType,String IC, String nationality, String contact, List<Integer> roomNumList) {
+public Guest(String guestName, String creditCard, String address, String country, String gender, String identityType,String IC, String nationality, String contact, List<String> roomNumList) {
         this.guestName = guestName;
         this.creditCard = creditCard;
         this.address = address;
@@ -112,11 +114,11 @@ public Guest(String guestName, String creditCard, String address, String country
     }
 
 
-	public List<Integer> getRoomNumList() {
+	public List<String> getRoomNumList() {
 		return roomNumList;
 	}
 
-	public void setRoomNumList(List<Integer> roomNumList) {
+	public void setRoomNumList(List<String> roomNumList) {
 		this.roomNumList = roomNumList;
 	}
 
