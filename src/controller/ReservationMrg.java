@@ -19,6 +19,9 @@ public class ReservationMrg {
     	return reservationMrg;
     }
     
+	public static Reservation createNewReservation() {
+		return new Reservation();
+	}
     public static ReservationStatus strToReservationStatus(String StrReservationStatus) {
     	Reservation.ReservationStatus reservationStatus = null;
     	if(StrReservationStatus.equalsIgnoreCase("CONFIRMED")) {
@@ -52,18 +55,20 @@ public class ReservationMrg {
     		roomMrg.cancelReservedRoom(reservation);
     }
 
-    public  void changeReservation(Reservation reservation ,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<String> roomList){
-    	 for (Reservation r : reservations) {
-    		 if(r.equals(reservation)) {
-    	    		r.setGuestIC(guestIC);
-    	    	    r.setCheckIn(checkInDate);
-    	    	    r.setCheckOut(checkOutDate);
-    	    		r.setNumOfAdults(numOfAdults);
-    	    		r.setNumOfChild(numOfChild);
-    	    		r.setRoomList(roomList);
-    	    		r.setReservationStatus(ReservationMrg.strToReservationStatus(StrReservationStatus));
-    		 }
+    public  boolean updateReservation(Reservation reservation) {
+    	boolean bool = false;
+    	for (Reservation r : reservations) {
+    		 if(r.getReservationCode().equals(reservation.getReservationCode())) {
+    	    	    r.setCheckIn(reservation.getCheckIn());
+    	    	    r.setCheckOut(reservation.getCheckOut());
+    	    		r.setNumOfAdults(reservation.getNumOfAdults());
+    	    		r.setNumOfChild(reservation.getNumOfChild());
+    	    		r.setRoomList(reservation.getRoomList());
+    	    		r.setReservationStatus(reservation.getReservationStatus());
+    	    		bool = true;
+    	   	 }
     	 }
+    	return bool;
     }
     public Reservation getReservationByCode(String reservationCode) {
     	Reservation r = null;

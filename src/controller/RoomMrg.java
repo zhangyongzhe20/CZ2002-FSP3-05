@@ -30,6 +30,11 @@ public class RoomMrg {
 		RoomMrg roomMrg = new RoomMrg();
 		return roomMrg;
 	}
+
+	public static Room createNewRoom() {
+		return new Room();
+	}
+
 	public static RoomType strToRoomType(String type) {
 		Room.RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
@@ -208,10 +213,11 @@ public class RoomMrg {
 		return r;
 	}
 
-	public List<Room> getAvailRoom(RoomStatus roomStatus,RoomType roomType,BedType bedType,boolean hasWifiBool,boolean allowSmokingBool){
+	public List<Room> getAvailRoom(RoomStatus roomStatus, RoomType roomType, BedType bedType, boolean hasWifiBool,
+			boolean allowSmokingBool) {
 		List<Room> returnList = new ArrayList<Room>();
-		for(Room room : rooms) {
-			if(room.getRoomStatus().equals(roomStatus) && room.getRoomType().equals(roomType) 
+		for (Room room : rooms) {
+			if (room.getRoomStatus().equals(roomStatus) && room.getRoomType().equals(roomType)
 					&& room.getBedType().equals(bedType) && room.isWifi() == hasWifiBool
 					&& room.isSmoking() == allowSmokingBool) {
 				returnList.add(room);
@@ -219,73 +225,6 @@ public class RoomMrg {
 		}
 		return returnList;
 	}
-
-	public void loadRoomData() throws FileNotFoundException {
-		File file = new File(fileName);
-		try {
-			file.createNewFile();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		Scanner sc = new Scanner(file);
-		String data;
-		while (sc.hasNextLine()) {
-			data = sc.nextLine();
-			String[] temp = data.split(",");
-			Room r = new Room();
-			r.setRoomNumber(temp[0]);
-			r.setRoomType(RoomMrg.strToRoomType(temp[1]));
-			r.setBedType(RoomMrg.strToBedType(temp[2]));
-			r.setFacing(RoomMrg.strToFacing(temp[3]));
-			r.setRoomRateWeekday(Double.parseDouble(temp[4]));
-			r.setRoomRateWeekend(Double.parseDouble(temp[5]));
-			r.setWifi(Boolean.parseBoolean(temp[6]));
-			r.setSmoking(Boolean.parseBoolean(temp[7]));
-			r.setRoomStatus(RoomMrg.strToRoomStatus(temp[8]));
-			if (r.getRoomStatus() == Room.RoomStatus.OCCUPIED || r.getRoomStatus() == Room.RoomStatus.RESERVED) {
-				r.setGuestIC((temp[9]));
-
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-				LocalDateTime CheckInDate = LocalDateTime.parse(temp[10], formatter);
-				r.setCheckInDate(CheckInDate);
-				LocalDateTime CheckOutDate = LocalDateTime.parse(temp[11], formatter);
-				r.setCheckOutDate(CheckOutDate);
-			}
-			rooms.add(r);
-		}
-		sc.close();
-	}
-
-	public void writeRoomData() throws IOException {
-		FileWriter fileWriter = new FileWriter(fileName);
-		PrintWriter fileOut = new PrintWriter(fileWriter);
-		if (rooms.size() > 0) {
-			for (Room room : rooms) {
-				fileOut.print(room.getRoomNumber() + ",");
-				fileOut.print(room.getRoomType() + ",");
-				fileOut.print(room.getBedType() + ",");
-				fileOut.print(room.getFacing() + ",");
-				fileOut.print(room.getRoomRateWeekday() + ",");
-				fileOut.print(room.getRoomRateWeekend() + ",");
-				fileOut.print(room.isWifi() + ",");
-				fileOut.print(room.isSmoking() + ",");
-				fileOut.print(room.getRoomStatus() + ",");
-				if (room.getRoomStatus() == Room.RoomStatus.OCCUPIED
-						|| room.getRoomStatus() == Room.RoomStatus.RESERVED) {
-					fileOut.print(room.getGuestIC() + ",");
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-					fileOut.print(room.getCheckInDate().format(formatter) + ",");
-					fileOut.print(room.getCheckOutDate().format(formatter) + ",");
-				}
-				fileOut.println();
-			}
-			System.out.println("finish writing");
-			fileOut.close();
-		}
-	}
-
-
 
 	// For Room Boundary
 	public void getRoomReportMenu() {
@@ -392,8 +331,6 @@ public class RoomMrg {
 		printRoomNumber(maintenanceList);
 	}
 
-
-
 	public void printRoomNumber(List<Room> list) {
 		if (list.isEmpty()) {
 			System.out.println("Contain no room");
@@ -407,9 +344,69 @@ public class RoomMrg {
 		}
 	}
 
-	public static Room createNewRoom() {
-		return new Room();
+	public void loadRoomData() throws FileNotFoundException {
+		File file = new File(fileName);
+		try {
+			file.createNewFile();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		Scanner sc = new Scanner(file);
+		String data;
+		while (sc.hasNextLine()) {
+			data = sc.nextLine();
+			String[] temp = data.split(",");
+			Room r = new Room();
+			r.setRoomNumber(temp[0]);
+			r.setRoomType(RoomMrg.strToRoomType(temp[1]));
+			r.setBedType(RoomMrg.strToBedType(temp[2]));
+			r.setFacing(RoomMrg.strToFacing(temp[3]));
+			r.setRoomRateWeekday(Double.parseDouble(temp[4]));
+			r.setRoomRateWeekend(Double.parseDouble(temp[5]));
+			r.setWifi(Boolean.parseBoolean(temp[6]));
+			r.setSmoking(Boolean.parseBoolean(temp[7]));
+			r.setRoomStatus(RoomMrg.strToRoomStatus(temp[8]));
+			if (r.getRoomStatus() == Room.RoomStatus.OCCUPIED || r.getRoomStatus() == Room.RoomStatus.RESERVED) {
+				r.setGuestIC((temp[9]));
+
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+				LocalDateTime CheckInDate = LocalDateTime.parse(temp[10], formatter);
+				r.setCheckInDate(CheckInDate);
+				LocalDateTime CheckOutDate = LocalDateTime.parse(temp[11], formatter);
+				r.setCheckOutDate(CheckOutDate);
+			}
+			rooms.add(r);
+		}
+		sc.close();
 	}
 
+	public void writeRoomData() throws IOException {
+		FileWriter fileWriter = new FileWriter(fileName);
+		PrintWriter fileOut = new PrintWriter(fileWriter);
+		if (rooms.size() > 0) {
+			for (Room room : rooms) {
+				fileOut.print(room.getRoomNumber() + ",");
+				fileOut.print(room.getRoomType() + ",");
+				fileOut.print(room.getBedType() + ",");
+				fileOut.print(room.getFacing() + ",");
+				fileOut.print(room.getRoomRateWeekday() + ",");
+				fileOut.print(room.getRoomRateWeekend() + ",");
+				fileOut.print(room.isWifi() + ",");
+				fileOut.print(room.isSmoking() + ",");
+				fileOut.print(room.getRoomStatus() + ",");
+				if (room.getRoomStatus() == Room.RoomStatus.OCCUPIED
+						|| room.getRoomStatus() == Room.RoomStatus.RESERVED) {
+					fileOut.print(room.getGuestIC() + ",");
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+					fileOut.print(room.getCheckInDate().format(formatter) + ",");
+					fileOut.print(room.getCheckOutDate().format(formatter) + ",");
+				}
+				fileOut.println();
+			}
+			System.out.println("finish writing");
+			fileOut.close();
+		}
+	}
 
 }

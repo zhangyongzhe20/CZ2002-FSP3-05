@@ -170,14 +170,6 @@ public class Room_Boundary {
 		room = roomMrg.searchRoomByNum(roomNum);
 		if (room != null) {
 			Character confirm;
-			enterRoomType();
-			enterBedType();
-			enterFacing();
-			enterWeekdayRate();
-			enterWeekendRate();
-			enterAllowSmoking();
-			enterHasWifi();
-
 			do {
 				room.printRoomInfo();
 				System.out.println("Press Y to confirm," + "N to discard and "
