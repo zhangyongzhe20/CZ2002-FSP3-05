@@ -15,7 +15,6 @@ import entity.Guest;
 import entity.Reservation;
 import entity.Room;
 import entity.Room.BedType;
-import entity.Room.Facing;
 import entity.Room.RoomType;
 
 public class Reservation_Boundary {
