@@ -12,7 +12,7 @@ import entity.Room;
 import entity.Room.RoomStatus;
 
 public class ReservationMrg {
-    public static List<Reservation> reservations;
+    public static List<Reservation> reservations = new ArrayList<Reservation>();
     
     public static ReservationStatus strToReservationStatus(String StrReservationStatus) {
     	Reservation.ReservationStatus reservationStatus = null;

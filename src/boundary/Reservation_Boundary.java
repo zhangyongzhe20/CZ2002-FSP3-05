@@ -30,7 +30,7 @@ public class Reservation_Boundary {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n" + "1. Create Reservation\n"
 					+ "2. Update Reservation\n" + "3.Delete Reservation\n" + "4. Get Reservation Details\n");
 			choice = sc.nextInt();
-			sc.hasNextLine();
+			sc.nextLine();
 
 			switch (choice) {
 			case 0:
@@ -78,9 +78,11 @@ public class Reservation_Boundary {
 
 		System.out.println("Create Reservation");
 		reservation = new Reservation();
-		System.out.println("Enter Guest IC");
+		reservation.setRoomList(new ArrayList<String>());
+		System.out.println("Enter Guest IC:");
 		String ic = sc.nextLine();
 		Guest g = guestMrg.searchGuestByIC(ic);
+		System.out.println(g.getIC());
 		if (g != null) {
 			reservation.setGuestIC(ic);
 			enterReservationCode();
@@ -88,7 +90,16 @@ public class Reservation_Boundary {
 			enterCheckOutDate();
 			enterNumOfAdult();
 			enterNumOfChild();
+			
+			char c;
+			
+			do {
 			enterRoomNum();
+			System.out.println("Press Y to confirm," + "and any key to continue adding rooms");
+			c = sc.nextLine().toUpperCase().charAt(0);
+			}while(c != 'Y');
+			
+			reservation.setReservationStatus(Reservation.ReservationStatus.CONFIRMED);
 			do {
 				printReservationInfo(reservation);
 				System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
@@ -145,7 +156,7 @@ public class Reservation_Boundary {
 		Scanner sc = reservation_Boundary.sc;
 		do {
 			try {
-				System.out.println("Enter Check In Date: (DD/MM/YYY HH:mm)");
+				System.out.println("Enter Check In Date: (DD/MM/YYYY HH:mm)");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 				String strCheckInDate = sc.nextLine();
 				LocalDateTime checkInDate = LocalDateTime.parse(strCheckInDate, formatter);
@@ -168,7 +179,7 @@ public class Reservation_Boundary {
 
 		do {
 			try {
-				System.out.println("Enter Check Out Date: (DD/MM/YYY HH:mm)");
+				System.out.println("Enter Check Out Date: (DD/MM/YYYY HH:mm)");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 				String strCheckInDate = sc.nextLine();
 				LocalDateTime checkInDate = LocalDateTime.parse(strCheckInDate, formatter);
@@ -225,7 +236,6 @@ public class Reservation_Boundary {
 		List<Room> roomList = new ArrayList<Room>();
 		RoomType roomType;
 		BedType bedType;
-		Facing facing;
 		boolean hasWifiBool;
 		boolean allowSmokingBool;
 		do {
@@ -252,19 +262,6 @@ public class Reservation_Boundary {
 			}
 		} while (true);
 		
-		
-		do {
-			System.out.println("Enter facing: NORTH, SOUTH, EAST, WEST ");
-			String StrFacing = sc.nextLine();
-			if (StrFacing.equalsIgnoreCase("NORTH") || StrFacing.equalsIgnoreCase("SOUTH") || StrFacing.equalsIgnoreCase("EAST")
-					|| StrFacing.equalsIgnoreCase("WEST")) {
-				facing =  RoomMrg.strToFacing(StrFacing);
-				break;
-			} else {
-				System.out.println("Please enter the correct facing!");
-			}
-		} while (true);
-		
 			
 			do {
 				System.out.println("Enter has wifi: (Y/N) ");
@@ -278,6 +275,7 @@ public class Reservation_Boundary {
 					break;
 				} else {
 					System.out.println("Please enter Y/N ");
+				
 				}
 			} while (true);
 	
@@ -294,32 +292,47 @@ public class Reservation_Boundary {
 				break;
 			} else {
 				System.out.println("Please enter Y/N ");
-				sc.nextLine();
+	
 			}
 		} while (true);
 
-		roomList = roomMrg.getAvailRoom(Room.RoomStatus.VACANT ,roomType,bedType,facing,hasWifiBool, allowSmokingBool);
+		roomList = roomMrg.getAvailRoom(Room.RoomStatus.VACANT ,roomType,bedType,hasWifiBool, allowSmokingBool);
 	
 		if(roomList != null && roomList.size() > 0) {
 			for(Room room : roomList) {
 				System.out.println("Room Number: " + room.getRoomNumber() + ", Weekday Rate: "+
-			+ room.getRoomRateWeekday() +", Weekend Rate: " + room.getRoomRateWeekend());
+			+ room.getRoomRateWeekday() +", Weekend Rate: " + room.getRoomRateWeekend() + ", Facing: " + room.getFacing());
 			}
 		}
 		String input;
+
 		do {
 			System.out.println("Enter the room number to be selected (Enter 0 to exit): ");
-			 input = sc.nextLine();
-			
-		}while(input != "0");
-		
+			input = sc.nextLine();
+			boolean addRoomNum = true;
+			for(Room room : roomList) {
+				if(room.getRoomNumber().equalsIgnoreCase(input)) {
+					for(String roomNum : reservation.getRoomList()) {
+						if(roomNum.equalsIgnoreCase(input)) {
+							addRoomNum = false;
+						}
+					}
+					if(addRoomNum) {
+						 reservation.getRoomList().add(room.getRoomNumber());
+					}
+				}
+			}
+		}while(!input.equalsIgnoreCase("0"));
 	}
-	public static void printReservationInfo(Reservation reservation) {
+	private void printReservationInfo(Reservation reservation) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		
 		System.out.println(" -------------------------------------------");
 		System.out.println("Guest IC: " + reservation.getGuestIC());
 		System.out.println("1.Reservation Code : " + reservation.getReservationCode());
-		System.out.println("2.Check In Date: " + reservation.getCheckIn());
-		System.out.println("3.Check Out Date: " + reservation.getCheckOut());
+		
+		System.out.println("2.Check In Date: " + formatter.format(reservation.getCheckIn()));
+		System.out.println("3.Check Out Date: " + formatter.format(reservation.getCheckOut()));
 		System.out.println("4.Number of Adult(s): " + reservation.getNumOfAdults());
 		System.out.println("5.Number of Child(ren): " + reservation.getNumOfChild());
 		System.out.println("Reservation Status : " + reservation.getReservationStatus());
@@ -336,7 +349,18 @@ public class Reservation_Boundary {
 	}
 
 	public static void main(String[] args) {
-
+		try {
+			RoomMrg roomMrg = new RoomMrg();
+			GuestMrg guestMrg = new GuestMrg();
+			roomMrg.loadRoomData();
+			guestMrg.loadGuestData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
+		reservation_Boundary.reservationMain();
 	}
 
 }

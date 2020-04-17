@@ -26,7 +26,7 @@ public class Room_Boundary {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
 					+ "3. Search Room\n" + "4. Check In\n" + "5. Check Out\n" + "6. Print Room Status Report\n");
 			choice = sc.nextInt();
-			sc.hasNextLine();
+			sc.nextLine();
 
 			switch (choice) {
 			case 0:
@@ -448,6 +448,7 @@ public class Room_Boundary {
 
 		System.out.println("Double: Number: " + doubleRoomVacantCount + " out of " + doubleRoomTotal);
 		System.out.print("	Rooms: ");
+		
 		printRoomNumber(doubleRoomList);
 
 		System.out.println("Deluxe: Number: " + deluxeRoomVacantCount + " out of " + deluxeRoomTotal);
@@ -619,7 +620,6 @@ public class Room_Boundary {
 				break;
 			} else {
 				System.out.println("Please enter Y/N ");
-				sc.nextLine();
 			}
 		} while (true);
 	}
@@ -647,7 +647,7 @@ public class Room_Boundary {
 
 	}
 
-	public static void printRoomNumber(List<Room> list) {
+	private void printRoomNumber(List<Room> list) {
 		if (list.isEmpty()) {
 			System.out.println("Contain no room");
 		} else {
@@ -660,7 +660,7 @@ public class Room_Boundary {
 		}
 	}
 
-	public static void printRoomInfo(Room room) {
+	private void printRoomInfo(Room room) {
 		System.out.println(" -------------------------------------------");
 		System.out.println("1.Room No: " + room.getRoomNumber());
 		System.out.println("2.Room Type: " + room.getRoomType());
