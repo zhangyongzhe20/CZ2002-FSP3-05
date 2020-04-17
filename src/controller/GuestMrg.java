@@ -17,16 +17,16 @@ public class GuestMrg {
 		final static String fileName = "guest_data.txt";
 
 		 
-	public static int guestExist(String data , String type , ArrayList<Guest> guestList) {
+	public  int guestExist(String data , String type , ArrayList<Guest> guestList) {
 	
 		return 1;
 	}
 	
-	public static void createGuest(Guest guest) {
+	public  void createGuest(Guest guest) {
 	   guests.add(guest);
 	}
 	
-	public static Guest searchGuestByIC(String ic) {
+	public  Guest searchGuestByIC(String ic) {
 		Guest g = null;
 		for(Guest guest : guests) {
 			if( guest.getIC().equalsIgnoreCase(ic)) {
@@ -35,7 +35,7 @@ public class GuestMrg {
 	}
 		return g;
 	}
-	public static List<Guest> searchGuestByName(String name) {
+	public  List<Guest> searchGuestByName(String name) {
 		List<Guest> guestList = new ArrayList<Guest>();
 		for(Guest guest : guests) {
 			if( guest.getGuestName().equalsIgnoreCase(name)) {
@@ -44,11 +44,11 @@ public class GuestMrg {
 	}
 		return guestList;
 	}
-	public static void updateGuest(ArrayList<Guest> guestList) {
+	public  void updateGuest(ArrayList<Guest> guestList) {
 		
 	}
 	
-	public static void loadGuestData() throws FileNotFoundException {
+	public  void loadGuestData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try { 
 			file.createNewFile();
@@ -66,16 +66,14 @@ public class GuestMrg {
 			for(int i = 9 ; i < temp.length;i ++) {
 			roomNumList.add(temp[i]);
 		}
-			}else {
-			roomNumList = null;
-		}
+			}
 			Guest guest = new Guest(temp[0],temp[1], temp[2], temp[3], temp[4],temp[5],temp[6],temp[7],temp[8], roomNumList);
 			guests.add(guest);
 		}
 		sc.close();
 	}
 	
-	public static void writeGuestData() throws IOException {
+	public  void writeGuestData() throws IOException {
 		 FileWriter fileWriter = new FileWriter(fileName);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		if(guests.size() > 0) {
@@ -90,7 +88,7 @@ public class GuestMrg {
 			fileOut.print(guest.getNationality()+ ",");
 			fileOut.print(guest.getContact()+ ",");
 			if(guest.getRoomNumList()!= null && guest.getRoomNumList().size()>0) {
-			for(int i : guest.getRoomNumList()) {
+			for(String i : guest.getRoomNumList()) {
 				fileOut.print(i+",");
 			}
 			}

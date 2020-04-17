@@ -110,11 +110,11 @@ public class RoomMrg {
 		return bool;
 	}
 
-	public void updateRoom(Room room, LocalDateTime checkoutDate, LocalDateTime checkInDate, String nric,RoomStatus rs) {
+	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String nric,RoomStatus rs) {
 		for (Room r : rooms) {
 			if (r.equals(room)) {
 				r.setCheckInDate(checkInDate);
-				r.setCheckOutDate(checkoutDate);
+				r.setCheckOutDate(checkOutDate);
 				r.setRoomStatus(rs);
 				r.setGuestIC(nric);
 			}
@@ -161,7 +161,8 @@ public class RoomMrg {
 
 	public List<Room> searchRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
-		List<Guest> guestlist = GuestMrg.searchGuestByName(name);
+		GuestMrg guestMrg = new GuestMrg();
+		List<Guest> guestlist = guestMrg.searchGuestByName(name);
 		for (Guest guest : guestlist) {
 			for (Room room : rooms) {
 				if (room.getGuestIC().equalsIgnoreCase(guest.getIC())) {
@@ -172,8 +173,7 @@ public class RoomMrg {
 		return roomList;
 	}
 
-	public List<Room> searchRoomByRoomType(String StrRoomType) {
-		Room.RoomType roomType = RoomMrg.strToRoomType(StrRoomType);
+	public List<Room> searchRoomByRoomType(RoomType roomType) {
 		List<Room> roomList = new ArrayList<Room>();
 		for (Room room : rooms) {
 			if (room.getRoomType().equals(roomType)) {
@@ -182,7 +182,15 @@ public class RoomMrg {
 		}
 		return roomList;
 	}
-
+	public List<Room> searchRoomByRoomStatus(RoomStatus roomStatus) {
+		List<Room> roomList = new ArrayList<Room>();
+		for (Room room : rooms) {
+			if (room.getRoomStatus().equals(roomStatus)) {
+				roomList.add(room);
+			}
+		}
+		return roomList;
+	}
 	public  Room searchRoomByNum(String roomNum) {
 		Room r = null;
 		for (Room room : rooms) {
@@ -192,7 +200,17 @@ public class RoomMrg {
 		}
 		return r;
 	}
-
+	public List<Room> getAvailRoom(RoomStatus roomStatus,RoomType roomType,BedType bedType,Facing facing,boolean hasWifiBool,boolean allowSmokingBool){
+		List<Room> returnList = new ArrayList<Room>();
+		for(Room room : rooms) {
+			if(room.getRoomStatus().equals(roomStatus) && room.getRoomType().equals(roomType) 
+					&& room.getBedType().equals(bedType)&& room.getFacing().equals(facing)
+					&& room.isWifi() == hasWifiBool && room.isSmoking() == allowSmokingBool) {
+				returnList.add(room);
+			}
+		}
+		return returnList;
+	}
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {

@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,13 +35,30 @@ public class Room_Boundary {
 				createRoomMenu();
 				break;
 			case 2:
-				updateRoomBydetailsMenu();
+				System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Update Room details\n"
+						+ "2. Update Room Status\n");
+				
+				int i = sc.nextInt();
+				sc.nextLine();
+		
+				
+				switch (i) {
+				case 0:
+					break;
+				case 1:
+					updateRoomBydetailsMenu();
+					break;
+				case 2:
+					updateRoomStatusMenu();
+					break;
+				}
+
 				break;
 			case 3:
 				System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Search Room by Room number\n"
 						+ "2. Search Room by Guest name\n");
 
-				int i = sc.nextInt();
+				i = sc.nextInt();
 				sc.nextLine();
 				switch (i) {
 				case 0:
@@ -203,7 +219,56 @@ public class Room_Boundary {
 		}
 
 	}
+	
+	private void updateRoomStatusMenu() {
+		Room_Boundary room_Boundary = new Room_Boundary();
+		Scanner sc = room_Boundary.sc;
+		RoomMrg roomMrg = new RoomMrg();
 
+		System.out.println("update Room");
+		System.out.println("Enter room number : ");
+		String roomNum = sc.nextLine();
+		room = roomMrg.searchRoomByNum(roomNum);
+		if (room != null) {
+			Character confirm;
+			
+			do {
+				System.out.println("Enter Room Status: VACANT, OCCUPIED, RESERVED, MAINTENANCE ");
+				String status = sc.nextLine();
+				if (status.equalsIgnoreCase("VACANT") || status.equalsIgnoreCase("OCCUPIED") || status.equalsIgnoreCase("RESERVED")
+						|| status.equalsIgnoreCase("MAINTENANCE")) {
+					room.setRoomStatus(RoomMrg.strToRoomStatus(status));
+					break;
+				} else {
+					System.out.println("Please enter the correct Status!");
+				}
+			} while (true);
+
+			
+
+			do {
+				printRoomInfo(room);
+				System.out.println("Press Y to confirm," + "N to discard");
+				confirm = sc.nextLine().charAt(0);
+				switch (confirm) {
+				case 'Y':
+					boolean success = roomMrg.updateRoom(room);
+					if (success) {
+						System.out.println("Sucessfully update room");
+					} else {
+						System.out.println("Unable to update room");
+					}
+					break;
+				case 'N':
+					break;
+				default:
+					break;
+				}
+			} while (!(confirm.equals('Y') || confirm.equals('N')));
+		}
+
+	}
+	
 	private void searchRoomByRoomNumMenu() {
 		Room_Boundary room_Boundary = new Room_Boundary();
 		Scanner sc = room_Boundary.sc;
@@ -239,10 +304,10 @@ public class Room_Boundary {
 		Room_Boundary room_Boundary = new Room_Boundary();
 		Scanner sc = room_Boundary.sc;
 		RoomMrg roomMrg = new RoomMrg();
-
+		GuestMrg guestMrg = new GuestMrg();
 		System.out.println("Enter the guest IC: ");
 		String ic = sc.nextLine();
-		Guest g = GuestMrg.searchGuestByIC(ic);
+		Guest g = guestMrg.searchGuestByIC(ic);
 		if (g != null) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm");
 
@@ -256,7 +321,7 @@ public class Room_Boundary {
 			} while (checkOut.isBefore(checkIn));
 
 			System.out.println("Enter Room Type : SINGLE, DOUBLE, DELUXE, VIP  ");
-			List<Room> RoomTypeList = roomMrg.searchRoomByRoomType(sc.nextLine().toUpperCase());
+			List<Room> RoomTypeList = roomMrg.searchRoomByRoomType(RoomMrg.strToRoomType(sc.nextLine().toUpperCase()));
 
 			char confirm;
 			do {
@@ -291,7 +356,9 @@ public class Room_Boundary {
 
 		System.out.println("Please enter the reservation code: ");
 		String reservationCode = sc.nextLine();
-		Reservation reservation = ReservationMrg.getReservationByCode(reservationCode);
+		ReservationMrg reservationMrg = new ReservationMrg();
+		
+		Reservation reservation = reservationMrg.getReservationByCode(reservationCode);
 		if (reservation != null) {
 			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
 				roomMrg.checkInReservedRoom(reservation);
@@ -616,8 +683,9 @@ public class Room_Boundary {
 	public static void main(String[] args) {
 		try {
 			RoomMrg roomMrg = new RoomMrg();
+			GuestMrg guestMrg = new GuestMrg();
 			roomMrg.loadRoomData();
-			GuestMrg.loadGuestData();
+			guestMrg.loadGuestData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

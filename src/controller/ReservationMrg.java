@@ -2,16 +2,19 @@ package controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import entity.Reservation;
+import entity.Reservation.ReservationStatus;
+import entity.Room;
 import entity.Room.RoomStatus;
 
 public class ReservationMrg {
     public static List<Reservation> reservations;
     
-    public static Reservation.ReservationStatus strToReservationStatus(String StrReservationStatus) {
+    public static ReservationStatus strToReservationStatus(String StrReservationStatus) {
     	Reservation.ReservationStatus reservationStatus = null;
     	if(StrReservationStatus.equalsIgnoreCase("CONFIRMED")) {
     		reservationStatus = Reservation.ReservationStatus.CONFIRMED;
@@ -26,26 +29,25 @@ public class ReservationMrg {
     }
 
 
-    public static void makeReservation(String reservationCode,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<String> roomList){
-    		Reservation reservation = new Reservation();
-    		reservation.setReservationCode(reservationCode);
-    		reservation.setGuestIC(guestIC);
-    	    reservation.setCheckIn(checkInDate);
-    	    reservation.setCheckOut(checkOutDate);
-    		reservation.setNumOfAdults(numOfAdults);
-    		reservation.setNumOfChild(numOfChild);
-    		reservation.setRoomList(roomList);
-    		reservation.setReservationStatus(ReservationMrg.strToReservationStatus(StrReservationStatus));
-    		reservations.add(reservation);
+    public  void createReservation(Reservation reservation){
+    			reservations.add(reservation);
+    			RoomMrg roomMrg = new RoomMrg();
+    			if(reservation.getRoomList() != null && reservation.getRoomList().size() > 0) {
+    			   for(String roomNum : reservation.getRoomList()) {
+    				  Room r = roomMrg.searchRoomByNum(roomNum);
+    				  roomMrg.updateRoom(r, reservation.getCheckIn(), reservation.getCheckOut(), reservation.getGuestIC(), Room.RoomStatus.RESERVED);
+    			   }
+    			}
     }
 
 
-    public static void cancelReservation(Reservation reservation){
+    public  void cancelReservation(Reservation reservation){
     		reservations.remove(reservation);
-    		RoomMrg.cancelReservedRoom(reservation);
+    		RoomMrg roomMrg = new RoomMrg();
+    		roomMrg.cancelReservedRoom(reservation);
     }
 
-    public static void changeReservation(Reservation reservation ,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<String> roomList){
+    public  void changeReservation(Reservation reservation ,String guestIC ,LocalDateTime checkInDate, LocalDateTime checkOutDate , int numOfAdults , int numOfChild,String StrReservationStatus , List<String> roomList){
     	 for (Reservation r : reservations) {
     		 if(r.equals(reservation)) {
     	    		r.setGuestIC(guestIC);
@@ -58,7 +60,7 @@ public class ReservationMrg {
     		 }
     	 }
     }
-    public static Reservation getReservationByCode(String reservationCode) {
+    public  Reservation getReservationByCode(String reservationCode) {
     	Reservation r = null;
     	for(Reservation reservation : reservations) {
     		if(reservation.getReservationCode().equals(reservationCode)) {
