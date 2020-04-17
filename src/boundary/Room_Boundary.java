@@ -18,7 +18,8 @@ public class Room_Boundary {
 	
 	private Scanner sc = new Scanner(System.in);
 	private RoomMrg roomMrg = RoomMrg.getInstance();
-	private static Room room = RoomMrg.createNewRoom();
+	private Room room = RoomMrg.createNewRoom();
+	
 	public void roomMain() {
 		int choice = 0;
 		do {

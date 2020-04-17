@@ -19,12 +19,10 @@ import entity.Room.Facing;
 import entity.Room.RoomType;
 
 public class Reservation_Boundary {
-	private static Reservation reservation;
+	private  Reservation reservation;
 	private Scanner sc = new Scanner(System.in);
-
+	
 	public void reservationMain() {
-		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
-		Scanner sc = reservation_Boundary.sc;
 		int choice = 0;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n" + "1. Create Reservation\n"
@@ -151,7 +149,7 @@ public class Reservation_Boundary {
 		} while (true);
 	}
 
-	private static void enterCheckInDate() {
+	private void enterCheckInDate() {
 		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
 		Scanner sc = reservation_Boundary.sc;
 		do {
@@ -173,7 +171,7 @@ public class Reservation_Boundary {
 		} while (true);
 	}
 
-	private static void enterCheckOutDate() {
+	private void enterCheckOutDate() {
 		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
 		Scanner sc = reservation_Boundary.sc;
 
