@@ -235,6 +235,9 @@ public class Room_Boundary {
 				String status = sc.nextLine();
 				if (status.equalsIgnoreCase("VACANT") || status.equalsIgnoreCase("OCCUPIED")
 						|| status.equalsIgnoreCase("RESERVED") || status.equalsIgnoreCase("MAINTENANCE")) {
+					if(status.equalsIgnoreCase("MAINTENANCE")) {
+						status = "UNDER_MAINTENANCE";
+					}
 					room.setRoomStatus(RoomMrg.strToRoomStatus(status));
 					break;
 				} else {
