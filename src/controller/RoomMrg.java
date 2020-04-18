@@ -116,7 +116,15 @@ public class RoomMrg {
 				bool = true;
 			}
 		}
-		return bool;
+		
+		try {
+			writeRoomData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return bool;	
 	}
 
 	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String nric,
@@ -150,6 +158,13 @@ public class RoomMrg {
 				}
 			}
 		}
+		
+		try {
+			writeRoomData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void cancelReservedRoom(Reservation reservation) {
@@ -167,6 +182,14 @@ public class RoomMrg {
 				}
 			}
 		}
+		
+		try {
+			writeRoomData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public List<Room> searchRoomByGuestName(String name) {

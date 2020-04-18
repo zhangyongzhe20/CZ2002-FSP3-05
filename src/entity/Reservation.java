@@ -105,7 +105,7 @@ public class Reservation{
 	}
 	
 	public void printReservationInfo() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		
 		System.out.println(" -------------------------------------------");
 		System.out.println("Guest IC: " + this.getGuestIC());
@@ -120,7 +120,7 @@ public class Reservation{
 
 			System.out.print("6.Room Number : ");
 			for (String roomNum : this.getRoomList()) {
-				System.out.print(roomNum + "  ");
+				System.out.print(roomNum + " ");
 			}
 
 			System.out.println();

@@ -172,7 +172,7 @@ public class Room {
 		System.out.println("9.Room Status: " + this.getRoomStatus());
 
 		if (this.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
 			System.out.println("10.Check in Date: " + formatter.format(this.getCheckInDate()));
 			System.out.println("11.Check out Date: " + formatter.format(this.getCheckOutDate()));
 		}
