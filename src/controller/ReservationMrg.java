@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import entity.Guest;
 import entity.Reservation;
 import entity.Reservation.ReservationStatus;
 import entity.Room;
@@ -111,7 +112,17 @@ public class ReservationMrg {
 	public List<Reservation> getAllReservation() {
 		return reservations;
 	}
-
+	public List<Reservation> getCheckInReservationListByGuestIC(String IC){
+		List<Reservation> rList = new ArrayList<Reservation>();
+		for(Reservation r : reservations) {
+			if(r.getGuestIC().equalsIgnoreCase(IC)) {
+				if(r.getReservationStatus().equals(Reservation.ReservationStatus.CHECKIN)) {
+					rList.add(r);
+				}
+			}
+		}
+		return rList;
+	}
 	public void loadReservationData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {

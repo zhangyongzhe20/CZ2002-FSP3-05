@@ -22,6 +22,7 @@ public class Reservation_Boundary {
 	private Scanner sc = new Scanner(System.in);
 	private ReservationMrg reservationMrg = ReservationMrg.getInstance();
 
+
 	public void reservationMain() {
 		String choice;
 		do {
@@ -33,7 +34,7 @@ public class Reservation_Boundary {
 			case "0":
 				break;
 			case "1":
-				createReservationMenu();
+				createReservationMenu("RESERVATION1");
 				break;
 			case "2":
 				updateReservationMenu();
@@ -51,12 +52,11 @@ public class Reservation_Boundary {
 		sc.close();
 	}
 
-	private void createReservationMenu() {
+	private void createReservationMenu(String type) {
 
 		Character confirm;
 		ReservationMrg reservationMrg = new ReservationMrg();
 
-		System.out.println("Create Reservation");
 		reservation = new Reservation();
 		reservation.setRoomList(new ArrayList<String>());
 		System.out.println("Enter Guest IC:");
@@ -64,8 +64,16 @@ public class Reservation_Boundary {
 		Guest g = GuestMrg.getInstance().searchGuestByIC(ic);
 		if (g != null) {
 			reservation.setGuestIC(ic);
+			if(type.equalsIgnoreCase("RESERVATION")) {
 			enterReservationCode();
 			enterCheckInDate();
+			}else {
+				LocalDateTime checkInDate = LocalDateTime.now();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+				checkInDate = LocalDateTime.parse(checkInDate.format(formatter), formatter);
+				reservation.setCheckIn(checkInDate);
+				reservation.setReservationCode("");
+			}
 			enterCheckOutDate();
 			enterNumOfAdult();
 			enterNumOfChild();
@@ -75,11 +83,6 @@ public class Reservation_Boundary {
 			do {
 				enterRoomNum();
 				System.out.println("Press Y to confirm," + "and any key to continue adding rooms");
-				if (reservation.getRoomList() != null && reservation.getRoomList().size() > 0) {
-					reservation.setReservationStatus(Reservation.ReservationStatus.CONFIRMED);
-				} else {
-					reservation.setReservationStatus(Reservation.ReservationStatus.WAITLIST);
-				}
 				c = sc.nextLine().toUpperCase().charAt(0);
 			} while (c != 'Y');
 
@@ -89,7 +92,25 @@ public class Reservation_Boundary {
 				confirm = sc.nextLine().toUpperCase().charAt(0);
 				switch (confirm) {
 				case 'Y':
+					if(type.equalsIgnoreCase("RESERVATION")) {
+						if (reservation.getRoomList() != null && reservation.getRoomList().size() > 0) {
+							reservation.setReservationStatus(Reservation.ReservationStatus.CONFIRMED);
+						} else {
+							reservation.setReservationStatus(Reservation.ReservationStatus.WAITLIST);
+						}
 					reservationMrg.createReservation(reservation);
+					}else {
+						if (reservation.getRoomList() != null && reservation.getRoomList().size() > 0) {
+							reservation.setReservationStatus(Reservation.ReservationStatus.CHECKIN);
+							reservation.setReservationType(Reservation.ReservationType.WALKIN);
+							reservationMrg.createReservation(reservation);
+							RoomMrg.getInstance().checkInReservedRoom(reservation);
+			
+						}else {
+							System.out.println("Unable to Check in as there are no room selected");
+						}
+	
+					}
 					break;
 				case 'N':
 					break;

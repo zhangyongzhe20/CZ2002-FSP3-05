@@ -127,14 +127,14 @@ public class RoomMrg {
 		return bool;	
 	}
 
-	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String nric,
+	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String reservationCode,
 			RoomStatus rs) {
 		for (Room r : rooms) {
 			if (r.equals(room)) {
 				r.setCheckInDate(checkInDate);
 				r.setCheckOutDate(checkOutDate);
 				r.setRoomStatus(rs);
-				r.setGuestIC(nric);
+				r.setReservationCode(reservationCode);
 			}
 		}
 
@@ -176,7 +176,7 @@ public class RoomMrg {
 							r.setCheckInDate(null);
 							r.setCheckOutDate(null);
 							r.setRoomStatus(Room.RoomStatus.VACANT);
-							r.setGuestIC(null);
+							r.setReservationCode(null);
 						}
 					}
 				}
@@ -194,12 +194,13 @@ public class RoomMrg {
 
 	public List<Room> searchRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
-		GuestMrg guestMrg = new GuestMrg();
+		GuestMrg guestMrg = GuestMrg.getInstance();
 		List<Guest> guestlist = guestMrg.searchGuestByName(name);
 		for (Guest guest : guestlist) {
-			for (Room room : rooms) {
-				if (room.getGuestIC().equalsIgnoreCase(guest.getIC())) {
-					roomList.add(room);
+			System.out.println(guest.getIC());
+			if(guest.getRoomNumList()!= null && guest.getRoomNumList().size()>0) {
+				for(String roomNum : guest.getRoomNumList()) {
+					roomList.add(searchRoomByNum(roomNum));
 				}
 			}
 		}
@@ -391,7 +392,7 @@ public class RoomMrg {
 			r.setSmoking(Boolean.parseBoolean(temp[7]));
 			r.setRoomStatus(RoomMrg.strToRoomStatus(temp[8]));
 			if (r.getRoomStatus() == Room.RoomStatus.OCCUPIED || r.getRoomStatus() == Room.RoomStatus.RESERVED) {
-				r.setGuestIC((temp[9]));
+				r.setReservationCode(temp[9]);
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 				LocalDateTime CheckInDate = LocalDateTime.parse(temp[10], formatter);
@@ -420,7 +421,7 @@ public class RoomMrg {
 				fileOut.print(room.getRoomStatus() + ",");
 				if (room.getRoomStatus() == Room.RoomStatus.OCCUPIED
 						|| room.getRoomStatus() == Room.RoomStatus.RESERVED) {
-					fileOut.print(room.getGuestIC() + ",");
+					fileOut.print(room.getReservationCode() + ",");
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 					fileOut.print(room.getCheckInDate().format(formatter) + ",");
 					fileOut.print(room.getCheckOutDate().format(formatter) + ",");

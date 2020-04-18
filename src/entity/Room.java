@@ -14,7 +14,7 @@ public class Room {
     private boolean isWifi;
     private Facing facing;
     private boolean isSmoking;
-    private String guestIC;
+    private String reservationCode;
     private LocalDateTime checkInDate;
     private LocalDateTime checkOutDate;
     private RoomStatus roomStatus;
@@ -98,12 +98,12 @@ public class Room {
         return roomType;
     }
 
-    public String getGuestIC() {
-		return guestIC;
+    public String getReservationCode() {
+		return reservationCode;
 	}
 
-	public void setGuestIC(String guestIC) {
-		this.guestIC = guestIC;
+	public void setReservationCode(String reservationCode) {
+		this.reservationCode = reservationCode;
 	}
 
 	public double getRoomRateWeekday() {
