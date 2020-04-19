@@ -251,15 +251,15 @@ public class Reservation_Boundary {
 		
 			System.out.println("Enter Reservation Code:");
 			String reservationCode = sc.nextLine();
-			Reservation r = reservationMrg.getReservationByCode(reservationCode);
-			if (r != null) {
-				 r.printReservationInfo();
+			 reservation = reservationMrg.getReservationByCode(reservationCode);
+			if ( reservation != null) {
+				reservation.printReservationInfo();
 				 char confirm;
 				 do {
 					 System.out.println("Press 'Y' to delete Reservation and 'N' to Return");
 					  confirm = sc.nextLine().toUpperCase().charAt(0);
 					if(confirm == 'Y') {
-						reservationMrg.cancelReservation(r);
+						reservationMrg.cancelReservation(reservation);
 					}
 				 }while(!(confirm == 'Y' || confirm == 'N'));
 			} else {

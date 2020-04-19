@@ -3,9 +3,11 @@ package boundary;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 import controller.PromotionMrg;
 import entity.Promotion;
+import entity.Reservation;
 import entity.Room;
 
 public class Promotion_Boundary {
@@ -46,8 +48,8 @@ public class Promotion_Boundary {
 		enterPromotionCode();
 		enterPromotionDescription();
 		enterDiscount();
-		enterPromoFrom();
-		enterPromoTo();
+		enterPromoStartDate();
+		enterPromoEndDate();
 		
 		do {
 			promotion.printPromotionInfo();
@@ -69,10 +71,10 @@ public class Promotion_Boundary {
 				enterDiscount();
 				break;
 			case '4':
-				enterPromoFrom();
+				enterPromoStartDate();
 				break;
 			case '5':
-				enterPromoTo();
+				enterPromoEndDate();
 				break;
 			default:
 				break;
@@ -93,7 +95,7 @@ public class Promotion_Boundary {
 				confirm = sc.nextLine().toUpperCase().charAt(0);
 				switch (confirm) {
 				case 'Y':
-					boolean success = promotionUpdat.updateRoom(room);
+					boolean success = promotionMrg.updatePromotion(promotion);
 					if (success) {
 						System.out.println("Sucessfully update room");
 					} else {
@@ -109,10 +111,10 @@ public class Promotion_Boundary {
 					enterDiscount();
 					break;
 				case '4':
-					enterPromoFrom();
+					enterPromoStartDate();
 					break;
 				case '5':
-					enterPromoTo();
+					enterPromoEndDate();
 					break;
 				default:
 					break;
@@ -123,8 +125,29 @@ public class Promotion_Boundary {
 		}
 	}
 	private void deletePromotionMenu() {
+
+		System.out.println("Enter Promotion Code:");
+		String PromotionCode = sc.nextLine();
+		promotion = promotionMrg.getPromotionByPromotionCode(PromotionCode);
+		if (promotion != null) {
+			promotion.printPromotionInfo();
+			 char confirm;
+			 do {
+				 System.out.println("Press 'Y' to delete Promotion and 'N' to Return");
+				  confirm = sc.nextLine().toUpperCase().charAt(0);
+				if(confirm == 'Y') {
+					promotionMrg.deletePromotion(promotion);
+				}
+			 }while(!(confirm == 'Y' || confirm == 'N'));
+		} else {
+			System.out.println("Promotion does not exist");
+		}
 	}
 	private void viewAllPromotionMenu() {
+		List<Promotion> promotionList = promotionMrg.getAllPromotion();
+		for(Promotion p : promotionList) {
+			p.printPromotionInfo();
+		}
 	}
 	
 	private void enterPromotionCode() {
@@ -142,8 +165,8 @@ public class Promotion_Boundary {
 	}
 	private void enterPromotionDescription() {	
 			System.out.println("Enter Promotion Description: ");
-			String promo_desc = sc.nextLine();
-			promotion.setPromo_desc(promo_desc);
+			String promoDescription = sc.nextLine();
+			promotion.setPromoDescription(promoDescription);
 	}
 	private void enterDiscount() {
 		do {
@@ -158,16 +181,16 @@ public class Promotion_Boundary {
 			}
 		} while (true);
 	}
-	private void enterPromoFrom() {
+	private void enterPromoStartDate() {
 		do {
 			try {
 				System.out.println("Enter Promotion Start Date : (DD/MM/YYYY HH:mm)");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-				String str_promo_from = sc.nextLine();
-				LocalDateTime promo_from = LocalDateTime.parse(str_promo_from, formatter);
+				String strPromoStartDate = sc.nextLine();
+				LocalDateTime promoStartDate = LocalDateTime.parse(strPromoStartDate, formatter);
 
-				if (promo_from.isAfter(LocalDateTime.now())) {
-					promotion.setPromo_from(promo_from);
+				if (promoStartDate.isAfter(LocalDateTime.now())) {
+					promotion.setPromoStartDate(promoStartDate);
 					break;
 				} else {
 					System.out.println("Please enter the correct Date");
@@ -178,16 +201,16 @@ public class Promotion_Boundary {
 		} while (true);
 	}
 
-	private void enterPromoTo() {
+	private void enterPromoEndDate() {
 		do {
 			try {
 				System.out.println("Enter Promotion End Date : (DD/MM/YYYY HH:mm)");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-				String str_promo_to = sc.nextLine();
-				LocalDateTime promo_to = LocalDateTime.parse(str_promo_to, formatter);
+				String strPromoEndDate = sc.nextLine();
+				LocalDateTime promoEndDate = LocalDateTime.parse(strPromoEndDate, formatter);
 
-				if (promo_to.isAfter(promotion.getPromo_from())) {
-					promotion.setPromo_from(promo_to);
+				if (promoEndDate.isAfter(promotion.getPromoStartDate())) {
+					promotion.setPromoEndDate(promoEndDate);
 					break;
 				} else {
 					System.out.println("Please enter the correct Date");

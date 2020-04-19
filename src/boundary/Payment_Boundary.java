@@ -1,6 +1,7 @@
 package boundary;
 
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import controller.GuestMrg;
@@ -34,6 +35,10 @@ public class Payment_Boundary {
 		 		break;
 		 	}else {
 		 	 p  = PromotionMrg.getInstance().getPromotionByPromotionCode(promoCode);
+		 	 if(!(p.getPromo_from().isBefore(LocalDateTime.now())&& p.getPromo_to().isAfter(LocalDateTime.now()))) {
+		 	System.out.println("The promotion has already expired");
+		 		 p = null;
+		 	 }
 		 		if(p != null) {
 		 			break;
 		 		}
