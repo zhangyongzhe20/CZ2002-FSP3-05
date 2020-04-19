@@ -1,59 +1,107 @@
 package controller;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import entity.*;
+import entity.Payment.PaymentMethod;
+
 
 public class PaymentMrg {
     /**
      * Consider the guest could visit the hotel more than once
      */
-    Map<Integer, List<Payment>> guestPayments;
+	public static List<Payment> payments = new ArrayList<Payment>();
+	final static String fileName = "payment_data.txt";
+	
+	public static PaymentMrg getInstance() {
+		return new PaymentMrg();
+	}
+	
+	
 
-    public PaymentMrg() {
-        guestPayments = new HashMap<>();
+	
+	public static PaymentMethod strToPaymentMethod(String strPaymentMethod) {
+		PaymentMethod paymentMethod = null;
+		if (strPaymentMethod.equalsIgnoreCase("CARD")) {
+			paymentMethod = Payment.PaymentMethod.CARD;
+		} else if (strPaymentMethod.equalsIgnoreCase("CASH")) {
+			paymentMethod = Payment.PaymentMethod.CASH;
+		} 
+		return paymentMethod;
+	}
+	
+    public void createPayment(Payment payment) {
+    	payments.add(payment);
+    	try {
+			writePaymentData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
-    /**
-     * add/update payment under the guest_id
-     * 
-     * @param guest_id
-     * @param payment
-     */
-    public void createPayment(int guest_id, Payment payment) {
-        guestPayments.putIfAbsent(guest_id, new ArrayList<payment>());
-        guestPayments.get(guest_id).add(payment);
+    public Payment getPaymentById(String id) {
+    	for (Payment p : payments) {
+    		if(p.getReservationCode().equalsIgnoreCase(id)) {
+    			return p;
+    		}
+    	}
+    	return null;
     }
+    
+	public void loadRoomData() throws FileNotFoundException {
+		File file = new File(fileName);
+		try {
+			file.createNewFile();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
-    // Calculate the room charge
-    public double calRoomCharge(Room room) {
-        double price = 0;
-        double total_price = 0;
-        LocalDateTime checkinTime = room.getGuest().getCheckIn();
-        List<Integer> days = getDays(checkinTime, checkOutTime);
-        for (int day : days) {
-            if (day == 0 || day == 6) {
-                price = room.getRoomRateWeekend();
-            }
-            price = room.getRoomRateWeekday();
-            total_price += price;
+		Scanner sc = new Scanner(file);
+		String data;
+		while (sc.hasNextLine()) {
+			data = sc.nextLine();
+			String[] temp = data.split(",");
+			String reservationCode = temp[0];
+			String promoCode = temp[1];
+			double roomCharge =Double.parseDouble(temp[2]);
+			double roomServiceCharge =Double.parseDouble(temp[3]);
+			double tax =Double.parseDouble(temp[4]);
+			double discount =Double.parseDouble(temp[5]);
+			double totalPay =Double.parseDouble(temp[6]);
+			String paymentMethod =temp[7];
+			String creditCard = temp[8];
+			Payment p = new Payment(reservationCode,promoCode,roomCharge,roomServiceCharge,tax,discount,totalPay,strToPaymentMethod(paymentMethod),creditCard);
+			payments.add(p);
+		}
+		sc.close();
+	}
 
-        }
-        return total_price;
-    }
-
-    public static List<Integer> getDays(LocalDateTime checkin, LocalDateTime checkout) {
-        List<Integer> days = new ArrayList<Integer>();
-        long duration = Duration.between(checkin, checkout).toDays();
-        int checkin_ = checkin.getDayOfWeek().getValue();
-
-        for (int i = 0; i < duration; i++) {
-            days.add(checkin_);
-            checkin_ = (checkin_ + 1) % 7;
-        }
-        return days;
-    }
-
+	public void writePaymentData() throws IOException {
+		FileWriter fileWriter = new FileWriter(fileName);
+		PrintWriter fileOut = new PrintWriter(fileWriter);
+		if (payments.size() > 0) {
+			for (Payment payment : payments) {
+				fileOut.print(payment.getReservationCode() + ",");
+				fileOut.print(payment.getPromoCode() + ",");
+				fileOut.print(payment.getRoomCharge() + ",");
+				fileOut.print(payment.getRoomServiceCharge() + ",");
+				fileOut.print(payment.getTax() + ",");
+				fileOut.print(payment.getDiscount() + ",");
+				fileOut.print(payment.getTotalPay() + ",");
+				fileOut.print(payment.getPaymentMethod() + ",");
+				fileOut.print(payment.getCreditCard()+",");
+				fileOut.println();
+			}
+			System.out.println("finish writing");
+			fileOut.close();
+		}
+	}
 }

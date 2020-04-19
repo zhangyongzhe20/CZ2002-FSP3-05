@@ -6,7 +6,7 @@ import java.util.List;
 import entity.Promotion;
 
 public class PromotionMrg {
-	List<Promotion> promotions = new ArrayList<Promotion>();
+	public static List<Promotion> promotions = new ArrayList<Promotion>();
 
 	public static PromotionMrg getInstance() {
 		PromotionMrg promotionMrg = new PromotionMrg();

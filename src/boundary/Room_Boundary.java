@@ -137,7 +137,7 @@ public class Room_Boundary {
 			case "0":
 				break;
 			case "1":
-				//WalkIncheckInMenu();
+				// WalkIncheckInMenu();
 				break;
 			case "2":
 				reservationCheckInMenu();
@@ -289,7 +289,6 @@ public class Room_Boundary {
 
 	}
 
-
 	public void reservationCheckInMenu() {
 		System.out.println("Please enter the reservation code: ");
 		String reservationCode = sc.nextLine();
@@ -308,20 +307,25 @@ public class Room_Boundary {
 	}
 
 	public void checkOutMenu() {
-		System.out.println("Please enter the room number: ");
-		String roomNum = sc.nextLine();
-		Room room = roomMrg.searchRoomByNum(roomNum);
-		if (room != null) {
-			if (room.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-				roomMrg.updateRoom(room, null, null, null, Room.RoomStatus.VACANT);
-				System.out.println("Sucessfully Check Out");
+		System.out.println("Please enter Guest IC: ");
+		String ic = sc.nextLine();
+		Guest guest = GuestMrg.getInstance().searchGuestByIC(ic);
+		if (guest != null) {
+			if (guest.getRoomNumList() != null && guest.getRoomNumList().size() > 0) {
+				String reservationCode = null;
+				for (String roomNum : guest.getRoomNumList()) {
+					Room r = roomMrg.searchRoomByNum(roomNum);
+					reservationCode = r.getReservationCode();
+					roomMrg.updateRoom(r, null, null, null, Room.RoomStatus.VACANT);
+				}
+				Payment_Boundary.getInstance().paymentMain(reservationCode);
+
 			} else {
-				System.out.println("Room is not occupied");
+				System.out.println("There are no rooms being occupied by this user");
 			}
 		} else {
-			System.out.println("Room not found");
+			System.out.println("Guest does not exist");
 		}
-
 	}
 
 	private void enterRoomNum() {

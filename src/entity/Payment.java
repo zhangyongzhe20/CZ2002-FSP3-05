@@ -10,29 +10,45 @@ public class Payment {
 	private String reservationCode;
 	private String promoCode;
     private double roomCharge;
-    private double tax;
     private double roomServiceCharge;
+    private double tax;
     private double discount;
     private double totalPay;
-    private String paymentMethod;
+    private PaymentMethod paymentMethod;
+    private String creditCard;
 
-    public Payment(String reservationCode, double roomCharge, double tax, double roomServiceCharge,
-    	 double discount, double totalPay ,String paymentMethod ) {
+    public Payment(String reservationCode, String promoCode, double roomCharge, double roomServiceCharge, double tax,
+    	 double discount, double totalPay, PaymentMethod paymentMethod , String creditCard ) {
     	this.reservationCode = reservationCode;
+    	this.promoCode = promoCode;
         this.roomCharge = roomCharge;
         this.tax = tax;
         this.roomServiceCharge = roomServiceCharge;
         this.discount = discount;
         this.paymentMethod = paymentMethod;
-        this.totalPay = (roomCharge + roomServiceCharge) *(1+ tax) * (1-discount);
+        this.totalPay = totalPay;
+        this.creditCard = creditCard;
     }
 
+    public enum PaymentMethod {
+    	CARD , CASH
+    }
+    
 	public String getReservationCode() {
 		return reservationCode;
 	}
 
 	public void setReservationCode(String reservationCode) {
 		this.reservationCode = reservationCode;
+	}
+
+	
+	public String getPromoCode() {
+		return promoCode;
+	}
+
+	public void setPromoCode(String promoCode) {
+		this.promoCode = promoCode;
 	}
 
 	public double getRoomCharge() {
@@ -75,13 +91,22 @@ public class Payment {
 		this.totalPay = totalPay;
 	}
 
-	public String getPaymentMethod() {
+	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
 
-	public void setPaymentMethod(String paymentMethod) {
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
 
+	public String getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(String creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	
   
 }
