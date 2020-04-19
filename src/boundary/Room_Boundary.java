@@ -57,6 +57,7 @@ public class Room_Boundary {
 		Character confirm;
 
 		System.out.println("Create Room");
+		//get user input
 		enterRoomNum();
 		enterRoomType();
 		enterBedType();

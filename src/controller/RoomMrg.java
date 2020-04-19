@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import entity.Guest;
+import entity.Order;
 import entity.Reservation;
 import entity.Room;
 import entity.Room.BedType;
@@ -127,6 +128,15 @@ public class RoomMrg {
 		return bool;	
 	}
 
+
+	/**
+	 * This function is used for check-in by reservation
+	 * @param room
+	 * @param checkInDate
+	 * @param checkOutDate
+	 * @param nric
+	 * @param rs
+	 */
 	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String nric,
 			RoomStatus rs) {
 		for (Room r : rooms) {
@@ -431,5 +441,4 @@ public class RoomMrg {
 			fileOut.close();
 		}
 	}
-
 }
