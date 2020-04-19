@@ -28,7 +28,7 @@ public class Payment_Boundary {
 		String promoCode;
 		Promotion p = null;
 		do {
-		System.out.println("Enter Promtion Code(Enter 0 to exit): ");
+		System.out.println("Enter Promtion Code (Enter 0 to exit): ");
 		promoCode = sc.nextLine();
 		 	if(promoCode.equalsIgnoreCase("0")) {
 		 		break;

@@ -75,7 +75,6 @@ public class Room_Boundary {
 				roomMrg.createRoom(room);
 				break;
 			case 'N':
-				roomMain();
 				break;
 			case '1':
 				enterRoomNum();
@@ -176,7 +175,7 @@ public class Room_Boundary {
 			do {
 				room.printRoomInfo();
 				System.out.println("Press Y to confirm," + "N to discard and "
-						+ "(No.) to edit a field.(Unable to select Room Number)");
+						+ "(No.) to edit a field.(Unable to edit Room Number)");
 				confirm = sc.nextLine().charAt(0);
 				switch (confirm) {
 				case 'Y':
@@ -214,6 +213,8 @@ public class Room_Boundary {
 					break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
+		}else {
+			System.out.println("There are no room existed by this room number");
 		}
 
 	}

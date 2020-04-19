@@ -1,9 +1,8 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-import entity.Room.BedType;
-import entity.Room.RoomType;
 
 public class Promotion {
 	private String promotionCode;
@@ -43,6 +42,16 @@ public class Promotion {
 	public void setPromo_to(LocalDateTime promo_to) {
 		this.promo_to = promo_to;
 	}
-
+	public void printPromotionInfo() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
+		
+		System.out.println(" -------------------------------------------");
+		System.out.println("1.Promotion Code: " + this.getPromotionCode());
+		System.out.println("2.Promotion Description: " + this.getPromo_desc());
+		System.out.println("3.Promotion Discount: " + this.getDiscount());
+		System.out.println("4.Promotion Start Date: " + formatter.format(this.getPromo_from()));
+		System.out.println("5.Promotion End Date: $" + formatter.format(this.getPromo_to()));
+		System.out.println(" -------------------------------------------");
+	}
 	
 }
