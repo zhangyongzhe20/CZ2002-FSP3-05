@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import entity.Guest;
 import entity.Reservation;
 import entity.Reservation.ReservationStatus;
 import entity.Room;
@@ -111,7 +112,7 @@ public class ReservationMrg {
 	public List<Reservation> getAllReservation() {
 		return reservations;
 	}
-
+	
 	public void loadReservationData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {

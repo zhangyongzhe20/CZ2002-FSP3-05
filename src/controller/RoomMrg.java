@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,8 +29,7 @@ public class RoomMrg {
 	final static String fileName = "room_data.txt";
 
 	public static RoomMrg getInstance() {
-		RoomMrg roomMrg = new RoomMrg();
-		return roomMrg;
+		return new RoomMrg();
 	}
 
 	public static Room createNewRoom() {
@@ -37,7 +37,7 @@ public class RoomMrg {
 	}
 
 	public static RoomType strToRoomType(String type) {
-		Room.RoomType roomtype = null;
+		RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
 			roomtype = Room.RoomType.SINGLE;
 		} else if (type.equalsIgnoreCase("DOUBLE")) {
@@ -51,7 +51,7 @@ public class RoomMrg {
 	}
 
 	public static BedType strToBedType(String type) {
-		Room.BedType bedType = null;
+		BedType bedType = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
 			bedType = Room.BedType.SINGLE;
 		} else if (type.equalsIgnoreCase("DOUBLE")) {
@@ -128,23 +128,14 @@ public class RoomMrg {
 		return bool;	
 	}
 
-
-	/**
-	 * This function is used for check-in by reservation
-	 * @param room
-	 * @param checkInDate
-	 * @param checkOutDate
-	 * @param nric
-	 * @param rs
-	 */
-	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String nric,
+	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String reservationCode,
 			RoomStatus rs) {
 		for (Room r : rooms) {
 			if (r.equals(room)) {
 				r.setCheckInDate(checkInDate);
 				r.setCheckOutDate(checkOutDate);
 				r.setRoomStatus(rs);
-				r.setGuestIC(nric);
+				r.setReservationCode(reservationCode);
 			}
 		}
 
@@ -186,7 +177,7 @@ public class RoomMrg {
 							r.setCheckInDate(null);
 							r.setCheckOutDate(null);
 							r.setRoomStatus(Room.RoomStatus.VACANT);
-							r.setGuestIC(null);
+							r.setReservationCode(null);
 						}
 					}
 				}
@@ -204,12 +195,13 @@ public class RoomMrg {
 
 	public List<Room> searchRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
-		GuestMrg guestMrg = new GuestMrg();
+		GuestMrg guestMrg = GuestMrg.getInstance();
 		List<Guest> guestlist = guestMrg.searchGuestByName(name);
 		for (Guest guest : guestlist) {
-			for (Room room : rooms) {
-				if (room.getGuestIC().equalsIgnoreCase(guest.getIC())) {
-					roomList.add(room);
+			System.out.println(guest.getIC());
+			if(guest.getRoomNumList()!= null && guest.getRoomNumList().size()>0) {
+				for(String roomNum : guest.getRoomNumList()) {
+					roomList.add(searchRoomByNum(roomNum));
 				}
 			}
 		}
@@ -258,7 +250,35 @@ public class RoomMrg {
 		}
 		return returnList;
 	}
+	public double getRoomCharge(Room room) {
+		  double price = 0;
+	        double total_price = 0;
+	        LocalDateTime checkinTime = room.getCheckInDate();
+	        LocalDateTime checkOutTime = room.getCheckOutDate();
+	        List<Integer> days = getDays(checkinTime, checkOutTime);
+	        for (int day : days) {
+	            if (day == 0 || day == 6) {
+	                price = room.getRoomRateWeekend();
+	            }
+	            price = room.getRoomRateWeekday();
+	            total_price += price;
 
+	        }
+	        return total_price;
+	}
+	
+	   public static List<Integer> getDays(LocalDateTime checkin, LocalDateTime checkout) {
+	        List<Integer> days = new ArrayList<Integer>();
+	        long duration = Duration.between(checkin, checkout).toDays();
+	        int checkin_ = checkin.getDayOfWeek().getValue();
+
+	        for (int i = 0; i < duration; i++) {
+	            days.add(checkin_);
+	            checkin_ = (checkin_ + 1) % 7;
+	        }
+	        return days;
+	    }
+	
 	// For Room Boundary
 	public void getRoomReportMenu() {
 		int singleRoomTotal = 0;
@@ -401,7 +421,7 @@ public class RoomMrg {
 			r.setSmoking(Boolean.parseBoolean(temp[7]));
 			r.setRoomStatus(RoomMrg.strToRoomStatus(temp[8]));
 			if (r.getRoomStatus() == Room.RoomStatus.OCCUPIED || r.getRoomStatus() == Room.RoomStatus.RESERVED) {
-				r.setGuestIC((temp[9]));
+				r.setReservationCode(temp[9]);
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 				LocalDateTime CheckInDate = LocalDateTime.parse(temp[10], formatter);
@@ -430,7 +450,7 @@ public class RoomMrg {
 				fileOut.print(room.getRoomStatus() + ",");
 				if (room.getRoomStatus() == Room.RoomStatus.OCCUPIED
 						|| room.getRoomStatus() == Room.RoomStatus.RESERVED) {
-					fileOut.print(room.getGuestIC() + ",");
+					fileOut.print(room.getReservationCode() + ",");
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 					fileOut.print(room.getCheckInDate().format(formatter) + ",");
 					fileOut.print(room.getCheckOutDate().format(formatter) + ",");

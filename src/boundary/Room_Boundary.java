@@ -138,7 +138,7 @@ public class Room_Boundary {
 			case "0":
 				break;
 			case "1":
-				WalkIncheckInMenu();
+				// WalkIncheckInMenu();
 				break;
 			case "2":
 				reservationCheckInMenu();
@@ -153,7 +153,6 @@ public class Room_Boundary {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Update Room details\n"
 					+ "2. Update Room Status\n");
 			i = sc.nextLine();
-			sc.nextLine();
 
 			switch (i) {
 			case "0":
@@ -271,7 +270,9 @@ public class Room_Boundary {
 		String roomNum = sc.nextLine();
 		room = roomMrg.searchRoomByNum(roomNum);
 		room.printRoomInfo();
-
+		String ic = ReservationMrg.getInstance().getReservationByCode(room.getReservationCode()).getGuestIC();
+		Guest g = GuestMrg.getInstance().searchGuestByIC(ic);
+		System.out.println("Guest Name : " + g.getGuestName());
 	}
 
 	public void searchRoomByGuestNameMenu() {
@@ -285,112 +286,6 @@ public class Room_Boundary {
 			}
 		} else {
 			System.out.println("No room found by the name " + name);
-		}
-
-	}
-
-	public void WalkIncheckInMenu() {
-		GuestMrg guestMrg = GuestMrg.getInstance();
-		System.out.println("Enter the guest IC: ");
-		String ic = sc.nextLine();
-		Guest g = guestMrg.searchGuestByIC(ic);
-
-		if (g != null) {
-			List<Room> roomList = new ArrayList<Room>();
-			RoomType roomType;
-			BedType bedType;
-			boolean hasWifiBool;
-			boolean allowSmokingBool;
-
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm");
-
-			LocalDateTime checkOutDate = LocalDateTime.now();
-			LocalDateTime checkInDate = LocalDateTime.now();
-
-			checkInDate = LocalDateTime.parse(checkInDate.format(formatter), formatter);
-
-			do {
-				System.out.println("Enter the check out date in (DD/MM/YYYY HH:mm)");
-				checkOutDate = LocalDateTime.parse(sc.nextLine(), formatter);
-			} while (checkOutDate.isBefore(checkInDate));
-
-			do {
-				System.out.println("Enter room type: SINGLE, DOUBLE, DELUXE, VIP  ");
-				String StrRoomType = sc.nextLine();
-				if (StrRoomType.equalsIgnoreCase("SINGLE") || StrRoomType.equalsIgnoreCase("DOUBLE")
-						|| StrRoomType.equalsIgnoreCase("DELUXE") || StrRoomType.equalsIgnoreCase("VIP")) {
-					roomType = RoomMrg.strToRoomType(StrRoomType);
-					break;
-				} else {
-					System.out.println("Please enter the correct room type!");
-				}
-			} while (true);
-
-			do {
-				System.out.println("Enter bed type: SINGLE, DOUBLE, KING ");
-				String StrBedType = sc.nextLine();
-				if (StrBedType.equalsIgnoreCase("SINGLE") || StrBedType.equalsIgnoreCase("DOUBLE")
-						|| StrBedType.equalsIgnoreCase("KING")) {
-					bedType = RoomMrg.strToBedType(StrBedType);
-					break;
-				} else {
-					System.out.println("Please enter the correct bed type!");
-				}
-			} while (true);
-			do {
-				System.out.println("Enter has wifi: (Y/N) ");
-				String input = sc.nextLine();
-				if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("N")) {
-					if (input.equalsIgnoreCase("Y")) {
-						hasWifiBool = true;
-					} else {
-						hasWifiBool = false;
-					}
-					break;
-				} else {
-					System.out.println("Please enter Y/N ");
-
-				}
-			} while (true);
-
-			do {
-				System.out.println("Enter allow smoking: (Y/N) ");
-				String input = sc.nextLine();
-				if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("N")) {
-					if (input.equalsIgnoreCase("Y")) {
-						allowSmokingBool = true;
-					} else {
-						allowSmokingBool = false;
-					}
-					break;
-				} else {
-					System.out.println("Please enter Y/N ");
-
-				}
-			} while (true);
-
-			roomList = roomMrg.getAvailRoom(Room.RoomStatus.VACANT, roomType, bedType, hasWifiBool, allowSmokingBool);
-			if (roomList != null && roomList.size() > 0) {
-				for (Room room : roomList) {
-					System.out.println(
-							"Room Number: " + room.getRoomNumber() + ", Weekday Rate: " + +room.getRoomRateWeekday()
-									+ ", Weekend Rate: " + room.getRoomRateWeekend() + ", Facing: " + room.getFacing());
-				}
-				String input;
-				do {
-					System.out.println("Enter the room number to be selected (Enter 0 to exit): ");
-					input = sc.nextLine();
-
-					for (Room room : roomList) {
-						if (room.getRoomNumber().equalsIgnoreCase(input)) {
-							roomMrg.updateRoom(room, checkInDate, checkOutDate, ic, Room.RoomStatus.OCCUPIED);
-						}
-					}
-				} while (!input.equalsIgnoreCase("0"));
-			} else {
-				System.out.println("No Available Room");
-			}
-
 		}
 
 	}
@@ -413,20 +308,25 @@ public class Room_Boundary {
 	}
 
 	public void checkOutMenu() {
-		System.out.println("Please enter the room number: ");
-		String roomNum = sc.nextLine();
-		Room room = roomMrg.searchRoomByNum(roomNum);
-		if (room != null) {
-			if (room.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-				roomMrg.updateRoom(room, null, null, null, Room.RoomStatus.VACANT);
-				System.out.println("Sucessfully Check Out");
+		System.out.println("Please enter Guest IC: ");
+		String ic = sc.nextLine();
+		Guest guest = GuestMrg.getInstance().searchGuestByIC(ic);
+		if (guest != null) {
+			if (guest.getRoomNumList() != null && guest.getRoomNumList().size() > 0) {
+				String reservationCode = null;
+				for (String roomNum : guest.getRoomNumList()) {
+					Room r = roomMrg.searchRoomByNum(roomNum);
+					reservationCode = r.getReservationCode();
+					roomMrg.updateRoom(r, null, null, null, Room.RoomStatus.VACANT);
+				}
+				Payment_Boundary.getInstance().paymentMain(reservationCode);
+
 			} else {
-				System.out.println("Room is not occupied");
+				System.out.println("There are no rooms being occupied by this user");
 			}
 		} else {
-			System.out.println("Room not found");
+			System.out.println("Guest does not exist");
 		}
-
 	}
 
 	private void enterRoomNum() {
@@ -564,6 +464,7 @@ public class Room_Boundary {
 		try {
 			RoomMrg.getInstance().loadRoomData();
 			GuestMrg.getInstance().loadGuestData();
+			ReservationMrg.getInstance().loadReservationData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

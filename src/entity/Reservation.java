@@ -14,7 +14,11 @@ public class Reservation{
     private int numOfChild;
     private ReservationStatus reservationStatus;
     private List<String> roomList;
+    private ReservationType reservationType;
 
+    public enum ReservationType {
+    	WALKIN , RESERVATION
+    }
     
     public enum ReservationStatus {
     	CONFIRMED, WAITLIST, CHECKIN, EXPIRED
@@ -31,7 +35,8 @@ public class Reservation{
         this.reservationCode = reservationCode;
     }
 
-    public String getGuestIC() {
+
+	public String getGuestIC() {
         return guestIC;
     }
 
@@ -102,6 +107,14 @@ public class Reservation{
 
 	public void setRoomList(List<String> roomList) {
 		this.roomList = roomList;
+	}
+	
+	public ReservationType getReservationType() {
+		return reservationType;
+	}
+
+	public void setReservationType(ReservationType reservationType) {
+		this.reservationType = reservationType;
 	}
 	
 	public void printReservationInfo() {
