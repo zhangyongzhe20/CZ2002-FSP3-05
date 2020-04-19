@@ -5,12 +5,27 @@ public class MenuItem {
     private String name;
     private String description;
     private double price;
+    // private ItemCategory itemCategory;
 
     public MenuItem(String name, String description, double price) {
         this.name = name;
         this.description = description;
         this.price = price;
+
     }
+
+    public enum ItemCategory {
+    	COOKING, NONCOOKING
+    }
+
+    // public void setItemCategory(ItemCategory itemCategory){
+    //     this.itemCategory = itemCategory;
+
+    // }
+
+    // public ItemCategory getItemCategory(){
+    //     return this.itemCategory;
+    // }
 
     public String getName() {
         return name;

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import entity.Guest;
+import entity.Order;
 import entity.Reservation;
 import entity.Room;
 import entity.Room.BedType;
@@ -460,5 +461,4 @@ public class RoomMrg {
 			fileOut.close();
 		}
 	}
-
 }
