@@ -8,14 +8,11 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import entity.*;
 import entity.Order.OrderStatus;
-import jdk.nashorn.internal.ir.Flags;
 
 public class OrderMrg {
     private static ItemList menu;
@@ -24,7 +21,7 @@ public class OrderMrg {
     final static String orderFile = "order_data.txt";
 
 	public static OrderStatus strToOrderType(String status) {
-		Order.OrderStatus orderStatus = null;
+		OrderStatus orderStatus = null;
 		if (status.equalsIgnoreCase("CONFIRMED")) {
 			orderStatus = Order.OrderStatus.CONFIRMED;
 		} else if (status.equalsIgnoreCase("PREPARING")) {
@@ -132,7 +129,7 @@ public class OrderMrg {
      * 
      * @return total charge of service
      */
-    public static double calculateRoomServiceCharge(String room_id) {
+    public double calculateRoomServiceCharge(String room_id) {
         double total_charge = 0;
         if (roomOrders != null) {
             for (Order order : roomOrders) {
@@ -214,7 +211,7 @@ public class OrderMrg {
      * @param room_id
      * @return All orders under the room_id
      */
-    private List<Order> searchOrderByRoomNum(String room_id) {
+    public List<Order> searchOrderByRoomNum(String room_id) {
         List<Order> orders = new ArrayList<>();
         if (roomOrders != null) {
             for (Order order : roomOrders) {
