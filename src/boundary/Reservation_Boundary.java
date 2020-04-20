@@ -407,8 +407,8 @@ public class Reservation_Boundary {
 		if (roomList != null && roomList.size() > 0) {
 			for (Room room : roomList) {
 				System.out.println(
-						"Room Number: " + room.getRoomNumber() + ", Weekday Rate: " + +room.getRoomRateWeekday()
-								+ ", Weekend Rate: " + room.getRoomRateWeekend() + ", Facing: " + room.getFacing());
+						"Room Number: " + room.getRoomNumber() + ", Weekday Rate: " +String.format("%.2f",room.getRoomRateWeekday())
+								+ ", Weekend Rate: " +String.format("%.2f",room.getRoomRateWeekend()) + ", Facing: " + room.getFacing());
 			}
 
 			do {

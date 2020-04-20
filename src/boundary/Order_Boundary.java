@@ -11,7 +11,7 @@ import controller.OrderMrg;
 import controller.RoomMrg;
 import entity.*;
 
-public class order_Boundary {
+public class Order_Boundary {
     static Scanner sc = new Scanner(System.in);
     // get the instance of Order Mrg
     static OrderMrg orderMrg = OrderMrg.getInstance();
@@ -86,7 +86,7 @@ public class order_Boundary {
             System.out.println("Enter room number of the Order: ");
             roomNum = sc.nextLine();
             if (roomNum.matches("^[0-9]*$")) {
-                Room r = roomMrg.searchRoomByNum(roomNum);
+                Room r = roomMrg.getRoomByRoomNum(roomNum);
                 if (r == null) {
                     System.out.println("Room does not exist");
                 } else {

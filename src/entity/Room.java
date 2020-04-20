@@ -147,12 +147,11 @@ public class Room {
 		System.out.println("2.Room Type: " + this.getRoomType());
 		System.out.println("3.Bed Type: " + this.getBedType());
 		System.out.println("4.Room Facing: " + this.getFacing());
-		System.out.println("5.Weekday Rate: $" + this.getRoomRateWeekday());
-		System.out.println("6.Weekend Rate: $" + this.getRoomRateWeekend());
+		System.out.println("5.Weekday Rate: $" + String.format("%.2f", this.getRoomRateWeekday()));
+		System.out.println("6.Weekend Rate: $" + String.format("%.2f", this.getRoomRateWeekend()));
 		System.out.println("7.Allowing Smoking: " + this.getAllowSmoking());
 		System.out.println("8.Has Wifi: " + this.getHasWifi());
 		System.out.println("9.Room Status: " + this.getRoomStatus());
-		System.out.println(" -------------------------------------------");
 	}
     
 }

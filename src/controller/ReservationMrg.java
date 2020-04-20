@@ -45,7 +45,7 @@ public class ReservationMrg {
 		return reservationStatus;
 	}
 
-	public static CheckInType strToCheckInType(String StrCheckInType) {
+	public static CheckInType strToCheckInType(String strCheckInType) {
 		CheckInType checkInType = null;
 		if (StrCheckInType.equalsIgnoreCase("WALKIN")) {
 			checkInType = Reservation.CheckInType.WALKIN;
