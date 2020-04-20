@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import entity.Guest;
+import entity.Reservation;
+import entity.Room;
 
 public class GuestMrg {
 
@@ -29,7 +31,7 @@ public class GuestMrg {
 	   guests.add(guest);
 	}
 	
-	public  Guest searchGuestByIC(String ic) {
+	public  Guest getGuestByIC(String ic) {
 		Guest g = null;
 		for(Guest guest : guests) {
 			if( guest.getIC().equalsIgnoreCase(ic)) {
@@ -38,7 +40,7 @@ public class GuestMrg {
 	}
 		return g;
 	}
-	public  List<Guest> searchGuestByName(String name) {
+	public  List<Guest> getGuestByName(String name) {
 		List<Guest> guestList = new ArrayList<Guest>();
 		for(Guest guest : guests) {
 			System.out.println(guest.getGuestName());
@@ -47,6 +49,14 @@ public class GuestMrg {
 		}
 	}
 		return guestList;
+	}
+	public Guest getGuestByRoomNum(String roomNum) {
+		Guest g = null;
+		Reservation r = ReservationMrg.getInstance().getReservationByRoomNum(roomNum);
+		if (r!= null) {
+		g = getGuestByIC(r.getGuestIC());
+		}
+		return g;
 	}
 	public  void updateGuest(ArrayList<Guest> guestList) {
 		
@@ -65,13 +75,7 @@ public class GuestMrg {
 		while(sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
-			List<String> roomNumList = new ArrayList<String>();
-			if(temp.length > 10) {
-			for(int i = 9 ; i < temp.length;i ++) {
-			roomNumList.add(temp[i]);
-		}
-			}
-			Guest guest = new Guest(temp[0],temp[1], temp[2], temp[3], temp[4],temp[5],temp[6],temp[7],temp[8], roomNumList);
+			Guest guest = new Guest(temp[0],temp[1], temp[2], temp[3], temp[4],temp[5],temp[6],temp[7],temp[8]);
 			guests.add(guest);
 		}
 		sc.close();
@@ -91,11 +95,6 @@ public class GuestMrg {
 			fileOut.print(guest.getIC()+ ",");
 			fileOut.print(guest.getNationality()+ ",");
 			fileOut.print(guest.getContact()+ ",");
-			if(guest.getRoomNumList()!= null && guest.getRoomNumList().size()>0) {
-			for(String i : guest.getRoomNumList()) {
-				fileOut.print(i+",");
-			}
-			}
 			fileOut.println();
 		}
 		System.out.println("finish writing");

@@ -103,8 +103,7 @@ public class RoomMrg {
 		}
 	}
 
-	public boolean updateRoom(Room room) {
-		boolean bool = false;
+	public void updateRoomDetails(Room room) {
 		for (Room r : rooms) {
 			if (r.getRoomNumber() == room.getRoomNumber()) {
 				r.setRoomType(room.getRoomType());
@@ -112,9 +111,8 @@ public class RoomMrg {
 				r.setFacing(room.getFacing());
 				r.setRoomRateWeekday(room.getRoomRateWeekday());
 				r.setRoomRateWeekend(room.getRoomRateWeekend());
-				r.setSmoking(room.isSmoking());
-				r.setWifi(room.isWifi());
-				bool = true;
+				r.setAllowSmoking(room.getAllowSmoking());
+				r.setHasWifi(room.getHasWifi());
 			}
 		}
 		
@@ -125,17 +123,12 @@ public class RoomMrg {
 			e.printStackTrace();
 		}
 		
-		return bool;	
 	}
 
-	public void updateRoom(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate, String reservationCode,
-			RoomStatus rs) {
+	public void updateRoomStatus(Room room,RoomStatus rs) {
 		for (Room r : rooms) {
 			if (r.equals(room)) {
-				r.setCheckInDate(checkInDate);
-				r.setCheckOutDate(checkOutDate);
 				r.setRoomStatus(rs);
-				r.setReservationCode(reservationCode);
 			}
 		}
 
@@ -147,68 +140,23 @@ public class RoomMrg {
 		}
 	}
 
-	public void checkInReservedRoom(Reservation reservation) {
-		if (reservation.getRoomList().size() < 0) {
-			for (String roomNum : reservation.getRoomList()) {
-				for (Room r : rooms) {
-					if (r.getRoomNumber().equalsIgnoreCase(roomNum)) {
-						if (r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
-							r.setRoomStatus(Room.RoomStatus.OCCUPIED);
-						}
-					}
-				}
-			}
-		}
-		
-		try {
-			writeRoomData();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void cancelReservedRoom(Reservation reservation) {
-		if (reservation.getRoomList().size() < 0) {
-			for (String roomNum : reservation.getRoomList()) {
-				for (Room r : rooms) {
-					if (r.getRoomNumber().equalsIgnoreCase(roomNum)) {
-						if (r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
-							r.setCheckInDate(null);
-							r.setCheckOutDate(null);
-							r.setRoomStatus(Room.RoomStatus.VACANT);
-							r.setReservationCode(null);
-						}
-					}
-				}
-			}
-		}
-		
-		try {
-			writeRoomData();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	public List<Room> searchRoomByGuestName(String name) {
+	
+	public List<Room> getRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
-		GuestMrg guestMrg = GuestMrg.getInstance();
-		List<Guest> guestlist = guestMrg.searchGuestByName(name);
-		for (Guest guest : guestlist) {
-			System.out.println(guest.getIC());
-			if(guest.getRoomNumList()!= null && guest.getRoomNumList().size()>0) {
-				for(String roomNum : guest.getRoomNumList()) {
-					roomList.add(searchRoomByNum(roomNum));
-				}
+		List<Guest> guestList = GuestMrg.getInstance().getGuestByName(name);
+		for(Guest g : guestList) {
+			String guestIC = g.getIC();
+			Reservation reservation = ReservationMrg.getInstance().getReservationByGuestIC(guestIC);
+			if(reservation.getReservationStatus().equals(Reservation.ReservationStatus.CHECKIN)) {
+				String roomNum = reservation.getRoomNum();
+				Room r = getRoomByRoomNum(roomNum);
+				roomList.add(r);
 			}
 		}
 		return roomList;
 	}
 
-	public List<Room> searchRoomByRoomType(RoomType roomType) {
+	public List<Room> getRoomByRoomType(RoomType roomType) {
 		List<Room> roomList = new ArrayList<Room>();
 		for (Room room : rooms) {
 			if (room.getRoomType().equals(roomType)) {
@@ -218,7 +166,7 @@ public class RoomMrg {
 		return roomList;
 	}
 
-	public List<Room> searchRoomByRoomStatus(RoomStatus roomStatus) {
+	public List<Room> getRoomByRoomStatus(RoomStatus roomStatus) {
 		List<Room> roomList = new ArrayList<Room>();
 		for (Room room : rooms) {
 			if (room.getRoomStatus().equals(roomStatus)) {
@@ -228,7 +176,7 @@ public class RoomMrg {
 		return roomList;
 	}
 
-	public Room searchRoomByNum(String roomNum) {
+	public Room getRoomByRoomNum(String roomNum) {
 		Room r = null;
 		for (Room room : rooms) {
 			if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
@@ -238,24 +186,24 @@ public class RoomMrg {
 		return r;
 	}
 
-	public List<Room> getAvailRoom(RoomStatus roomStatus, RoomType roomType, BedType bedType, boolean hasWifiBool,
+	public List<Room> getAvailRoom(RoomType roomType, BedType bedType, boolean hasWifiBool,
 			boolean allowSmokingBool) {
 		List<Room> returnList = new ArrayList<Room>();
 		for (Room room : rooms) {
-			if (room.getRoomStatus().equals(roomStatus) && room.getRoomType().equals(roomType)
-					&& room.getBedType().equals(bedType) && room.isWifi() == hasWifiBool
-					&& room.isSmoking() == allowSmokingBool) {
-				returnList.add(room);
+			if (room.getRoomType().equals(roomType) && room.getBedType().equals(bedType) && 
+				room.getHasWifi() == hasWifiBool && room.getAllowSmoking() == allowSmokingBool) {
+				if(room.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+					returnList.add(room);
+				}
 			}
 		}
 		return returnList;
 	}
-	public double getRoomCharge(Room room) {
+	
+	public double getRoomCharge(Room room , LocalDateTime checkInDate , LocalDateTime checkOutDate) {
 		  double price = 0;
 	        double total_price = 0;
-	        LocalDateTime checkinTime = room.getCheckInDate();
-	        LocalDateTime checkOutTime = room.getCheckOutDate();
-	        List<Integer> days = getDays(checkinTime, checkOutTime);
+	        List<Integer> days = getDays(checkInDate, checkOutDate);
 	        for (int day : days) {
 	            if (day == 0 || day == 6) {
 	                price = room.getRoomRateWeekend();
@@ -417,18 +365,9 @@ public class RoomMrg {
 			r.setFacing(RoomMrg.strToFacing(temp[3]));
 			r.setRoomRateWeekday(Double.parseDouble(temp[4]));
 			r.setRoomRateWeekend(Double.parseDouble(temp[5]));
-			r.setWifi(Boolean.parseBoolean(temp[6]));
-			r.setSmoking(Boolean.parseBoolean(temp[7]));
+			r.setHasWifi(Boolean.parseBoolean(temp[6]));
+			r.setAllowSmoking(Boolean.parseBoolean(temp[7]));
 			r.setRoomStatus(RoomMrg.strToRoomStatus(temp[8]));
-			if (r.getRoomStatus() == Room.RoomStatus.OCCUPIED || r.getRoomStatus() == Room.RoomStatus.RESERVED) {
-				r.setReservationCode(temp[9]);
-
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-				LocalDateTime CheckInDate = LocalDateTime.parse(temp[10], formatter);
-				r.setCheckInDate(CheckInDate);
-				LocalDateTime CheckOutDate = LocalDateTime.parse(temp[11], formatter);
-				r.setCheckOutDate(CheckOutDate);
-			}
 			rooms.add(r);
 		}
 		sc.close();
@@ -445,16 +384,9 @@ public class RoomMrg {
 				fileOut.print(room.getFacing() + ",");
 				fileOut.print(room.getRoomRateWeekday() + ",");
 				fileOut.print(room.getRoomRateWeekend() + ",");
-				fileOut.print(room.isWifi() + ",");
-				fileOut.print(room.isSmoking() + ",");
+				fileOut.print(room.getHasWifi() + ",");
+				fileOut.print(room.getAllowSmoking() + ",");
 				fileOut.print(room.getRoomStatus() + ",");
-				if (room.getRoomStatus() == Room.RoomStatus.OCCUPIED
-						|| room.getRoomStatus() == Room.RoomStatus.RESERVED) {
-					fileOut.print(room.getReservationCode() + ",");
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-					fileOut.print(room.getCheckInDate().format(formatter) + ",");
-					fileOut.print(room.getCheckOutDate().format(formatter) + ",");
-				}
 				fileOut.println();
 			}
 			System.out.println("finish writing");
