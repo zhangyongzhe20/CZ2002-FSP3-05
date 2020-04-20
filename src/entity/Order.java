@@ -19,6 +19,30 @@ public class Order {
     private String remarks;
     private ItemList orderItems;
     private OrderStatus orderStatus;
+    private OrderBillStatus billStatus;
+
+    public Order() {
+        orderItems = new ItemList();
+        billStatus = OrderBillStatus.UNBILLED;
+    }
+    
+    /**
+     * Used in Payment
+     */
+    public enum OrderBillStatus {
+    	BILLED, UNBILLED
+    }
+
+    public void setOrderBillStatus(OrderBillStatus orderBillStatus) {
+		this.billStatus = orderBillStatus;
+    }
+
+        /**
+     * @return status of the order
+     */
+    public OrderBillStatus getOrderBillStatus() {
+        return billStatus;
+    }
 
 
     public void setOrderId(String orderId){
@@ -61,8 +85,7 @@ public class Order {
     //     orderItems = new ItemList();
     // }
 
-    // public Order() {
-	// }
+
 
 	/**
      * @return order time
@@ -136,7 +159,7 @@ public class Order {
 		System.out.println("2.Order Time: " + this.orderTime);
 		System.out.println("3.Remarks: " + this.remarks);
         System.out.println("4.Order Status: " + this.orderStatus);
-        System.out.println("5.Order Items: " + this.orderStatus);
+        System.out.println("5.Order Items: ");
         orderItems.displayItems();
 		System.out.println(" -------------------------------------------");
 	}

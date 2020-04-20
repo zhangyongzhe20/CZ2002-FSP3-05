@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import entity.*;
+import entity.Order.OrderBillStatus;
 import entity.Order.OrderStatus;
 import jdk.nashorn.internal.ir.Flags;
 
@@ -22,6 +23,26 @@ public class OrderMrg {
     private static List<Order> roomOrders;
     final static String menuFile = "menu_data.txt";
     final static String orderFile = "order_data.txt";
+
+
+        /**
+     * Applied Singelton Desgin Pattern in Mrg classes
+     */
+    private static OrderMrg SINGLE_INSTANCE;
+
+    public static OrderMrg getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new OrderMrg();
+        }
+        return SINGLE_INSTANCE;
+    }
+
+    public OrderMrg(){
+        menu = new ItemList();
+        roomOrders = new ArrayList<>();
+
+    }
+
 
 	public static OrderStatus strToOrderType(String status) {
 		Order.OrderStatus orderStatus = null;
@@ -33,7 +54,18 @@ public class OrderMrg {
 			orderStatus = Order.OrderStatus.DELIVERED;
 		} 
 		return orderStatus;
-	}
+    }
+
+    public static OrderBillStatus strToOrderBillType(String status) {
+		Order.OrderBillStatus orderBillStatus = null;
+		if (status.equalsIgnoreCase("BILLED")) {
+			orderBillStatus = Order.OrderBillStatus.BILLED;
+		} else if (status.equalsIgnoreCase("UNBILLED")) {
+			orderBillStatus = Order.OrderBillStatus.UNBILLED;
+        }
+		return orderBillStatus;
+    }
+    
 
     public void loadOrderData() throws FileNotFoundException {
 		File file = new File(orderFile);
@@ -50,12 +82,13 @@ public class OrderMrg {
 			data = sc.nextLine();
             String[] temp = data.split(",");
             Order order = new Order();
-            ItemList itemList_ = new ItemList();
             order.setOrderId(temp[0]);;
             order.setRoomId(temp[1]);
             LocalDateTime orderTime = LocalDateTime.parse(temp[2], formatter);
             order.setOrderTime(orderTime);
             order.setRemarks(temp[3]);
+            order.setOrderStatus(strToOrderType(temp[4]));
+            order.setOrderBillStatus(strToOrderBillType(temp[5]));
             if(sc.hasNextLine()){
                 data = sc.nextLine();
                 String[] temp2 = data.split(";");
@@ -83,6 +116,8 @@ public class OrderMrg {
 				fileOut.print(order.getRoomId() + ",");
                 fileOut.print(order.getOrderTime().format(formatter) + ",");
                 fileOut.print(order.getRemarks() + ",");
+                fileOut.print(order.getStatus() + ",");
+                fileOut.print(order.getOrderBillStatus() + ",");
                 fileOut.println();
                 for(MenuItem menuItem_ : order.getOrderLists().getItemList()){
                     fileOut.print(menuItem_.getName() + ",");
@@ -91,13 +126,12 @@ public class OrderMrg {
                 }
                 fileOut.println();
                 }
-            System.out.println("finish writing");
             fileOut.close();
         }
     }
 
-    public void loadMenuData(String fileName) throws FileNotFoundException {
-        File file = new File(fileName);
+    public void loadMenuData() throws FileNotFoundException {
+        File file = new File(menuFile);
         try {
             file.createNewFile();
         } catch (Exception e) {
@@ -116,20 +150,7 @@ public class OrderMrg {
 
 
     /**
-     * Applied Singelton Desgin Pattern in Mrg classes
-     */
-    private static OrderMrg SINGLE_INSTANCE;
-
-    public static OrderMrg getInstance() {
-        if (SINGLE_INSTANCE == null) {
-            SINGLE_INSTANCE = new OrderMrg();
-        }
-        return SINGLE_INSTANCE;
-    }
-
-    /**
      * Used in Payment
-     * 
      * @return total charge of service
      */
     public static double calculateRoomServiceCharge(String room_id) {
@@ -143,15 +164,25 @@ public class OrderMrg {
         return total_charge;
     }
 
+
     /**
      * Used in Create-Order Page
      * 
      * @param order add new order
      */
-    public void createOrders(Order order) {
+    public boolean createOrders(Order order) {
+        boolean bool=false;
         if (order != null) {
             roomOrders.add(order);
         }
+        try {
+            writeOrderData();
+            bool = true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bool;
     }
 
     /**
@@ -204,10 +235,46 @@ public class OrderMrg {
      */
     public void displayAllOrders(String room_id){
         List<Order> orders = searchOrderByRoomNum(room_id);
+        if(orders != null){
         for(Order order_ : orders){
             order_.printOrderInfo();
         }
     }
+    else{
+        System.out.println("No orders are under the room");
+    }
+    }
+
+
+    public void displayUnDeliverOrder(String room_id){
+        List<Order> orders = searchOrderByRoomNum(room_id);
+        if(orders != null){
+            for(Order order_ : orders){
+                Order.OrderStatus status = order_.getStatus();
+                if(!status.equals(Order.OrderStatus.DELIVERED)){
+                order_.printOrderInfo();
+                return;
+                }
+            }
+           
+        }
+        System.out.println("No orders are found to update the room");
+    }
+
+    public Order getUnDeliverOrder(String room_id){
+        List<Order> orders = searchOrderByRoomNum(room_id);
+        if(orders != null){
+            for(Order order_ : orders){
+                Order.OrderStatus status = order_.getStatus();
+                if(!status.equals(Order.OrderStatus.DELIVERED)){
+                return order_;
+                }
+            }
+        }
+        System.out.println("No orders are found to update the room");
+        return null;
+    }
+
 
         /**
      * used in displayAllOrders
@@ -235,14 +302,19 @@ public class OrderMrg {
 
     // Used in Order Report page
 	public void printOrderByStatus(OrderStatus status) {
+        Boolean found = false;
         if (roomOrders != null) {
             // Assume that a room only has an order is under "CONFIRMED" or "PREPARING"
             for (Order order : roomOrders) {
                 if (order.getStatus().equals(status))
                     order.printOrderInfo();
+                    found = true;
             }
         }
+        if(!found)
+            System.out.println("No orders are found");
     }
+
     
 
 

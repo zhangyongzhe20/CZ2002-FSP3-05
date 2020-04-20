@@ -32,7 +32,8 @@ public class ItemList{
     public void displayItems(){
         int i =1;
         for(MenuItem menuitem_ : menuItem){
-            System.out.println(i +":" + menuitem_.toString());
+            System.out.println(" " + i +"." + menuitem_.toString());
+            i++;
         }
     }
 }
