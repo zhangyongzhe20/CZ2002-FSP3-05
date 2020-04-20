@@ -1,20 +1,15 @@
 package boundary;
 
 import java.io.FileNotFoundException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import controller.GuestMrg;
 import controller.ReservationMrg;
 import controller.RoomMrg;
 import entity.Guest;
 import entity.Reservation;
 import entity.Room;
-import entity.Room.BedType;
-import entity.Room.RoomType;
+import entity.Room.RoomStatus;
 
 public class Room_Boundary {
 
@@ -26,7 +21,7 @@ public class Room_Boundary {
 		String choice;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
-					+ "3. Search Room\n" + "4. Check In\n" + "5. Check Out\n" + "6. Print Room Status Report\n");
+					+ "3. Search Room\n" +  "4. Print Room Status Report\n");
 			choice = sc.nextLine();
 
 			switch (choice) {
@@ -42,11 +37,6 @@ public class Room_Boundary {
 				searchRoomMenu();
 				break;
 			case "4":
-				checkInMenu();
-				break;
-			case "5":
-				checkOutMenu();
-			case "6":
 				roomMrg.getRoomReportMenu();
 			}
 		} while (!choice.equalsIgnoreCase("0"));
@@ -127,7 +117,7 @@ public class Room_Boundary {
 			}
 		} while (!i.equalsIgnoreCase("0"));
 	}
-
+/*
 	private void checkInMenu() {
 		System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
 		String i;
@@ -145,7 +135,7 @@ public class Room_Boundary {
 			}
 		} while (!i.equalsIgnoreCase("0"));
 	}
-
+*/
 	private void updateRoomMenu() {
 		String i;
 		do {
@@ -170,7 +160,7 @@ public class Room_Boundary {
 		System.out.println("update Room");
 		System.out.println("Enter room number : ");
 		String roomNum = sc.nextLine();
-		room = roomMrg.searchRoomByNum(roomNum);
+		room = roomMrg.getRoomByRoomNum(roomNum);
 		if (room != null) {
 			Character confirm;
 			do {
@@ -180,12 +170,7 @@ public class Room_Boundary {
 				confirm = sc.nextLine().charAt(0);
 				switch (confirm) {
 				case 'Y':
-					boolean success = roomMrg.updateRoom(room);
-					if (success) {
-						System.out.println("Sucessfully update room");
-					} else {
-						System.out.println("Unable to update room");
-					}
+					roomMrg.updateRoomDetails(room);
 					break;
 				case 'N':
 					break;
@@ -224,13 +209,13 @@ public class Room_Boundary {
 		System.out.println("update Room");
 		System.out.println("Enter room number : ");
 		String roomNum = sc.nextLine();
-		room = roomMrg.searchRoomByNum(roomNum);
+		room = roomMrg.getRoomByRoomNum(roomNum);
 		if (room != null) {
 			Character confirm;
-
+			String status;
 			do {
 				System.out.println("Enter Room Status: VACANT, OCCUPIED, RESERVED, MAINTENANCE ");
-				String status = sc.nextLine();
+				 status = sc.nextLine();
 				if (status.equalsIgnoreCase("VACANT") || status.equalsIgnoreCase("OCCUPIED")
 						|| status.equalsIgnoreCase("RESERVED") || status.equalsIgnoreCase("MAINTENANCE")) {
 					if (status.equalsIgnoreCase("MAINTENANCE")) {
@@ -249,12 +234,7 @@ public class Room_Boundary {
 				confirm = sc.nextLine().toUpperCase().charAt(0);
 				switch (confirm) {
 				case 'Y':
-					boolean success = roomMrg.updateRoom(room);
-					if (success) {
-						System.out.println("Sucessfully update room");
-					} else {
-						System.out.println("Unable to update room");
-					}
+				 roomMrg.updateRoomStatus(room, RoomMrg.strToRoomStatus(status));
 					break;
 				case 'N':
 					break;
@@ -269,18 +249,19 @@ public class Room_Boundary {
 	private void searchRoomByRoomNumMenu() {
 		System.out.println("Enter room number: ");
 		String roomNum = sc.nextLine();
-		room = roomMrg.searchRoomByNum(roomNum);
+		room = roomMrg.getRoomByRoomNum(roomNum);
 		room.printRoomInfo();
-		String ic = ReservationMrg.getInstance().getReservationByCode(room.getReservationCode()).getGuestIC();
-		Guest g = GuestMrg.getInstance().searchGuestByIC(ic);
-		System.out.println("Guest Name : " + g.getGuestName());
+		if(room.getRoomStatus().equals(RoomStatus.OCCUPIED)|| room.getRoomStatus().equals(RoomStatus.RESERVED)) {
+			Guest g = GuestMrg.getInstance().getGuestByRoomNum(roomNum);
+			System.out.println("Guest Name : " + g.getGuestName());
+		}
 	}
 
 	public void searchRoomByGuestNameMenu() {
 
 		System.out.println("Enter Guest Name: ");
 		String name = sc.nextLine();
-		List<Room> roomList = roomMrg.searchRoomByGuestName(name);
+		List<Room> roomList = roomMrg.getRoomByGuestName(name);
 		if (roomList.size() > 0) {
 			for (Room r : roomList) {
 				r.printRoomInfo();
@@ -297,7 +278,7 @@ public class Room_Boundary {
 		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(reservationCode);
 		if (reservation != null) {
 			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
-				roomMrg.checkInReservedRoom(reservation);
+				roomMrg.updateRoomStatus(roomMrg.getRoomByRoomNum(reservation.getRoomNum()), RoomStatus.OCCUPIED);
 				System.out.println("Sucessfully check in to the room");
 			} else {
 				System.out.println("Reservation is on " + reservation.getReservationStatus());
@@ -307,35 +288,12 @@ public class Room_Boundary {
 		}
 
 	}
-
-	public void checkOutMenu() {
-		System.out.println("Please enter Guest IC: ");
-		String ic = sc.nextLine();
-		Guest guest = GuestMrg.getInstance().searchGuestByIC(ic);
-		if (guest != null) {
-			if (guest.getRoomNumList() != null && guest.getRoomNumList().size() > 0) {
-				String reservationCode = null;
-				for (String roomNum : guest.getRoomNumList()) {
-					Room r = roomMrg.searchRoomByNum(roomNum);
-					reservationCode = r.getReservationCode();
-					roomMrg.updateRoom(r, null, null, null, Room.RoomStatus.VACANT);
-				}
-				Payment_Boundary.getInstance().paymentMain(reservationCode);
-
-			} else {
-				System.out.println("There are no rooms being occupied by this user");
-			}
-		} else {
-			System.out.println("Guest does not exist");
-		}
-	}
-
 	private void enterRoomNum() {
 		do {
 			System.out.println("Enter room number: ");
 			String roomNum = sc.nextLine();
 			if (roomNum.matches("^[0-9]*$")) {
-				Room r = roomMrg.searchRoomByNum(roomNum);
+				Room r = roomMrg.getRoomByRoomNum(roomNum);
 				if (r == null) {
 					room.setRoomNumber(roomNum);
 					break;
@@ -434,7 +392,7 @@ public class Room_Boundary {
 				} else {
 					bool = false;
 				}
-				room.setSmoking(bool);
+				room.setAllowSmoking(bool);
 				break;
 			} else {
 				System.out.println("Please enter Y/N ");
@@ -453,7 +411,7 @@ public class Room_Boundary {
 				} else {
 					bool = false;
 				}
-				room.setWifi(bool);
+				room.setHasWifi(bool);
 				break;
 			} else {
 				System.out.println("Please enter Y/N ");

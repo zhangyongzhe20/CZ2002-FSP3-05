@@ -1,91 +1,95 @@
 package entity;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Guest {
 
-    private String guestName;
-    private String creditCard;
-    private String address;
-    private String country;
-    private String gender;
-    private String identityType;
-    private String IC;
-    private String nationality;
-    private String contact;
-    private List<String> roomNumList;
+	private String guestName;
+	private String creditCard;
+	private String address;
+	private String country;
+	private String gender;
+	private IdentityType identityType;
+	private String IC;
+	private String nationality;
+	private String contact;
 
+	/**
+	 * Entity of Guest Object
+	 * 
+	 * @version 1.0
+	 */
 
-    /**
- * Entity of Guest Object
- * @version 1.0
- */
+	/**
+	 * Constructor of Guest()
+	 */
+	public Guest(String guestName, String creditCard, String address, String country, String gender,
+			IdentityType identityType, String IC, String nationality, String contact) {
+		this.guestName = guestName;
+		this.creditCard = creditCard;
+		this.address = address;
+		this.country = country;
+		this.gender = gender;
+		this.identityType = identityType;
+		this.IC = IC;
+		this.nationality = nationality;
+		this.contact = contact;
+	}
 
+	public Guest() {
 
-    /**
-     * Constructor of Guest()
-     */
-public Guest(String guestName, String creditCard, String address, String country, String gender, String identityType,String IC, String nationality, String contact, List<String> roomNumList) {
-        this.guestName = guestName;
-        this.creditCard = creditCard;
-        this.address = address;
-        this.country = country;
-        this.gender = gender;
-        this.identityType = identityType;
-        this.IC = IC;
-        this.nationality = nationality;
-        this.contact = contact;
-        this.roomNumList = roomNumList;
- }
+	}
 
-    public String getGuestName() {
-        return guestName;
-    }
+	public enum IdentityType {
+		PASSPORT, DRIVING_LICENSE
+	}
 
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
-    }
+	public String getGuestName() {
+		return guestName;
+	}
 
-    public String getCreditCard() {
-        return creditCard;
-    }
+	public void setGuestName(String guestName) {
+		this.guestName = guestName;
+	}
 
-    public void setCreditCard(String creditCard) {
-        this.creditCard = creditCard;
-    }
+	public String getCreditCard() {
+		return creditCard;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public void setCreditCard(String creditCard) {
+		this.creditCard = creditCard;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public String getCountry() {
+		return country;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public String getGender() {
+		return gender;
+	}
 
-  
-    public String getIdentityType() {
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public IdentityType getIdentityType() {
 		return identityType;
 	}
 
-	public void setIdentityType(String identityType) {
+	public void setIdentityType(IdentityType identityType) {
 		this.identityType = identityType;
 	}
 
@@ -98,31 +102,30 @@ public Guest(String guestName, String creditCard, String address, String country
 	}
 
 	public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-
-	public List<String> getRoomNumList() {
-		return roomNumList;
+		return nationality;
 	}
 
-	public void setRoomNumList(List<String> roomNumList) {
-		this.roomNumList = roomNumList;
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
 	}
 
+	public String getContact() {
+		return contact;
+	}
 
-    
-
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+	public void printGuestInfo() {
+		System.out.println(" -------------------------------------------");
+		System.out.println("1.IC: " + this.getIC());
+		System.out.println("2.Identity Type: " + this.getIdentityType());
+		System.out.println("3.Name: " + this.getGuestName());
+		System.out.println("4.Gender: " + this.getGender());
+		System.out.println("5.Contact: " + this.getContact());
+		System.out.println("6.Country: " + this.getCountry());
+		System.out.println("7.Nationality: " + this.getNationality());
+		System.out.println("8.Address: " + this.getAddress());
+		System.out.println("9.Credit Card : " + this.getCreditCard());
+	}
 }

@@ -4,141 +4,117 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+public class Reservation {
+	private String reservationCode;
+	private String guestIC;
+	private String roomNum;
+	private LocalDateTime checkIn;
+	private LocalDateTime checkOut;
+	private int numOfAdults;
+	private int numOfChild;
+	private ReservationStatus reservationStatus;
+	private CheckInType checkInType;
 
-public class Reservation{
-    private String reservationCode;
-    private String guestIC;
-    private LocalDateTime checkIn;
-    private LocalDateTime checkOut;
-    private int numOfAdults;
-    private int numOfChild;
-    private ReservationStatus reservationStatus;
-    private List<String> roomList;
-    private ReservationType reservationType;
+	public enum CheckInType {
+		WALKIN, RESERVATION
+	}
 
-    public enum ReservationType {
-    	WALKIN , RESERVATION
-    }
-    
-    public enum ReservationStatus {
-    	CONFIRMED, WAITLIST, CHECKIN, EXPIRED
-    }
-    
-    public String getReservationCode() {
-        return reservationCode;
-    }
+	public enum ReservationStatus {
+		CONFIRMED, WAITLIST, CHECKIN, CHECKOUT, EXPIRED
+	}
 
-    /*
-     * @param the reservationCode to set
-     */
-    public void setReservationCode(String reservationCode) {
-        this.reservationCode = reservationCode;
-    }
+	public String getReservationCode() {
+		return reservationCode;
+	}
 
+	public void setReservationCode(String reservationCode) {
+		this.reservationCode = reservationCode;
+	}
 
 	public String getGuestIC() {
-        return guestIC;
-    }
-
-    /*
-     * @param the guest to set
-     */
-    public void setGuestIC(String guestIC) {
-        this.guestIC = guestIC;
-    }
-    public LocalDateTime getCheckIn() {
-        return checkIn;
-    }
-
-    /*
-     * @param the checkIn to set
-     */
-    public void setCheckIn(LocalDateTime checkIn) {
-        this.checkIn = checkIn;
-    }
-
-    public LocalDateTime getCheckOut() {
-        return checkOut;
-    }
-
-    /*
-     * @param the checkOut to set
-     */
-    public void setCheckOut(LocalDateTime checkOut) {
-        this.checkOut = checkOut;
-    }
-
-    public int getNumOfAdults() {
-        return numOfAdults;
-    }
-
-    /*
-     * @param the numOfAdults to set
-     */
-    public void setNumOfAdults(int numOfAdults) {
-        this.numOfAdults = numOfAdults;
-    }
-
-    public int getNumOfChild() {
-        return numOfChild;
-    }
-
-    /*
-     * @param the numOfChild to set
-     */
-    public void setNumOfChild(int numOfChild) {
-        this.numOfChild = numOfChild;
-    }
-
-    public ReservationStatus getReservationStatus() {
-        return reservationStatus;
-    }
-
-    /*
-     * @param the reservationStatus to set
-     */
-    public void setReservationStatus(ReservationStatus reservationStatus) {
-        this.reservationStatus = reservationStatus;
-    }
-
-	public List<String> getRoomList() {
-		return roomList;
+		return guestIC;
 	}
 
-	public void setRoomList(List<String> roomList) {
-		this.roomList = roomList;
-	}
-	
-	public ReservationType getReservationType() {
-		return reservationType;
+	public void setGuestIC(String guestIC) {
+		this.guestIC = guestIC;
 	}
 
-	public void setReservationType(ReservationType reservationType) {
-		this.reservationType = reservationType;
+	public String getRoomNum() {
+		return roomNum;
 	}
-	
-	public void printReservationInfo() {
+
+	public void setRoomNum(String roomNum) {
+		this.roomNum = roomNum;
+	}
+
+	public LocalDateTime getCheckIn() {
+		return checkIn;
+	}
+
+	public void setCheckIn(LocalDateTime checkIn) {
+		this.checkIn = checkIn;
+	}
+
+	public LocalDateTime getCheckOut() {
+		return checkOut;
+	}
+
+	public void setCheckOut(LocalDateTime checkOut) {
+		this.checkOut = checkOut;
+	}
+
+	public int getNumOfAdults() {
+		return numOfAdults;
+	}
+
+	public void setNumOfAdults(int numOfAdults) {
+		this.numOfAdults = numOfAdults;
+	}
+
+	public int getNumOfChild() {
+		return numOfChild;
+	}
+
+	public void setNumOfChild(int numOfChild) {
+		this.numOfChild = numOfChild;
+	}
+
+	public ReservationStatus getReservationStatus() {
+		return reservationStatus;
+	}
+
+	public void setReservationStatus(ReservationStatus reservationStatus) {
+		this.reservationStatus = reservationStatus;
+	}
+
+	public CheckInType getCheckInType() {
+		return checkInType;
+	}
+
+	public void setCheckInType(CheckInType checkInType) {
+		this.checkInType = checkInType;
+	}
+
+	public void printInfo() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-		
 		System.out.println(" -------------------------------------------");
 		System.out.println("Guest IC: " + this.getGuestIC());
-		System.out.println("1.Reservation Code : " + this.getReservationCode());
-		
-		System.out.println("2.Check In Date: " + formatter.format(this.getCheckIn()));
-		System.out.println("3.Check Out Date: " + formatter.format(this.getCheckOut()));
-		System.out.println("4.Number of Adult(s): " + this.getNumOfAdults());
-		System.out.println("5.Number of Child(ren): " + this.getNumOfChild());
-		System.out.println("Reservation Status : " + this.getReservationStatus());
-		if (this.getRoomList() != null && this.getRoomList().size() > 0) {
 
-			System.out.print("6.Room Number : ");
-			for (String roomNum : this.getRoomList()) {
-				System.out.print(roomNum + " ");
+		if (this.getCheckInType().equals(CheckInType.RESERVATION)) {
+			System.out.println("Reservation Code : " + this.getReservationCode());
+			System.out.println("1.Check In Date: " + formatter.format(this.getCheckIn()));
+			System.out.println("2.Check Out Date: " + formatter.format(this.getCheckOut()));
+			System.out.println("3.Number of Adult(s): " + this.getNumOfAdults());
+			System.out.println("4.Number of Child(ren): " + this.getNumOfChild());
+			System.out.println("Reservation Status : " + this.getReservationStatus());
+			if (!this.reservationStatus.equals(ReservationStatus.WAITLIST)) {
+				System.out.print("5.Room Number : " + this.getRoomNum());
 			}
-
-			System.out.println();
+		} else {
+			System.out.println("1.Check In Date: " + formatter.format(this.getCheckIn()));
+			System.out.println("2.Check Out Date: " + formatter.format(this.getCheckOut()));
+			System.out.println("3.Number of Adult(s): " + this.getNumOfAdults());
+			System.out.println("4.Number of Child(ren): " + this.getNumOfChild());
 		}
-		System.out.println(" -------------------------------------------");
 	}
 }
-    

@@ -1,166 +1,150 @@
 package boundary;
 
-
-
 import entity.Guest;
+import entity.Room;
 import controller.GuestMrg;
+import controller.RoomMrg;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Guest_Boundary {
-    static Scanner sc = new Scanner(System.in);
-    static String IC;
-    static String name;
-    static String address;
-    static String country;
-    static String identityType;
-    static String nationality;
-    static String gender;
-    static String contact;
-    static String creditCard;
-    public static void guestMain(){
-        System.out.println(
-       "Guest System\n" +
-        "0. Return to Main Menu\n" +
-        "1. Create Guest\n" + 
-        "2. Update Guest\n" +
-        "3. Find Guest\n");
-    }
+	private Scanner sc = new Scanner(System.in);
+	private GuestMrg guestMrg = GuestMrg.getInstance();
+	private Guest guest;
+	public static void guestMain() {
+		System.out.println("Guest System\n" + "0. Return to Main Menu\n" + "1. Create Guest\n" + "2. Update Guest\n"
+				+ "3. Find Guest\n");
+	}
 
-    private static void createGuest(){
-        Character confirm;
-        System.out.println(
-        "Create Guest\n" +
-        "Type of ID:\n" +
-        "1. Passport\n" +
-        "2. Driving License\n");
+	private void createGuest() {
+		char confirm;
+		guest = new Guest();
+		enterIC();
+		if(guestMrg.getGuestByIC(guest.getIC()) == null) {
+			enterIdentityType();
+			enterName();
+			enterGender();
+			enterContact();
+			enterAddress();
+			enterCountry();
+			enterNationality();
+			enterCreditCard();
+			
+			guest.printGuestInfo();
+			
+			System.out.println(
+					"Press Y to confirm," + "N to discard and " + "(No.) to edit a field and (No.) to edit a field.");
+			confirm = sc.nextLine().charAt(0);
+			switch (confirm) {
+			case 'Y':
+				break;
+			case 'N':
+				break;
+			case '1':
+				enterIdentityType();
+				break;
+			case '2':
+				enterName();
+				break;
+			case '3':
+				enterGender();
+				break;
+			case '4':
+				enterContact();
+				break;
+			case '5':
+				enterAddress();
+				break;
+			case '6':
+				nationality = nationality();
+				break;
+			case '7':
+				gender = gender();
+				break;
+			case '8':
+				contact = contact();
+				break;
+			case '9':
+				creditCard = creditCard();
+				break;
+			default:
+			}
+		}else {
+			System.out.println("Guest already exist");
+		}
+	}
 
-        int selection = sc.nextInt();
-        sc.nextLine();
-        identityType = identityType(selection);
-        name = name();
-        address = address();
-        country=country();
-        nationality=nationality();
-        gender=gender();
-        contact = contact ();
-        creditCard=creditCard();
+	private void enterIdentityType() {
+		String choice = null;
+	do {
+		System.out.println("Create Guest\n" + "Type of ID:\n" + "1. Passport\n" + "2. Driving License\n");
+		if(choice.equalsIgnoreCase("1")) {
+			choice = sc.nextLine();
+			guest.setIdentityType(GuestMrg.strToIdentityType("PASSPORT"));
+		}else if(choice.equalsIgnoreCase("2")) {
+			guest.setIdentityType(GuestMrg.strToIdentityType("DRIVING LICENSE"));
+		}
+	}while(!(choice.equalsIgnoreCase("1")||choice.equalsIgnoreCase("2")));
 
-        printGuestInfo();
+		
+	}
 
-        System.out.println(
-        "Press Y to confirm,"+
-        "N to discard and " +
-        "(No.) to edit a field and (No.) to edit a field.");
-        confirm = sc.nextLine().charAt(0);
-        switch(confirm){
-            case 'Y':  
-            	List<String>roomNumList = new ArrayList<String>();
-            	roomNumList.add("10-10");
-            	roomNumList.add("10-11");
-            	roomNumList.add("10-12");
-            	roomNumList.add("10-13");
-            	Guest guest = new Guest(name,  creditCard,  address,  country,  gender, identityType, IC,  nationality, contact, roomNumList);      
-            	GuestMrg.createGuest(guest);
-            	break;
-            case 'N': break;
-            case '1': identityType = identityType(selection); break;
-            case '2':  IC = IC(); break;
-            case '3': name = name(); break;
-            case '4': address = address(); break;
-            case '5': country = country(); break;
-            case '6': nationality = nationality(); break;
-            case '7': gender  = gender (); break;
-            case '8': contact  = contact (); break;
-            case '9': creditCard  = creditCard(); break;
-            default:
-        }
-    }
+	private void enterIC() {
+		System.out.println("IC:");
+		String ic = sc.nextLine();
+		guest.setIC(ic);
+	
+	}
 
+	private void  enterName() {
+		System.out.println("Name:");
+		String name = sc.nextLine();
+		guest.setGuestName(name);
+	
+	}
 
+	private void  enterAddress() {
+		System.out.println("Address:");
+		String address = sc.nextLine();
+		guest.setAddress(address);
+		
+	}
 
+	private void  enterCountry() {
+		System.out.println("Country:");
+		String country = sc.nextLine();
+		guest.setCountry(country);
+	
+	}
 
+	private void  enterNationality() {
+		System.out.println("Nationality:");
+		String nationality = sc.nextLine();
+		guest.setNationality(nationality);
+		
+	}
 
-    public static String identityType(int selection){
-        if(selection == 1){
-         System.out.println("Passport:");
-        }
-        else{
-        System.out.println("Driving license:");
-        }
-        String id = sc.nextLine();
-        return id;
-    }
-    
-    public static String IC(){
-        System.out.println("IC:");
-        String ic = sc.nextLine();
-        return ic;
-    }
-    
-    public static String name(){
-        System.out.println("Name:");
-        String name = sc.nextLine();
-        return name;
-    }
+	private void  enterGender() {
+		System.out.println("Gender:");
+		String gender = sc.nextLine();
+		guest.setGender(gender);
+	
+	}
 
-    public static String address(){
-        System.out.println("Address:");
-        String address = sc.nextLine();
-        return address;
-    }
+	private void  enterContact() {
+		System.out.println("Contact:");
+		String contact = sc.nextLine();
+		guest.setContact(contact);
+	
+	}
 
-    public static String country(){
-        System.out.println("Country:");
-        String country = sc.nextLine();
-        return country;
-    }
+	private void  enterCreditCard() {
+		System.out.println("Credit Card:");
+		String creditCard = sc.nextLine();
+		guest.setCreditCard(creditCard);
 
-    public static String nationality(){
-        System.out.println("Nationality:");
-        String nationality = sc.nextLine();
-        return nationality;
-    }
-
-    public static String gender(){
-        System.out.println("Gender:");
-        String gender = sc.nextLine();
-        return gender;
-    }
-
-    public static String contact(){
-        System.out.println("Contact:");
-        String contact = sc.nextLine();
-        return contact;
-    }
-    public static String creditCard(){
-        System.out.println("Credit Card:");
-        String creditCard = sc.nextLine();
-        return creditCard;
-    }
-
-    public static void printGuestInfo() {
-        String guestInfo = "Guest information:\n" +
-         "1." + identityType+ "\n" +
-         "2." + IC + "\n" +
-         "3." + name + "\n" +
-         "4." + address + "\n" +
-         "5." + country + "\n" +
-         "6." + nationality + "\n" +
-         "7." + gender + "\n" +
-         "8." + contact + "\n" +
-         "9." + creditCard;
-        System.out.println(guestInfo);
-    }
-
-    public static void main(String[] args) {
-        guestMain();
-        int selection = sc.nextInt();
-        if(selection == 1){
-        	createGuest();
-        }
-        
-    }
+	}
 
 }

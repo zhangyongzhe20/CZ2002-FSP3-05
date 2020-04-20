@@ -2,14 +2,17 @@ package boundary;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Scanner;
 
 import controller.GuestMrg;
+import controller.OrderMrg;
 import controller.PaymentMrg;
 import controller.PromotionMrg;
 import controller.ReservationMrg;
 import controller.RoomMrg;
 import entity.Guest;
+import entity.Order;
 import entity.Payment;
 import entity.Promotion;
 import entity.Reservation;
@@ -35,7 +38,7 @@ public class Payment_Boundary {
 		 		break;
 		 	}else {
 		 	 p  = PromotionMrg.getInstance().getPromotionByPromotionCode(promoCode);
-		 	 if(!(p.getPromo_from().isBefore(LocalDateTime.now())&& p.getPromo_to().isAfter(LocalDateTime.now()))) {
+		 	 if(!(p.getPromoStartDate().isBefore(LocalDateTime.now())&& p.getPromoEndDate().isAfter(LocalDateTime.now()))) {
 		 	System.out.println("The promotion has already expired");
 		 		 p = null;
 		 	 }
@@ -51,15 +54,19 @@ public class Payment_Boundary {
 		System.out.println("Date Check Out:"+reservation.getCheckOut());
 		
 		double totalRoomCharge = 0;
-		for(String roomNum : reservation.getRoomList()) {
-			Room r = RoomMrg.getInstance().searchRoomByNum(roomNum);
-			double roomCharge = RoomMrg.getInstance().getRoomCharge(r);
-			System.out.println("Room Number: "+ r.getRoomNumber() + "Room Charge: $"+ roomCharge);
-			totalRoomCharge += roomCharge;
-		}
-		System.out.println("Total Room Charge: $"+ totalRoomCharge);
+		Room r = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
+		double roomCharge = RoomMrg.getInstance().getRoomCharge(r , reservation.getCheckIn(),reservation.getCheckOut());
+		System.out.println("Room Number: "+ r.getRoomNumber() + "Room Charge: $"+ String.format("%.2f", roomCharge));
+		
+		
 		double totalRoomServiceCharge = 0;
-		System.out.println("Room Service Charge: ");
+		List<Order> orderList = OrderMrg.getInstance().searchOrderByRoomNum(reservation.getRoomNum());
+		for(Order order : orderList) {
+			order.printOrderInfo();
+		}
+		totalRoomServiceCharge = OrderMrg.getInstance().calculateRoomServiceCharge(reservation.getRoomNum());
+		
+		System.out.println("Room Service Charge: $"+String.format("%.2f", totalRoomServiceCharge));
 		
 		double discount = 0;
 		String promoCodeStr = "No promotion";
@@ -72,7 +79,7 @@ public class Payment_Boundary {
 		System.out.println("Tax: "+TAX + "%");
 		
 		double totalPay = (totalRoomCharge + totalRoomServiceCharge) * (1-discount) * (1+ TAX);
-		System.out.println("Total Price: $"+totalPay );
+		System.out.println("Total Price: $"+String.format("%.2f", totalPay) );
 		
 		String choice;
 		String paymentMethod = "CASH";
@@ -85,7 +92,7 @@ public class Payment_Boundary {
 		switch(choice) {
 		case "1":
 			paymentMethod = "CARD";
-			Guest g = GuestMrg.getInstance().searchGuestByIC(reservation.getGuestIC());
+			Guest g = GuestMrg.getInstance().getGuestByIC(reservation.getGuestIC());
 			if(g.getCreditCard()!= null) {
 				char confirm;
 				do {

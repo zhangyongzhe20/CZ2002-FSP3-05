@@ -6,17 +6,14 @@ import java.time.format.DateTimeFormatter;
 
 public class Room {
 	
+	private String roomNumber;
     private RoomType roomType;
+    private BedType bedType;
+    private Facing facing;
     private double roomRateWeekday;
     private double roomRateWeekend;
-    private String roomNumber;
-    private BedType bedType;
-    private boolean isWifi;
-    private Facing facing;
-    private boolean isSmoking;
-    private String reservationCode;
-    private LocalDateTime checkInDate;
-    private LocalDateTime checkOutDate;
+    private boolean hasWifi;
+    private boolean allowSmoking;
     private RoomStatus roomStatus;
     
     
@@ -36,147 +33,125 @@ public class Room {
     	SINGLE, DOUBLE, KING
     }
     
-    /*
-     * @param the roomType to set
-     */
+ 
     
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
-    }
-
-    /*
-     * @param the roomRateWeekday to set
-     */
-    public void setRoomRateWeekday(double roomRateWeekday) {
-        this.roomRateWeekday = roomRateWeekday;
-    }
-
-    /*
-     * @param the roomRateWeekend to set
-     */
-    public void setRoomRateWeekend(double roomRateWeekend) {
-        this.roomRateWeekend = roomRateWeekend;
-    }
-
-    /*
-     * @param the roomNumber to set
-     */
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    /*
-     * @param the bedType to set
-     */
-    public void setBedType(BedType bedType) {
-        this.bedType = bedType;
-    }
-
-    /*
-     * @param the wifi to set
-     */
-    public void setWifi(boolean wifi) {
-        isWifi = wifi;
-    }
-
-    /*
-     * @param the facing to set
-     */
-    public void setFacing(Facing facing) {
-        this.facing = facing;
-    }
-
-    /*
-     * @param the smoking to set
-     */
-    public void setSmoking(boolean smoking) {
-        isSmoking = smoking;
-    }
-
-
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public String getReservationCode() {
-		return reservationCode;
+	public RoomType getRoomType() {
+		return roomType;
 	}
 
-	public void setReservationCode(String reservationCode) {
-		this.reservationCode = reservationCode;
+
+
+	public void setRoomType(RoomType roomType) {
+		this.roomType = roomType;
 	}
+
+
 
 	public double getRoomRateWeekday() {
-        return roomRateWeekday;
-    }
-
-    public double getRoomRateWeekend() {
-        return roomRateWeekend;
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public BedType getBedType() {
-        return bedType;
-    }
-
-    public boolean isWifi() {
-        return isWifi;
-    }
-
-    public Facing getFacing() {
-        return facing;
-    }
-
-    public boolean isSmoking() {
-        return isSmoking;
-    }
-
-
-	public LocalDateTime getCheckInDate() {
-		return checkInDate;
+		return roomRateWeekday;
 	}
 
-	public void setCheckInDate(LocalDateTime checkInDate) {
-		this.checkInDate = checkInDate;
+
+
+	public void setRoomRateWeekday(double roomRateWeekday) {
+		this.roomRateWeekday = roomRateWeekday;
 	}
 
-	public LocalDateTime getCheckOutDate() {
-		return checkOutDate;
+
+
+	public double getRoomRateWeekend() {
+		return roomRateWeekend;
 	}
 
-	public void setCheckOutDate(LocalDateTime checkOutDate) {
-		this.checkOutDate = checkOutDate;
+
+
+	public void setRoomRateWeekend(double roomRateWeekend) {
+		this.roomRateWeekend = roomRateWeekend;
+	}
+
+
+
+	public String getRoomNumber() {
+		return roomNumber;
+	}
+
+
+
+	public void setRoomNumber(String roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+
+
+	public BedType getBedType() {
+		return bedType;
+	}
+
+
+
+	public void setBedType(BedType bedType) {
+		this.bedType = bedType;
+	}
+
+
+
+	public boolean getHasWifi() {
+		return hasWifi;
+	}
+
+
+
+	public void setHasWifi(boolean hasWifi) {
+		this.hasWifi = hasWifi;
+	}
+
+
+
+	public Facing getFacing() {
+		return facing;
+	}
+
+
+
+	public void setFacing(Facing facing) {
+		this.facing = facing;
+	}
+
+
+
+	public boolean getAllowSmoking() {
+		return allowSmoking;
+	}
+
+
+
+	public void setAllowSmoking(boolean allowSmoking) {
+		this.allowSmoking = allowSmoking;
 	}
 
 	public RoomStatus getRoomStatus() {
-		return this.roomStatus;
+		return roomStatus;
 	}
+
+
 
 	public void setRoomStatus(RoomStatus roomStatus) {
 		this.roomStatus = roomStatus;
-    }
-    
+	}
+
+
+
 	public void printRoomInfo() {
 		System.out.println(" -------------------------------------------");
 		System.out.println("1.Room No: " + this.getRoomNumber());
 		System.out.println("2.Room Type: " + this.getRoomType());
 		System.out.println("3.Bed Type: " + this.getBedType());
 		System.out.println("4.Room Facing: " + this.getFacing());
-		System.out.println("5.Weekday Rate: $" + this.getRoomRateWeekday());
-		System.out.println("6.Weekend Rate: $" + this.getRoomRateWeekend());
-		System.out.println("7.Allowing Smoking: " + this.isSmoking());
-		System.out.println("8.Has Wifi: " + this.isWifi());
+		System.out.println("5.Weekday Rate: $" + String.format("%.2f", this.getRoomRateWeekday()));
+		System.out.println("6.Weekend Rate: $" + String.format("%.2f", this.getRoomRateWeekend()));
+		System.out.println("7.Allowing Smoking: " + this.getAllowSmoking());
+		System.out.println("8.Has Wifi: " + this.getHasWifi());
 		System.out.println("9.Room Status: " + this.getRoomStatus());
-
-		if (this.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
-			System.out.println("10.Check in Date: " + formatter.format(this.getCheckInDate()));
-			System.out.println("11.Check out Date: " + formatter.format(this.getCheckOutDate()));
-		}
-		System.out.println(" -------------------------------------------");
 	}
     
 }
