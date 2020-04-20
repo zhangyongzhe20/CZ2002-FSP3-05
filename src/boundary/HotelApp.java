@@ -16,7 +16,7 @@ public class HotelApp {
 				 case 3:
 				 break;
 				 case 4:
-				 main = new order_Boundary();
+				 main = new Order_Boundary();
 				 main.displayMain();
 				 break;
 				 case 5:
