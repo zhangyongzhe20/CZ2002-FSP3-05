@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -147,7 +148,8 @@ public class Order {
 	public void printOrderInfo() {
 		System.out.println(" -------------------------------------------");
 		System.out.println("1.Room No: " + this.orderRoomId);
-		System.out.println("2.Order Time: " + this.orderTime);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		System.out.println("2.Order Time: " + formatter.format(this.orderTime));
 		System.out.println("3.Remarks: " + this.remarks);
         System.out.println("4.Order Status: " + this.orderStatus);
         System.out.println("5.Order Items: ");

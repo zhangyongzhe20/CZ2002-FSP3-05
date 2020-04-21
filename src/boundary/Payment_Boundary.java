@@ -1,7 +1,9 @@
 package boundary;
 
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,14 +18,15 @@ import entity.Order;
 import entity.Payment;
 import entity.Promotion;
 import entity.Reservation;
+import entity.Reservation.ReservationStatus;
 import entity.Room;
 
-public class Payment_Boundary {
+public class Payment_Boundary extends Boundary{
 
 	private Scanner sc = new Scanner(System.in);
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
 	private Payment payment;
-	final static double TAX = 17.0;
+	final static double TAX = 0.17;
 	
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
@@ -49,14 +52,15 @@ public class Payment_Boundary {
 		}while(true);
 		
 		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(code);
-				
-		System.out.println("Date Check In: "+reservation.getCheckIn());
-		System.out.println("Date Check Out:"+reservation.getCheckOut());
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");		
+		System.out.println("Date Check In: "+formatter.format(reservation.getCheckIn()));
+		System.out.println("Date Check Out:"+formatter.format(reservation.getCheckOut()));
 		
 		double totalRoomCharge = 0;
 		Room r = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
 		double roomCharge = RoomMrg.getInstance().getRoomCharge(r , reservation.getCheckIn(),reservation.getCheckOut());
-		System.out.println("Room Number: "+ r.getRoomNumber() + "Room Charge: $"+ String.format("%.2f", roomCharge));
+		System.out.println("Room Number: "+ r.getRoomNumber() + " Room Charge: $"+ String.format("%.2f", roomCharge));
 		
 		
 		double totalRoomServiceCharge = 0;
@@ -64,7 +68,8 @@ public class Payment_Boundary {
 		for(Order order : orderList) {
 			order.printOrderInfo();
 		}
-		totalRoomServiceCharge = OrderMrg.getInstance().calculateRoomServiceCharge(reservation.getRoomNum());
+		OrderMrg.getInstance();
+		totalRoomServiceCharge = OrderMrg.calculateRoomServiceCharge(reservation.getRoomNum());
 		
 		System.out.println("Room Service Charge: $"+String.format("%.2f", totalRoomServiceCharge));
 		
@@ -78,7 +83,7 @@ public class Payment_Boundary {
 		
 		System.out.println("Tax: "+TAX + "%");
 		
-		double totalPay = (totalRoomCharge + totalRoomServiceCharge) * (1-discount) * (1+ TAX);
+		double totalPay = (roomCharge + totalRoomServiceCharge) * (1-discount) * (1+ TAX);
 		System.out.println("Total Price: $"+String.format("%.2f", totalPay) );
 		
 		String choice;
@@ -120,4 +125,20 @@ public class Payment_Boundary {
 		paymentMrg.createPayment(payment);
 	}
 	
+	public void checkOutMenu() {
+	   String roomNum = readInputString("Enter room number");
+	   Reservation r = ReservationMrg.getInstance().getReservationByRoomNum(roomNum);
+	   if(r!=null && r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+		   paymentMain(r.getReservationCode());
+	   }
+	}
+	 public void loadData() {
+	        // TODO Auto-generated method stub
+	        try {
+	        	paymentMrg.loadPaymentData();
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
 }
