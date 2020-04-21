@@ -56,7 +56,7 @@ public class PaymentMrg {
     	return null;
     }
     
-	public void loadRoomData() throws FileNotFoundException {
+	public void loadPaymentData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
 			file.createNewFile();

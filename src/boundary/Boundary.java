@@ -13,22 +13,26 @@ import java.util.Scanner;
 public class Boundary {
     Reservation_Boundary reservationpage;
     Guest_Boundary guestpage;
-
+    private Scanner sc = new Scanner(System.in);
 
     public void display_Control(){
-        String choice;
-        Scanner sc = new Scanner(System.in);
         Order_Boundary orderpage = new Order_Boundary();
         Room_Boundary roompage= new Room_Boundary();
         Reservation_Boundary reservationpage = new Reservation_Boundary();
         Guest_Boundary guestpage = new Guest_Boundary();
+        Payment_Boundary paymentpage = new Payment_Boundary();
         orderpage.loadData();
         roompage.loadData();
+        reservationpage.loadData();
+        guestpage.loadData();
+        paymentpage.loadData();
             //    roompage.loadData;
     //    reservationpage.loadData;
     //    guestpage.loadData;
+        String choice;
     do{
         displayMain();
+        choice =  readInputString("Enter your choice: ");
 		switch(choice) {
 			case "1":
 				guestpage.displayMain();
@@ -42,17 +46,16 @@ public class Boundary {
         	 case "4":
              orderpage.displayMain();
 			 break;
-             case 5:
+             case "5":
+           
              break;
-             case 6:
+             case "6":
+            	 paymentpage.checkOutMenu();
+            	 break;
+            	 default:
+            		 break;
 			}
 			 }while(!choice.equalsIgnoreCase("7"));
-		// List<String> data = new ArrayList<String>();
-		// HashMap<String , String> enumData = new HashMap<String , String>();
-		// enumData.put("1", "WALKIN" );
-		// enumData.put("2", "RESERVATION");
-		// readInputEnum("1. WALKIN\n 2.RESERVATION\n" , enumData);
-		// System.out.println("============================================");
     }
 
 

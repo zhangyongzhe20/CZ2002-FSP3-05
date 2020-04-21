@@ -1,6 +1,7 @@
 package boundary;
 
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
@@ -16,9 +17,10 @@ import entity.Order;
 import entity.Payment;
 import entity.Promotion;
 import entity.Reservation;
+import entity.Reservation.ReservationStatus;
 import entity.Room;
 
-public class Payment_Boundary {
+public class Payment_Boundary extends Boundary{
 
 	private Scanner sc = new Scanner(System.in);
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
@@ -120,4 +122,20 @@ public class Payment_Boundary {
 		paymentMrg.createPayment(payment);
 	}
 	
+	public void checkOutMenu() {
+	   String roomNum = readInputString("Enter room number");
+	   Reservation r = ReservationMrg.getInstance().getReservationByRoomNum(roomNum);
+	   if(r!=null && r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+		   paymentMain(r.getReservationCode());
+	   }
+	}
+	 public void loadData() {
+	        // TODO Auto-generated method stub
+	        try {
+	        	paymentMrg.loadPaymentData();
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
 }
