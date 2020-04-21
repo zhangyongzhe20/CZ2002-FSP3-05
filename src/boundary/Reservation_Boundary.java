@@ -17,6 +17,7 @@ import entity.Reservation.CheckInType;
 import entity.Reservation.ReservationStatus;
 import entity.Room;
 import entity.Room.BedType;
+import entity.Room.RoomStatus;
 import entity.Room.RoomType;
 
 public class Reservation_Boundary extends Boundary{
@@ -240,16 +241,16 @@ public class Reservation_Boundary extends Boundary{
 			case "0":
 				break;
 			case "1":
-				searchByReservationCode();
+				searchByReservationCodeMenu();
 				break;
 			case "2":
-				searchAllReservation();
+				searchAllReservationMenu();
 				break;
 			}
 		} while (!choice.equalsIgnoreCase("0"));
 	}
 
-	private void searchByReservationCode() {
+	private void searchByReservationCodeMenu() {
 		System.out.println("Enter Reservation Code:");
 		String reservationCode = sc.nextLine();
 		Reservation r = reservationMrg.getReservationByCode(reservationCode);
@@ -266,7 +267,7 @@ public class Reservation_Boundary extends Boundary{
 
 	}
 
-	private void searchAllReservation() {
+	private void searchAllReservationMenu() {
 		List<Reservation> allReservationList = reservationMrg.getAllReservation();
 		for (Reservation r : allReservationList) {
 			if (r.getCheckInType().equals(CheckInType.RESERVATION)) {
@@ -277,7 +278,59 @@ public class Reservation_Boundary extends Boundary{
 			}
 		}
 	}
+	public void checkInMenu() {
+		System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
+		String i;
+		do {
+			i = sc.nextLine();
+			switch (i) {
+			case "0":
+				break;
+			case "1":
+				 WalkIncheckInMenu();
+				break;
+			case "2":
+				reservationCheckInMenu();
+				break;
+			}
+		} while (!i.equalsIgnoreCase("0"));
+	}
+	
+	private void reservationCheckInMenu() {
+		System.out.println("Please enter the reservation code: ");
+		String reservationCode = sc.nextLine();
+		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(reservationCode);
+		if (reservation != null) {
+			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
+				reservation.setReservationStatus(Reservation.ReservationStatus.CHECKIN);
+				reservationMrg.checkInReservation(reservation);	
+				System.out.println("Sucessfully check in to the room");
+			} else {
+				System.out.println("Reservation is on " + reservation.getReservationStatus());
+			}
+		} else {
+			System.out.println("Reservation not found");
+		}
 
+	}
+	private void WalkIncheckInMenu() {
+		System.out.println("Please enter the reservation code: ");
+		String reservationCode = sc.nextLine();
+		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(reservationCode);
+		if (reservation != null) {
+			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
+				reservation.setReservationStatus(Reservation.ReservationStatus.CHECKIN);
+				reservationMrg.checkInReservation(reservation);	
+				System.out.println("Sucessfully check in to the room");
+			} else {
+				System.out.println("Reservation is on " + reservation.getReservationStatus());
+			}
+		} else {
+			System.out.println("Reservation not found");
+		}
+
+	}
+	
 	private void enterCheckInDate() {
 		do {
 			try {

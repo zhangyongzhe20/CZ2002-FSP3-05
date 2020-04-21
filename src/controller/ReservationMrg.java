@@ -105,6 +105,17 @@ public class ReservationMrg {
 		}
 	}
 
+	public void checkInReservation(Reservation reservation) {
+		Room r = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
+		RoomMrg.getInstance().updateRoomStatus(r, RoomStatus.OCCUPIED);
+		
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public Reservation getReservationByCode(String reservationCode) {
 		Reservation r = null;
 		for (Reservation reservation : reservations) {

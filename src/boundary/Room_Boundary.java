@@ -122,25 +122,8 @@ public class Room_Boundary extends Boundary {
 			}
 		} while (!i.equalsIgnoreCase("0"));
 	}
-/*
-	private void checkInMenu() {
-		System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
-		String i;
-		do {
-			i = sc.nextLine();
-			switch (i) {
-			case "0":
-				break;
-			case "1":
-				// WalkIncheckInMenu();
-				break;
-			case "2":
-				reservationCheckInMenu();
-				break;
-			}
-		} while (!i.equalsIgnoreCase("0"));
-	}
-*/
+
+
 	private void updateRoomMenu() {
 		String i;
 		do {
@@ -279,22 +262,6 @@ public class Room_Boundary extends Boundary {
 
 	}
 
-	public void reservationCheckInMenu() {
-		System.out.println("Please enter the reservation code: ");
-		String reservationCode = sc.nextLine();
-		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(reservationCode);
-		if (reservation != null) {
-			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CONFIRMED)) {
-				roomMrg.updateRoomStatus(roomMrg.getRoomByRoomNum(reservation.getRoomNum()), RoomStatus.OCCUPIED);
-				System.out.println("Sucessfully check in to the room");
-			} else {
-				System.out.println("Reservation is on " + reservation.getReservationStatus());
-			}
-		} else {
-			System.out.println("Reservation not found");
-		}
-
-	}
 	private void enterRoomNum() {
 		do {
 			System.out.println("Enter room number: ");
