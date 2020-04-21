@@ -1,5 +1,4 @@
 package controller;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -10,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.UUID;
 import entity.*;
 import entity.Order.OrderBillStatus;
 import entity.Order.OrderStatus;
@@ -18,6 +17,7 @@ import entity.Order.OrderStatus;
 public class OrderMrg {
     private ItemList menu;
     private static List<Order> roomOrders;
+    private static Order order;
     final static String menuFile = "menu_data.txt";
     final static String orderFile = "order_data.txt";
 
@@ -36,6 +36,7 @@ public class OrderMrg {
     public OrderMrg() {
         menu = new ItemList();
         roomOrders = new ArrayList<>();
+        order = new Order();
 
     }
 
@@ -165,9 +166,10 @@ public class OrderMrg {
      * 
      * @param order add new order
      */
-    public boolean createOrders(Order order) {
+    public boolean createOrders() {
         boolean bool=false;
         if (order != null) {
+            order.setOrderId(UUID.randomUUID().toString());
             roomOrders.add(order);
         }
         try {
@@ -186,7 +188,7 @@ public class OrderMrg {
      * @param order
      * @return
      */
-    public boolean updateOrderDetail(Order order) {
+    public boolean updateOrderDetail() {
         boolean bool = false;
             for (Order order_ : roomOrders) {
                 if (order_.getOrderId() == order.getOrderId()) {
@@ -266,11 +268,66 @@ public class OrderMrg {
             System.out.println("No orders are found");
     }
     
-    public ItemList getMenu(){
-        return menu;
+	public void setOrderLists(List<Integer> selections) {
+        ItemList orderLists = order.getOrderLists();
+        for (int selection_ : selections) {
+            orderLists.addItem(menu.getItemList().get(selection_ - 1));
+        }
+        order.setOrderLists(orderLists);
+	}
+
+	public void setRemarks(String remarks) {
+        order.setRemarks(remarks);
+	}
+
+	public void setOrderTime(LocalDateTime orderTime) {
+        order.setOrderTime(orderTime);
+	}
+
+    public boolean setAndVerifyRoomNum(String roomNum) {
+        boolean foundRoom = false;
+        if (roomNum.matches("^[0-9]*$")) {
+            if (!RoomMrg.checkRoomExist(roomNum)) {
+                System.out.println("Room does not exist");
+                foundRoom = false;
+            } else {
+                order.setRoomId(roomNum);
+                foundRoom = true;
+            }
+        } else {
+            System.out.println("Please enter room number in digits");
+            foundRoom = false;
+        }
+        return foundRoom;
     }
 
+	public void printOrderInfo() {
+        order.printOrderInfo();
+	}
 
+	public void setOrderStatus(OrderStatus status) {
+        order.setOrderStatus(status);
+	}
 
+	public void printUndeliveredOrderInfo(String roomNum) {
+        order = getUnDeliverOrder(roomNum);
+        order.printOrderInfo();
+	}
+
+	public void displayItems() {
+        order.getOrderLists().displayItems();
+	}
+
+	public void deleteItem(int selection) {
+        if (selection > 0 && selection <= order.getOrderLists().getNumOfItems()) {
+            order.getOrderLists().displayItems();
+            order.getOrderLists().deleteItem(selection - 1);
+        }
+	}
+
+	public int showMenu() {
+        menu.displayItems();
+        return menu.getNumOfItems();
+	}
 
 }

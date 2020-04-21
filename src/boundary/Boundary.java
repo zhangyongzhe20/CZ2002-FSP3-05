@@ -16,6 +16,8 @@ public class Boundary {
     private Scanner sc = new Scanner(System.in);
 
     public void display_Control(){
+        String choice = "0";
+        Scanner sc = new Scanner(System.in);
         Order_Boundary orderpage = new Order_Boundary();
         Room_Boundary roompage= new Room_Boundary();
         Reservation_Boundary reservationpage = new Reservation_Boundary();
@@ -29,10 +31,9 @@ public class Boundary {
             //    roompage.loadData;
     //    reservationpage.loadData;
     //    guestpage.loadData;
-        String choice;
     do{
         displayMain();
-        choice =  readInputString("Enter your choice: ");
+        choice = sc.nextLine();
 		switch(choice) {
 			case "1":
 				guestpage.displayMain();
@@ -47,13 +48,9 @@ public class Boundary {
              orderpage.displayMain();
 			 break;
              case "5":
-           
              break;
              case "6":
-            	 paymentpage.checkOutMenu();
-            	 break;
-            	 default:
-            		 break;
+             break;
 			}
 			 }while(!choice.equalsIgnoreCase("7"));
     }

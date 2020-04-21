@@ -13,10 +13,11 @@ import controller.RoomMrg;
 import entity.*;
 
 public class Order_Boundary extends Boundary {
-    static Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
     // get the instance of Order Mrg
     public static OrderMrg orderMrg = OrderMrg.getInstance();
-    static Order order = new Order();
+
+
     public void displayMain() {
         int choice = 0;
         do {
@@ -39,32 +40,32 @@ public class Order_Boundary extends Boundary {
         } while (choice != 0);
     }
 
-    private void createOrderMenu() {
+    private void createOrderMenu(){
 
         Character confirm;
         System.out.println("Create Order:");
         // get user input
-        order.setRoomId(enterAndVerifyRoomNum());
+        enterRoomNum();
         enterOrderItem();
         enterRemarks();
         enterOrderTime();
-        order.setOrderStatus(Order.OrderStatus.CONFIRMED);
+        orderMrg.setOrderStatus(Order.OrderStatus.CONFIRMED);
+        //order.setOrderStatus(Order.OrderStatus.CONFIRMED);
         do {
-            order.printOrderInfo();
+            orderMrg.printOrderInfo();
             System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
             confirm = sc.nextLine().toUpperCase().charAt(0);
             switch (confirm) {
                 case 'Y':
                     // Confirm order then set the order time and set the order status
-                    order.setOrderId(UUID.randomUUID().toString());
-                    if (orderMrg.createOrders(order)) {
+                    if (orderMrg.createOrders()) {
                         System.out.println("Order is created successfully!");
                     }
                     break;
                 case 'N':
                     break;
                 case '1':
-                    order.setRoomId(enterAndVerifyRoomNum());
+                    enterRoomNum();
                     break;
                 case '2':
                     enterOrderItem();
@@ -85,73 +86,57 @@ public class Order_Boundary extends Boundary {
     }
 
     // use RoomMrg.checkRoomExsit here
-    private String enterAndVerifyRoomNum() {
+    private String enterRoomNum() {
         String roomNum = new String();
-        do {
-            System.out.println("Enter room number of the Order: ");
-            roomNum = sc.nextLine();
-            if (roomNum.matches("^[0-9]*$")) {
-                if (!RoomMrg.checkRoomExist(roomNum)) {
-                    System.out.println("Room does not exist");
-                } else {
-                    break;
-                }
-            } else {
-                System.out.println("Please enter room number in digits");
-            }
-        } while (true);
+        do{
+        System.out.println("Enter room number of the Order: ");
+        roomNum = sc.nextLine();
+        }while(!orderMrg.setAndVerifyRoomNum(roomNum));
         return roomNum;
     }
 
 
-    private static void enterOrderItem() {
+    private void enterOrderItem() {
         System.out.println("Hotel Menu:");
         int selection;
         List<Integer> selections = new ArrayList<>();
-        ItemList menu = orderMrg.getMenu();
-        menu.displayItems();
-        int numOfItems = menu.getNumOfItems();
+        int numOfItems = orderMrg.showMenu();
         System.out.println("Press 0 to confirm," + "(No.) to add an item to order.");
         selection = Integer.parseInt(sc.nextLine());
         while (selection != 0 || selection > numOfItems || selection < 0) {
             selections.add(selection);
             selection = Integer.parseInt(sc.nextLine());
+            System.out.println("Press 0 to confirm," + "(No.) to add an item to order.");
         }
-        // collect Item from menu and add to OrderLists
-        // OrderLists is under the room_id
-        ItemList orderLists = order.getOrderLists();
-        for (int selection_ : selections) {
-            orderLists.addItem(menu.getItemList().get(selection_ - 1));
-        }
-        order.setOrderLists(orderLists);
+         // collect Item from menu and add to OrderLists
+        orderMrg.setOrderLists(selections);
     }
 
-    private static void enterRemarks() {
+    private void enterRemarks() {
         String remarks = "";
         System.out.println("Remarks to put for the order:");
         remarks = sc.nextLine();
-        order.setRemarks(remarks);
+        orderMrg.setRemarks(remarks);
     }
 
-    private static void enterOrderTime() {
+    private void enterOrderTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm");
         LocalDateTime orderTime = LocalDateTime.now();
         orderTime = LocalDateTime.parse(orderTime.format(formatter), formatter);
-        order.setOrderTime(orderTime);
+        orderMrg.setOrderTime(orderTime);
     }
 
     private void updateOrderMenu() {
         System.out.println("update Order");
-        String roomNum = enterAndVerifyRoomNum();
+        String roomNum = enterRoomNum();
         Character confirm;
         do {
-            order = orderMrg.getUnDeliverOrder(roomNum);
-            order.printOrderInfo();
+            orderMrg.printUndeliveredOrderInfo(roomNum);
             System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
             confirm = sc.nextLine().charAt(0);
             switch (confirm) {
                 case 'Y':
-                    boolean success = orderMrg.updateOrderDetail(order);
+                    boolean success = orderMrg.updateOrderDetail();
                     if (success) {
                         System.out.println("Sucessfully update order");
                     } else {
@@ -161,7 +146,7 @@ public class Order_Boundary extends Boundary {
                 case 'N':
                     break;
                 case '1':
-                    order.setRoomId(enterAndVerifyRoomNum());
+                    enterRoomNum();
                     break;
                 case '2':
                     enterOrderTime();
@@ -181,7 +166,7 @@ public class Order_Boundary extends Boundary {
         } while (!(confirm.equals('Y') || confirm.equals('N')));
     }
 
-    private static void updateOrderItem() {
+    private void updateOrderItem() {
         String i;
         System.out.println("Update order items:");
         System.out.println("0. Return to previous page\n" + "1. Add new order items\n" + "2. Delete order items\n");
@@ -198,20 +183,17 @@ public class Order_Boundary extends Boundary {
         }
     }
 
-    private static void deleteOrderItem() {
-        order.getOrderLists().displayItems();
+    private void deleteOrderItem(){
+        System.out.println("Press 0 to previous page " + "(No.) to delete a order item.");
         int selection = 1;
         do {
-            System.out.println("Press 0 to previous page " + "(No.) to delete a order item.");
             selection = Integer.parseInt(sc.nextLine());
-            if (selection > 0 && selection <= order.getOrderLists().getNumOfItems()) {
-                order.getOrderLists().deleteItem(selection - 1);
-                order.getOrderLists().displayItems();
-            }
+            orderMrg.deleteItem(selection);
         } while (selection != 0);
     }
 
-    private static void updateOrderStatus() {
+
+    private void updateOrderStatus() {
         String i;
         System.out.println("Update order status:");
         System.out.println(
@@ -221,10 +203,10 @@ public class Order_Boundary extends Boundary {
             case "0":
                 break;
             case "1":
-                order.setOrderStatus(Order.OrderStatus.PREPARING);
+                orderMrg.setOrderStatus(Order.OrderStatus.PREPARING);
                 break;
             case "2":
-                order.setOrderStatus(Order.OrderStatus.DELIVERED);
+                orderMrg.setOrderStatus(Order.OrderStatus.DELIVERED);
                 break;
         }
     }
