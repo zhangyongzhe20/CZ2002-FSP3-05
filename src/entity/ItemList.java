@@ -3,36 +3,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemList{
-    List<MenuItem> items;
-    
+    List<MenuItem> menuItem;
     public ItemList(){
-        items = new ArrayList<>();
+        menuItem = new ArrayList<>();
     }
 
     public List<MenuItem> getItemList(){
-        return items;
+        return menuItem;
     }
 
     public void addItem(MenuItem Item){
-        items.add(Item);
+        menuItem.add(Item);
     }
 
     public void deleteItem(int num){
-        items.remove(num);
+        menuItem.remove(num);
     }
 
     public void updateItem(int index, MenuItem Item){
-        items.set(index, Item);
+        menuItem.set(index, Item);
     }
 
     public int getNumOfItems(){
-        return items.size();
+        return menuItem.size();
     }
 
 
     public void displayItems(){
         int i =1;
-        for(MenuItem menuitem_ : items){
+        for(MenuItem menuitem_ : menuItem){
             System.out.println(" " + i +"." + menuitem_.toString());
             i++;
         }

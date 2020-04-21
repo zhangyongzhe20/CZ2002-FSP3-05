@@ -16,12 +16,13 @@ import entity.Order.OrderBillStatus;
 import entity.Order.OrderStatus;
 
 public class OrderMrg {
-    private ItemList menu;
+    private static ItemList menu;
     private static List<Order> roomOrders;
     final static String menuFile = "menu_data.txt";
     final static String orderFile = "order_data.txt";
 
-    /**
+
+        /**
      * Applied Singelton Desgin Pattern in Mrg classes
      */
     private static OrderMrg SINGLE_INSTANCE;
@@ -33,94 +34,95 @@ public class OrderMrg {
         return SINGLE_INSTANCE;
     }
 
-    public OrderMrg() {
+    public OrderMrg(){
         menu = new ItemList();
         roomOrders = new ArrayList<>();
 
     }
 
-    private static OrderStatus strToOrderType(String status) {
-        OrderStatus orderStatus = null;
-        if (status.equalsIgnoreCase("CONFIRMED")) {
-            orderStatus = Order.OrderStatus.CONFIRMED;
-        } else if (status.equalsIgnoreCase("PREPARING")) {
-            orderStatus = Order.OrderStatus.PREPARING;
-        } else if (status.equalsIgnoreCase("DELIVERED")) {
-            orderStatus = Order.OrderStatus.DELIVERED;
-        }
-        return orderStatus;
+
+	public static OrderStatus strToOrderType(String status) {
+		OrderStatus orderStatus = null;
+		if (status.equalsIgnoreCase("CONFIRMED")) {
+			orderStatus = Order.OrderStatus.CONFIRMED;
+		} else if (status.equalsIgnoreCase("PREPARING")) {
+			orderStatus = Order.OrderStatus.PREPARING;
+		} else if (status.equalsIgnoreCase("DELIVERED")) {
+			orderStatus = Order.OrderStatus.DELIVERED;
+		} 
+		return orderStatus;
     }
 
-    private static OrderBillStatus strToOrderBillType(String status) {
-        Order.OrderBillStatus orderBillStatus = null;
-        if (status.equalsIgnoreCase("BILLED")) {
-            orderBillStatus = Order.OrderBillStatus.BILLED;
-        } else if (status.equalsIgnoreCase("UNBILLED")) {
-            orderBillStatus = Order.OrderBillStatus.UNBILLED;
+    public static OrderBillStatus strToOrderBillType(String status) {
+		Order.OrderBillStatus orderBillStatus = null;
+		if (status.equalsIgnoreCase("BILLED")) {
+			orderBillStatus = Order.OrderBillStatus.BILLED;
+		} else if (status.equalsIgnoreCase("UNBILLED")) {
+			orderBillStatus = Order.OrderBillStatus.UNBILLED;
         }
-        return orderBillStatus;
+		return orderBillStatus;
     }
+    
 
     public void loadOrderData() throws FileNotFoundException {
-        File file = new File(orderFile);
-        try {
-            file.createNewFile();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+		File file = new File(orderFile);
+		try {
+			file.createNewFile();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
-        Scanner sc = new Scanner(file);
+		Scanner sc = new Scanner(file);
         String data;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        while (sc.hasNextLine()) {
-            data = sc.nextLine();
+		while (sc.hasNextLine()) {
+			data = sc.nextLine();
             String[] temp = data.split(",");
             Order order = new Order();
-            order.setOrderId(temp[0]);
-            ;
+            order.setOrderId(temp[0]);;
             order.setRoomId(temp[1]);
             LocalDateTime orderTime = LocalDateTime.parse(temp[2], formatter);
             order.setOrderTime(orderTime);
             order.setRemarks(temp[3]);
             order.setOrderStatus(strToOrderType(temp[4]));
             order.setOrderBillStatus(strToOrderBillType(temp[5]));
-            if (sc.hasNextLine()) {
+            if(sc.hasNextLine()){
                 data = sc.nextLine();
                 String[] temp2 = data.split(";");
                 int numOfItems = temp2.length;
                 ItemList orderList = new ItemList();
-                for (int i = 0; i < numOfItems; i++) {
+                for(int i=0; i< numOfItems; i++){
                     String[] temp3 = temp2[i].split(",");
-                    MenuItem item = new MenuItem(temp3[0], temp3[1], Double.parseDouble(temp3[2]));
-                    orderList.addItem(item);
+                MenuItem item = new MenuItem(temp3[0], temp3[1], Double.parseDouble(temp3[2]));
+               orderList.addItem(item);
                 }
                 order.setOrderLists(orderList);
             }
             roomOrders.add(order);
-        }
-        sc.close();
+		}
+		sc.close();
     }
 
     public void writeOrderData() throws IOException {
-        FileWriter fileWriter = new FileWriter(orderFile);
+		FileWriter fileWriter = new FileWriter(orderFile);
         PrintWriter fileOut = new PrintWriter(fileWriter);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        if (roomOrders.size() > 0) {
-            for (Order order : roomOrders) {
+		if (roomOrders.size() > 0) {
+			for (Order order : roomOrders) {
                 fileOut.print(order.getOrderId() + ",");
-                fileOut.print(order.getRoomId() + ",");
+				fileOut.print(order.getRoomId() + ",");
                 fileOut.print(order.getOrderTime().format(formatter) + ",");
                 fileOut.print(order.getRemarks() + ",");
                 fileOut.print(order.getStatus() + ",");
                 fileOut.print(order.getOrderBillStatus() + ",");
                 fileOut.println();
-                for (MenuItem menuItem_ : order.getOrderLists().getItemList()) {
+                for(MenuItem menuItem_ : order.getOrderLists().getItemList()){
                     fileOut.print(menuItem_.getName() + ",");
                     fileOut.print(menuItem_.getDescription() + ",");
                     fileOut.print(menuItem_.getPrice() + ";");
                 }
                 fileOut.println();
-            }
+                }
             fileOut.close();
         }
     }
@@ -143,16 +145,16 @@ public class OrderMrg {
         sc.close();
     }
 
+
     /**
      * Used in Payment
-     * 
      * @return total charge of service
      */
-    public static double calculateRoomServiceCharge(String room_id) {
+    public double calculateRoomServiceCharge(String room_id) {
         double total_charge = 0;
         if (roomOrders != null) {
             for (Order order : roomOrders) {
-                if (order.getRoomId().equals(room_id) && order.getOrderBillStatus().equals(Order.OrderBillStatus.UNBILLED))
+                if (order.getRoomId().equals(room_id))
                     total_charge += total_charge + order.getOrderCharge();
             }
         }
@@ -205,8 +207,56 @@ public class OrderMrg {
 		}
 		return bool;	
     }
-
+        /**
+     * 
+     * @param room_id
+     * @return order with the status is not DELIVERED
+     */
+    private Order updateOrderByRoomNum(String room_id) {
+        Order updatedOrder = new Order();
+        if (roomOrders != null) {
+            // Assume that a room only has an order is under "CONFIRMED" or "PREPARING"
+            for (Order order : roomOrders) {
+                if (order.getRoomId().equals(room_id) && !order.getStatus().equals("DELIVERED"))
+                    return updatedOrder;
+            }
+        }
+        return updatedOrder;
+    }
     
+    /**
+     * 
+     * @param room_id
+     * display all orders under the room_id
+     * this method is used in Report Page
+     */
+    public void displayAllOrders(String room_id){
+        List<Order> orders = searchOrderByRoomNum(room_id);
+        if(orders != null){
+        for(Order order_ : orders){
+            order_.printOrderInfo();
+        }
+    }
+    else{
+        System.out.println("No orders are under the room");
+    }
+    }
+
+
+    public void displayUnDeliverOrder(String room_id){
+        List<Order> orders = searchOrderByRoomNum(room_id);
+        if(orders != null){
+            for(Order order_ : orders){
+                Order.OrderStatus status = order_.getStatus();
+                if(!status.equals(Order.OrderStatus.DELIVERED)){
+                order_.printOrderInfo();
+                return;
+                }
+            }
+           
+        }
+        System.out.println("No orders are found to update the room");
+    }
 
     public Order getUnDeliverOrder(String room_id){
         List<Order> orders = searchOrderByRoomNum(room_id);
@@ -221,8 +271,9 @@ public class OrderMrg {
         System.out.println("No orders are found to update the room");
         return null;
     }
-   
-    /**
+
+
+        /**
      * used in displayAllOrders
      * @param room_id
      * @return All orders under the room_id
@@ -238,20 +289,15 @@ public class OrderMrg {
         return orders;
     }
 
-    public void displayAllOrders(String roomId) {
-        List<Order> roomOrders_ = searchOrderByRoomNum(roomId);
-        if(roomOrders_!=null){
-            for(Order order_ : roomOrders_){
-                order_.printOrderInfo();
-            }
-        }
-        else{
-            System.out.println("No orders are found under the room");
-        }
+	public static Order createNewOrder() {
+		return new Order();
     }
     
+    public static ItemList getMenu(){
+        return menu;
+    }
 
-        // Used in Order Report page
+    // Used in Order Report page
 	public void printOrderByStatus(OrderStatus status) {
         Boolean found = false;
         if (roomOrders != null) {
@@ -265,13 +311,8 @@ public class OrderMrg {
         if(!found)
             System.out.println("No orders are found");
     }
+
     
-    public ItemList getMenu(){
-        return menu;
-    }
-
-
-
 
 
 }

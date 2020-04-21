@@ -1,6 +1,5 @@
 package boundary;
 
-
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -45,4 +44,5 @@ public class HotelApp {
 				break;
 			}
 		} while (!(choice.equalsIgnoreCase("6")));
-
+	}
+}

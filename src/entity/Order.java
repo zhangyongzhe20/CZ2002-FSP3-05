@@ -2,6 +2,7 @@ package entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 
@@ -25,29 +26,13 @@ public class Order {
         billStatus = OrderBillStatus.UNBILLED;
     }
     
-
-
-    public enum OrderStatus {
-    	CONFIRMED, PREPARING, DELIVERED
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
-    }
-
-        /**
-     * @return status of the order
-     */
-    public OrderStatus getStatus() {
-        return orderStatus;
-    }
-
     /**
      * Used in Payment
      */
     public enum OrderBillStatus {
     	BILLED, UNBILLED
     }
+
     public void setOrderBillStatus(OrderBillStatus orderBillStatus) {
 		this.billStatus = orderBillStatus;
     }
@@ -58,8 +43,6 @@ public class Order {
     public OrderBillStatus getOrderBillStatus() {
         return billStatus;
     }
-
-
 
 
     public void setOrderId(String orderId){
@@ -78,7 +61,20 @@ public class Order {
         return this.orderRoomId;
     }
 
+    public enum OrderStatus {
+    	CONFIRMED, PREPARING, DELIVERED
+    }
 
+    public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+    }
+
+        /**
+     * @return status of the order
+     */
+    public OrderStatus getStatus() {
+        return orderStatus;
+    }
     /**
      * Constructor of Order class
      */
@@ -143,6 +139,19 @@ public class Order {
         return orderItems;
     }
 
+
+    @Override
+    public String toString() {
+        String orders = "";
+        int i = 1;
+        List<MenuItem> totalOrderItems = orderItems.getItemList();
+        for (MenuItem item : totalOrderItems) {
+            orders = orders.concat("order" + String.valueOf(i) + " " + item.toString() + "\n");
+            i++;
+        }
+        return "{" + " orderTime='" + getOrderTime() + "'" + ", remarks='" + getRemarks() + "'" + ", status='"
+                + getStatus() + "'" + "}" + "\n" + orders;
+    }
 
 	public void printOrderInfo() {
 		System.out.println(" -------------------------------------------");
