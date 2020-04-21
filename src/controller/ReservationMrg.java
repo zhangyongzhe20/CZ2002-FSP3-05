@@ -16,22 +16,95 @@ import entity.Reservation;
 import entity.Reservation.CheckInType;
 import entity.Reservation.ReservationStatus;
 import entity.Room;
+import entity.Room.BedType;
+import entity.Room.Facing;
 import entity.Room.RoomStatus;
+import entity.Room.RoomType;
 
 public class ReservationMrg {
 	public static List<Reservation> reservations = new ArrayList<Reservation>();
 	final static String fileName = "reservation_data.txt";
+	private Reservation reservation;
+	private String roomNum;
 
 	public static ReservationMrg getInstance() {
 		ReservationMrg reservationMrg = new ReservationMrg();
 		return reservationMrg;
 	}
 
-	public static Reservation createNewReservation() {
-		return new Reservation();
+	public void createNewReservation() {
+		reservation =  new Reservation();
+	}
+	public void setReservationCode(String reservationCode) {
+		if(checkReservationExist(reservationCode)) {
+			reservation = getReservationByCode(reservationCode);
+			if(reservation.getRoomNum() != null) {
+			roomNum = reservation.getRoomNum();
+			}
+		}else {
+			reservation.setReservationCode(reservationCode);
+		}
+	}	
+	public void setGuestIC(String guestIC) {
+		reservation.setGuestIC(guestIC);
+	}
+	public void setRoomNum(String roomNum) {
+		reservation.setRoomNum(roomNum);
+	}
+	public void setCheckIn(LocalDateTime checkIn) {
+		reservation.setCheckIn(checkIn);
+	}
+	public void setCheckOut(LocalDateTime checkOut) {
+		reservation.setCheckOut(checkOut);
+	}
+		
+	public void setNumOfAdults(int numOfAdults) {
+		reservation.setNumOfAdults(numOfAdults);
+	}
+	public void setNumOfChild(int numOfChild) {
+		reservation.setNumOfChild(numOfChild);
+	}
+	public void setReservationStatus(ReservationStatus reservationStatus) {
+		reservation.setReservationStatus(reservationStatus);
+	}
+	public void setCheckInType(CheckInType checkInType) {
+		reservation.setCheckInType(checkInType);
 	}
 
-	public static ReservationStatus strToReservationStatus(String StrReservationStatus) {
+	public LocalDateTime getCheckIn() {
+		return reservation.getCheckIn();
+	}
+	public LocalDateTime getCheckOut() {
+		return reservation.getCheckOut();
+	}
+	public CheckInType getCheckInType() {
+		return reservation.getCheckInType();
+	}
+	public ReservationStatus getReservationStatus() {
+		return reservation.getReservationStatus();
+	}
+
+	
+	public static boolean checkReservationExist(String reservationCode) {
+		for (Reservation reservation : reservations) {
+			if (reservation.getReservationCode().equalsIgnoreCase(reservationCode)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean checkReservationExist(String reservationCode , ReservationStatus rs , CheckInType checkInType) {
+		for (Reservation reservation : reservations) {
+			if (reservation.getReservationCode().equalsIgnoreCase(reservationCode)) {
+				if(reservation.getReservationStatus().equals(rs) &&
+						reservation.getCheckInType().equals(checkInType)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public ReservationStatus strToReservationStatus(String StrReservationStatus) {
 		ReservationStatus reservationStatus = null;
 		if (StrReservationStatus.equalsIgnoreCase("CONFIRMED")) {
 			reservationStatus = Reservation.ReservationStatus.CONFIRMED;
@@ -45,7 +118,7 @@ public class ReservationMrg {
 		return reservationStatus;
 	}
 
-	public static CheckInType strToCheckInType(String strCheckInType) {
+	public CheckInType strToCheckInType(String strCheckInType) {
 		CheckInType checkInType = null;
 		if (strCheckInType.equalsIgnoreCase("WALKIN")) {
 			checkInType = Reservation.CheckInType.WALKIN;
@@ -61,11 +134,10 @@ public class ReservationMrg {
 		return code;
 	}
 
-	public void createReservation(Reservation reservation) {
+	public void createReservation() {
 		reservations.add(reservation);
 		if (reservation.getRoomNum() != null) {
-			Room room = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
-			RoomMrg.getInstance().updateRoomStatus(room, RoomStatus.RESERVED);
+			RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.RESERVED);
 		}
 		try {
 			writeReservationData();
@@ -75,11 +147,10 @@ public class ReservationMrg {
 		}
 	}
 
-	public void cancelReservation(Reservation reservation) {
+	public void cancelReservation() {
+		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.VACANT);
 		reservations.remove(reservation);
-		Room room = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
-		RoomMrg.getInstance().updateRoomStatus(room, RoomStatus.VACANT);
-
+		
 		try {
 			writeReservationData();
 		} catch (IOException e) {
@@ -88,14 +159,12 @@ public class ReservationMrg {
 		}
 	}
 
-	public void updateReservation(Reservation reservation, String oldRoomNum) {
-		if (oldRoomNum != null) {
-			Room r = RoomMrg.getInstance().getRoomByRoomNum(oldRoomNum);
-			RoomMrg.getInstance().updateRoomStatus(r, RoomStatus.VACANT);
+	public void updateReservation() {
+		if(roomNum != null) {
+		RoomMrg.getInstance().updateRoomStatus(roomNum, RoomStatus.VACANT);
 		}
-		if(reservation.getRoomNum() != null) {
-		Room newRoom = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
-		RoomMrg.getInstance().updateRoomStatus(newRoom, RoomStatus.RESERVED);
+		if(reservation.getRoomNum()!= null) {
+		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 		}
 		try {
 			writeReservationData();
@@ -104,10 +173,15 @@ public class ReservationMrg {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public boolean isReservationStatus(ReservationStatus rs) {
+		if(rs.equals(reservation.getReservationStatus())) {
+			return true;
+		}
+		return false;
+	}
 	public void checkInReservation(Reservation reservation) {
-		Room r = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
-		RoomMrg.getInstance().updateRoomStatus(r, RoomStatus.OCCUPIED);
+		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 		
 		try {
 			writeReservationData();
@@ -160,10 +234,34 @@ public class ReservationMrg {
 		return rList;
 	}
 
-	public List<Reservation> getAllReservation() {
-		return reservations;
+	public void printReservationInfo() {
+		
+		if (reservation.getRoomNum() == null) {
+			reservation.setReservationStatus(ReservationStatus.WAITLIST);
+		} else {
+			reservation.setReservationStatus(ReservationStatus.CONFIRMED);
+		}
+		
+		reservation.printInfo();
 	}
 
+	public void printReservationsByStatus(ReservationStatus rs) {
+		List<Reservation> rList = new ArrayList<Reservation>();
+		rList = getReservationByReservationStatus(rs);
+		for(Reservation r : rList) {
+			r.printInfo();
+		}
+	}
+	public void printActiveReservation() {
+		for(Reservation r : reservations) {
+			if (r.getCheckInType().equals(CheckInType.RESERVATION)) {
+				if (!(r.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)
+						|| r.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
+					r.printInfo();
+				}
+			}
+		}
+	}
 	public void loadReservationData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
@@ -178,7 +276,7 @@ public class ReservationMrg {
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
-			Reservation r = ReservationMrg.createNewReservation();
+			Reservation r = new Reservation();
 			r.setReservationCode(temp[0]);
 			r.setGuestIC(temp[1]);
 			r.setRoomNum(temp[2]);
@@ -186,8 +284,8 @@ public class ReservationMrg {
 			r.setCheckOut(LocalDateTime.parse(temp[4], formatter));
 			r.setNumOfAdults(Integer.parseInt(temp[5]));
 			r.setNumOfChild(Integer.parseInt(temp[6]));
-			r.setReservationStatus(ReservationMrg.strToReservationStatus(temp[7]));
-			r.setCheckInType(ReservationMrg.strToCheckInType(temp[8]));
+			r.setReservationStatus(strToReservationStatus(temp[7]));
+			r.setCheckInType(strToCheckInType(temp[8]));
 			reservations.add(r);
 		}
 		sc.close();

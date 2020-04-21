@@ -111,26 +111,14 @@ public class Boundary {
     	}while(!(confirm == 'Y' || confirm =='N'));
     	return bool;
     }
-    public LocalDateTime readInputDate(String message ,LocalDateTime compareDate, boolean isAfter) {
+    public LocalDateTime readInputDate(String message) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime dateTime = null;
 		do {
 		try {
 		String strDateTime = readInputString(message);
 		dateTime = LocalDateTime.parse(strDateTime,formatter);
-		if(isAfter) {
-			if(dateTime.isAfter(compareDate)){
-				break;
-			}else {
-				System.out.println("Please enter the correct date");
-			}
-		}else {
-			if(dateTime.isBefore(compareDate)){
-				break;
-			}else {
-				System.out.println("Please enter the correct date");
-			}
-		}
+		break;
 		}catch(DateTimeParseException e) {
 			System.out.println("Please enter the correct date format");
 		}
@@ -138,7 +126,11 @@ public class Boundary {
 		return dateTime;
 	}
     public String readInputEnum(String message , HashMap<String, String> enumData) {
+    	message = message+"\n";
     	String input;
+    	for(String key : enumData.keySet()) {
+    		message = message + key+". "+ enumData.get(key)+"\n";
+    	}
     	do {
     	 input = readInputString(message);   
     	 if(enumData.get(input) == null) {

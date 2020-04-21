@@ -25,6 +25,16 @@ public class GuestMrg {
 		return guestMrg;
 	}
 	
+	public static boolean checkGuestExist(String ic) {
+		for (Guest guest : guests) {
+			if (guest.getIC().equalsIgnoreCase(ic)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
 	public static IdentityType strToIdentityType(String strIdentityType) {
 		IdentityType identityType = null;
 		if (strIdentityType.equalsIgnoreCase("PASSPORT")) {

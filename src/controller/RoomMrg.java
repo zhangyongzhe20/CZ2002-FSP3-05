@@ -11,7 +11,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,16 +30,78 @@ import entity.Room.RoomType;
 public class RoomMrg {
 	public static List<Room> rooms = new ArrayList<Room>();
 	final static String fileName = "room_data.txt";
+	private Room room;
 
 	public static RoomMrg getInstance() {
 		return new RoomMrg();
 	}
 
-	public static Room createNewRoom() {
-		return new Room();
+	public void createNewRoom() {
+		room = new Room();
 	}
 
-	public static RoomType strToRoomType(String type) {
+	public void setRoomNumber(String roomNum) {
+		if (checkRoomExist(roomNum)) {
+			room = getRoomByRoomNum(roomNum);
+		} else {
+			room.setRoomNumber(roomNum);
+		}
+	}
+
+	public void setRoomType(RoomType roomType) {
+		room.setRoomType(roomType);
+	}
+
+	public void setBedType(BedType bedType) {
+		room.setBedType(bedType);
+	}
+
+	public void setFacing(Facing facing) {
+		room.setFacing(facing);
+	}
+
+	public void setRoomRateWeekday(double roomRateWeekday) {
+		room.setRoomRateWeekday(roomRateWeekday);
+	}
+
+	public void setRoomRateWeekend(double roomRateWeekend) {
+		room.setRoomRateWeekend(roomRateWeekend);
+	}
+
+	public void setHasWifi(boolean hasWifi) {
+		room.setHasWifi(hasWifi);
+	}
+
+	public void setAllowSmoking(boolean allowSmoking) {
+		room.setAllowSmoking(allowSmoking);
+	}
+
+	public void setRoomStatus(RoomStatus roomStatus) {
+		room.setRoomStatus(roomStatus);
+	}
+
+	public <T extends Enum<T>> HashMap<String, String> getEnumTypeHashMap(Class<T> enumData) {
+		HashMap<String, String> returnValue = new HashMap<String, String>();
+		int count = 1;
+		for (T value : Arrays.asList(enumData.getEnumConstants())) {
+			returnValue.put(String.valueOf(count), String.valueOf(value));
+			count++;
+		}
+		return returnValue;
+	}
+
+	/*
+	 * public HashMap<String,String> getRoomTypeHashMap(){ HashMap<String,String>
+	 * returnValue = new HashMap<String,String>(); returnValue =
+	 * getEnumTypeHashMap(RoomType.class); return returnValue; } public
+	 * HashMap<String,String> getBedTypeHashMap(){ HashMap<String,String>
+	 * returnValue = new HashMap<String,String>(); returnValue =
+	 * getEnumTypeHashMap(BedType.class); return returnValue; } public
+	 * HashMap<String,String> getFacingHashMap(){ HashMap<String,String> returnValue
+	 * = new HashMap<String,String>(); returnValue =
+	 * getEnumTypeHashMap(Facing.class); return returnValue; }
+	 */
+	public RoomType strToRoomType(String type) {
 		RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
 			roomtype = Room.RoomType.SINGLE;
@@ -50,7 +115,7 @@ public class RoomMrg {
 		return roomtype;
 	}
 
-	public static BedType strToBedType(String type) {
+	public BedType strToBedType(String type) {
 		BedType bedType = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
 			bedType = Room.BedType.SINGLE;
@@ -62,7 +127,7 @@ public class RoomMrg {
 		return bedType;
 	}
 
-	public static Facing strToFacing(String strFacing) {
+	public Facing strToFacing(String strFacing) {
 		Facing facing = null;
 		if (strFacing.equalsIgnoreCase("NORTH")) {
 			facing = Room.Facing.NORTH;
@@ -90,19 +155,17 @@ public class RoomMrg {
 		return roomStatus;
 	}
 
-	//modify to apply in Order Boundary
-		public static boolean checkRoomExist(String roomNum) {
-			Room r = null;
-			for (Room room : rooms) {
-				if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
-					r = room;
-					return true;
-				}
+	// modify to apply in Order Boundary
+	public static boolean checkRoomExist(String roomNum) {
+		for (Room room : rooms) {
+			if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
+				return true;
 			}
-			return false;
 		}
-		
-	public void createRoom(Room room) {
+		return false;
+	}
+
+	public void createRoom() {
 		rooms.add(room);
 		try {
 			writeRoomData();
@@ -112,51 +175,35 @@ public class RoomMrg {
 		}
 	}
 
-	public void updateRoomDetails(Room room) {
-		for (Room r : rooms) {
-			if (r.getRoomNumber() == room.getRoomNumber()) {
-				r.setRoomType(room.getRoomType());
-				r.setBedType(room.getBedType());
-				r.setFacing(room.getFacing());
-				r.setRoomRateWeekday(room.getRoomRateWeekday());
-				r.setRoomRateWeekend(room.getRoomRateWeekend());
-				r.setAllowSmoking(room.getAllowSmoking());
-				r.setHasWifi(room.getHasWifi());
-			}
-		}
-		
+	public void updateRoom() {
 		try {
 			writeRoomData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	public void updateRoomStatus(Room room,RoomStatus rs) {
-		for (Room r : rooms) {
-			if (r.getRoomNumber().equalsIgnoreCase(room.getRoomNumber())) {
-				r.setRoomStatus(rs);
-			}
-		}
-
+	public void updateRoomStatus(String roomNum, RoomStatus rs) {
+		room = getRoomByRoomNum(roomNum);
+		setRoomStatus(rs);
 		try {
 			writeRoomData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
-	
 	public List<Room> getRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
 		List<Guest> guestList = GuestMrg.getInstance().getGuestByName(name);
-		for(Guest g : guestList) {
+		for (Guest g : guestList) {
 			String guestIC = g.getIC();
 			Reservation reservation = ReservationMrg.getInstance().getReservationByGuestIC(guestIC);
-			if(reservation.getReservationStatus().equals(Reservation.ReservationStatus.CHECKIN)) {
+			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CHECKIN)) {
 				String roomNum = reservation.getRoomNum();
 				Room r = getRoomByRoomNum(roomNum);
 				roomList.add(r);
@@ -195,47 +242,53 @@ public class RoomMrg {
 		return r;
 	}
 
-	public List<Room> getAvailRoom(RoomType roomType, BedType bedType, boolean hasWifiBool,
+	public double getRoomCharge(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
+		double price = 0;
+		double total_price = 0;
+		List<Integer> days = getDays(checkInDate, checkOutDate);
+		for (int day : days) {
+			if (day == 0 || day == 6) {
+				price = room.getRoomRateWeekend();
+			}
+			price = room.getRoomRateWeekday();
+			total_price += price;
+
+		}
+		return total_price;
+	}
+
+	public static List<Integer> getDays(LocalDateTime checkin, LocalDateTime checkout) {
+		List<Integer> days = new ArrayList<Integer>();
+		long duration = Duration.between(checkin, checkout).toDays();
+		int checkin_ = checkin.getDayOfWeek().getValue();
+
+		for (int i = 0; i < duration; i++) {
+			days.add(checkin_);
+			checkin_ = (checkin_ + 1) % 7;
+		}
+		return days;
+	}
+
+	public List<String> getAndPrintAvailRoom(RoomType roomType, BedType bedType, boolean hasWifiBool,
 			boolean allowSmokingBool) {
-		List<Room> returnList = new ArrayList<Room>();
+		List<String> roomNumList = new ArrayList<String>();
 		for (Room room : rooms) {
-			if (room.getRoomType().equals(roomType) && room.getBedType().equals(bedType) && 
-				room.getHasWifi() == hasWifiBool && room.getAllowSmoking() == allowSmokingBool) {
-				if(room.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
-					returnList.add(room);
+			if (room.getRoomType().equals(roomType) && room.getBedType().equals(bedType)
+					&& room.getHasWifi() == hasWifiBool && room.getAllowSmoking() == allowSmokingBool) {
+				if (room.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+					System.out.println("Room Number: " + room.getRoomNumber() + ", Weekday Rate: "
+							+ String.format("%.2f", room.getRoomRateWeekday()) + ", Weekend Rate: "
+							+ String.format("%.2f", room.getRoomRateWeekend()) + ", Facing: " + room.getFacing());
+					roomNumList.add(room.getRoomNumber());
 				}
 			}
 		}
-		return returnList;
+		if (roomNumList.size() == 0) {
+			System.out.println("There are no available room");
+		}
+		return roomNumList;
 	}
-	
-	public double getRoomCharge(Room room , LocalDateTime checkInDate , LocalDateTime checkOutDate) {
-		  double price = 0;
-	        double total_price = 0;
-	        List<Integer> days = getDays(checkInDate, checkOutDate);
-	        for (int day : days) {
-	            if (day == 0 || day == 6) {
-	                price = room.getRoomRateWeekend();
-	            }
-	            price = room.getRoomRateWeekday();
-	            total_price += price;
 
-	        }
-	        return total_price;
-	}
-	
-	   public static List<Integer> getDays(LocalDateTime checkin, LocalDateTime checkout) {
-	        List<Integer> days = new ArrayList<Integer>();
-	        long duration = Duration.between(checkin, checkout).toDays();
-	        int checkin_ = checkin.getDayOfWeek().getValue();
-
-	        for (int i = 0; i < duration; i++) {
-	            days.add(checkin_);
-	            checkin_ = (checkin_ + 1) % 7;
-	        }
-	        return days;
-	    }
-	
 	// For Room Boundary
 	public void getRoomReportMenu() {
 		int singleRoomTotal = 0;
@@ -354,6 +407,25 @@ public class RoomMrg {
 		}
 	}
 
+	public void printRoomInfo() {
+		room.printRoomInfo();
+		if (room.getRoomStatus().equals(RoomStatus.OCCUPIED) || room.getRoomStatus().equals(RoomStatus.RESERVED)) {
+			Guest g = GuestMrg.getInstance().getGuestByRoomNum(room.getRoomNumber());
+			System.out.println("Guest Name : " + g.getGuestName());
+		}
+	}
+
+	public void printRoomByGuestName(String name) {
+		List<Room> roomList = getRoomByGuestName(name);
+		if (roomList.size() > 0) {
+			for (Room r : roomList) {
+				r.printRoomInfo();
+			}
+		} else {
+			System.out.println("No room found by the name " + name);
+		}
+	}
+
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
@@ -369,9 +441,9 @@ public class RoomMrg {
 			String[] temp = data.split(",");
 			Room r = new Room();
 			r.setRoomNumber(temp[0]);
-			r.setRoomType(RoomMrg.strToRoomType(temp[1]));
-			r.setBedType(RoomMrg.strToBedType(temp[2]));
-			r.setFacing(RoomMrg.strToFacing(temp[3]));
+			r.setRoomType(strToRoomType(temp[1]));
+			r.setBedType(strToBedType(temp[2]));
+			r.setFacing(strToFacing(temp[3]));
 			r.setRoomRateWeekday(Double.parseDouble(temp[4]));
 			r.setRoomRateWeekend(Double.parseDouble(temp[5]));
 			r.setHasWifi(Boolean.parseBoolean(temp[6]));
@@ -401,5 +473,15 @@ public class RoomMrg {
 			System.out.println("finish writing");
 			fileOut.close();
 		}
+	}
+
+	public static void main(String args[]) {
+		HashMap<String, String> returnValue = new HashMap<String, String>();
+		returnValue = RoomMrg.getInstance().getEnumTypeHashMap(RoomType.class);
+		for (String k : returnValue.keySet()) {
+			System.out.println(k + " : " + returnValue.get(k));
+		}
+		// System.out.println(RoomType.class);
+		// System.out.println(EnumSet.allOf(RoomType.class));
 	}
 }
