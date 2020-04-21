@@ -16,7 +16,7 @@ public class Boundary {
 
 
     public void display_Control(){
-        String choice;
+        String choice = "0";
         Scanner sc = new Scanner(System.in);
         Order_Boundary orderpage = new Order_Boundary();
         Room_Boundary roompage= new Room_Boundary();
@@ -29,6 +29,7 @@ public class Boundary {
     //    guestpage.loadData;
     do{
         displayMain();
+        choice = sc.nextLine();
 		switch(choice) {
 			case "1":
 				guestpage.displayMain();
@@ -42,9 +43,10 @@ public class Boundary {
         	 case "4":
              orderpage.displayMain();
 			 break;
-             case 5:
+             case "5":
              break;
-             case 6:
+             case "6":
+             break;
 			}
 			 }while(!choice.equalsIgnoreCase("7"));
 		// List<String> data = new ArrayList<String>();
