@@ -18,7 +18,7 @@ public class Guest_Boundary {
 				+ "3. Find Guest\n");
 	}
 
-	private void createGuestMenu() {
+	private void createGuest() {
 		char confirm;
 		guest = new Guest();
 		enterIC();
@@ -58,19 +58,18 @@ public class Guest_Boundary {
 				enterAddress();
 				break;
 			case '6':
-				enterNationality();
+				nationality = nationality();
 				break;
 			case '7':
-			 enterGender();
+				gender = gender();
 				break;
 			case '8':
-				enterContact();
+				contact = contact();
 				break;
 			case '9':
-				enterCreditCard();
+				creditCard = creditCard();
 				break;
 			default:
-				break;
 			}
 		}else {
 			System.out.println("Guest already exist");

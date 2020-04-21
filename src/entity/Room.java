@@ -19,8 +19,6 @@ public class Room {
     
     public enum RoomStatus {
     	VACANT, OCCUPIED, RESERVED, UNDER_MAINTENANCE
-    	
-    	
     }
     
     public enum Facing {

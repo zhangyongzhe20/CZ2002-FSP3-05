@@ -6,7 +6,6 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-
 public class Boundary {
     public void displayMain(){
         System.out.println("Hotel Reservation and Payment System (HRPS)");
@@ -17,7 +16,23 @@ public class Boundary {
 		System.out.println("4. About Room Service");
 		System.out.println("5. About Payment");
 		System.out.println("6. Quit");
-		System.out.println("============================================");
+        System.out.println("============================================");
+		choice = Integer.parseInt(sc.nextLine());
+		switch(choice) {
+			case 1:
+			break;
+			case 2:
+	    	 break;
+    		 case 3:
+             break;		
+        	 case 4:
+             orderpage.displayMain();
+			 break;
+			 case 5:
+			 break;
+			}
+			 }while(choice!=6);
+	
     }
     
     public String readInputString(String message) {
@@ -48,39 +63,14 @@ public class Boundary {
     	}
     	return input;
     }
-    public boolean readInputBoolean(String message) {
-    	boolean bool =  false;
-    	char confirm;
-    	do {
-    	 confirm = readInputString(message).toUpperCase().charAt(0);
-    	 if(confirm == 'Y') {
-    		 bool = true;
-    	 }else if(confirm == 'N') {
-    		 bool = false;
-    	 }
-    	}while(!(confirm == 'Y' || confirm =='N'));
-    	return bool;
-    }
-    public LocalDateTime readInputDate(String message ,LocalDateTime compareDate, boolean isAfter) {
+    public LocalDateTime readInputDate(String message) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime dateTime = null;
 		do {
 		try {
 		String strDateTime = readInputString(message);
 		dateTime = LocalDateTime.parse(strDateTime,formatter);
-		if(isAfter) {
-			if(dateTime.isAfter(compareDate)){
-				break;
-			}else {
-				System.out.println("Please enter the correct date");
-			}
-		}else {
-			if(dateTime.isBefore(compareDate)){
-				break;
-			}else {
-				System.out.println("Please enter the correct date");
-			}
-		}
+		break;
 		}catch(DateTimeParseException e) {
 			System.out.println("Please enter the correct date format");
 		}
@@ -98,5 +88,4 @@ public class Boundary {
     	return (enumData.get(input));
     	
     }
-
 }
