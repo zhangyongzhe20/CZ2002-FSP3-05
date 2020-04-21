@@ -99,17 +99,20 @@ public class Reservation {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		System.out.println(" -------------------------------------------");
 		System.out.println("Guest IC: " + this.getGuestIC());
-
 		if (this.getCheckInType().equals(CheckInType.RESERVATION)) {
 			System.out.println("Reservation Code : " + this.getReservationCode());
+			System.out.println("Reservation Status : " + this.getReservationStatus());
 			System.out.println("1.Check In Date: " + formatter.format(this.getCheckIn()));
 			System.out.println("2.Check Out Date: " + formatter.format(this.getCheckOut()));
 			System.out.println("3.Number of Adult(s): " + this.getNumOfAdults());
 			System.out.println("4.Number of Child(ren): " + this.getNumOfChild());
-			System.out.println("Reservation Status : " + this.getReservationStatus());
-			if (!this.reservationStatus.equals(ReservationStatus.WAITLIST)) {
-				System.out.print("5.Room Number : " + this.getRoomNum());
+			String roomNum;
+			if (this.reservationStatus.equals(ReservationStatus.WAITLIST)) {
+				roomNum = "No room selected";
+			}else {
+				roomNum = this.getRoomNum();
 			}
+			System.out.println("5.Room Number : " + roomNum);
 		} else {
 			System.out.println("1.Check In Date: " + formatter.format(this.getCheckIn()));
 			System.out.println("2.Check Out Date: " + formatter.format(this.getCheckOut()));

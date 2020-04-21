@@ -47,41 +47,62 @@ public class ReservationMrg {
 
 	public static CheckInType strToCheckInType(String strCheckInType) {
 		CheckInType checkInType = null;
-		if (StrCheckInType.equalsIgnoreCase("WALKIN")) {
+		if (strCheckInType.equalsIgnoreCase("WALKIN")) {
 			checkInType = Reservation.CheckInType.WALKIN;
-		} else if (StrCheckInType.equalsIgnoreCase("RESERVATION")) {
+		} else if (strCheckInType.equalsIgnoreCase("RESERVATION")) {
 			checkInType = Reservation.CheckInType.RESERVATION;
 		}
 		return checkInType;
 	}
-	public String generateReservationCode() {
-		return "";
+
+	public String generateReservationCode(String ic) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyHdmM");
+		String code = ic.substring(ic.length() - 3) + LocalDateTime.now().format(formatter);
+		return code;
 	}
-	
+
 	public void createReservation(Reservation reservation) {
 		reservations.add(reservation);
-		Room room = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
-		RoomMrg.getInstance().updateRoomStatus(room, RoomStatus.RESERVED);
+		if (reservation.getRoomNum() != null) {
+			Room room = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
+			RoomMrg.getInstance().updateRoomStatus(room, RoomStatus.RESERVED);
+		}
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void cancelReservation(Reservation reservation) {
 		reservations.remove(reservation);
 		Room room = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
 		RoomMrg.getInstance().updateRoomStatus(room, RoomStatus.VACANT);
+
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void updateReservation(Reservation reservation) {
-		for (Reservation r : reservations) {
-			if (r.getReservationCode().equals(reservation.getReservationCode())) {
-				r.setCheckIn(reservation.getCheckIn());
-				r.setCheckOut(reservation.getCheckOut());
-				r.setNumOfAdults(reservation.getNumOfAdults());
-				r.setNumOfChild(reservation.getNumOfChild());
-				r.setRoomNum(reservation.getRoomNum());
-				r.setReservationStatus(reservation.getReservationStatus());
-			}
+	public void updateReservation(Reservation reservation, String oldRoomNum) {
+		if (oldRoomNum != null) {
+			Room r = RoomMrg.getInstance().getRoomByRoomNum(oldRoomNum);
+			RoomMrg.getInstance().updateRoomStatus(r, RoomStatus.VACANT);
 		}
-
+		if(reservation.getRoomNum() != null) {
+		Room newRoom = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
+		RoomMrg.getInstance().updateRoomStatus(newRoom, RoomStatus.RESERVED);
+		}
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Reservation getReservationByCode(String reservationCode) {
@@ -93,33 +114,45 @@ public class ReservationMrg {
 		}
 		return r;
 	}
+
 	public Reservation getReservationByGuestIC(String ic) {
 		Reservation r = null;
 		for (Reservation reservation : reservations) {
 			if (reservation.getGuestIC().equalsIgnoreCase(ic)) {
-				if(!(reservation.getReservationStatus().equals(ReservationStatus.CHECKOUT)||
-						reservation.getReservationStatus().equals(ReservationStatus.EXPIRED)))
-				r = reservation;
+				if (!(reservation.getReservationStatus().equals(ReservationStatus.CHECKOUT)
+						|| reservation.getReservationStatus().equals(ReservationStatus.EXPIRED)))
+					r = reservation;
 			}
 		}
 		return r;
 	}
-	
+
 	public Reservation getReservationByRoomNum(String roomNum) {
 		Reservation r = null;
 		for (Reservation reservation : reservations) {
 			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
-				if(!(reservation.getReservationStatus().equals(ReservationStatus.CHECKOUT)||
-						reservation.getReservationStatus().equals(ReservationStatus.EXPIRED)))
-				r = reservation;
+				if (!(reservation.getReservationStatus().equals(ReservationStatus.CHECKOUT)
+						|| reservation.getReservationStatus().equals(ReservationStatus.EXPIRED)))
+					r = reservation;
 			}
 		}
 		return r;
 	}
+
+	public List<Reservation> getReservationByReservationStatus(ReservationStatus rs) {
+		List<Reservation> rList = new ArrayList<Reservation>();
+		for (Reservation reservation : reservations) {
+			if (reservation.getReservationStatus().equals(rs)) {
+				rList.add(reservation);
+			}
+		}
+		return rList;
+	}
+
 	public List<Reservation> getAllReservation() {
 		return reservations;
 	}
-	
+
 	public void loadReservationData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
@@ -163,7 +196,7 @@ public class ReservationMrg {
 				fileOut.print(r.getNumOfAdults() + ",");
 				fileOut.print(r.getNumOfChild() + ",");
 				fileOut.print(r.getReservationStatus() + ",");
-				fileOut.print(r.getCheckInType()+ ",");
+				fileOut.print(r.getCheckInType() + ",");
 				fileOut.println();
 			}
 			System.out.println("finish writing");

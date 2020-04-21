@@ -37,6 +37,14 @@ public class GuestMrg {
 	
 	public void createGuest(Guest guest) {
 		guests.add(guest);
+		
+		try {
+			writeGuestData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public Guest getGuestByIC(String ic) {

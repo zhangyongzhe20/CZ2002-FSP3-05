@@ -8,6 +8,10 @@ import java.util.Scanner;
 
 
 public class Boundary {
+	
+	public static Boundary getInstance() {
+		return new Boundary();
+	}
     public void displayMain(){
         System.out.println("Hotel Reservation and Payment System (HRPS)");
 		System.out.println("===========================================");
