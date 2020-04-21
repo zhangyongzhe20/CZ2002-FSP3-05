@@ -3,11 +3,29 @@ package boundary;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
+
 public class Boundary {
+    Scanner sc = new Scanner(System.in);
+    int choice;
+
+    Reservation_Boundary reservationpage;
+    Guest_Boundary guestpage;
+
+
     public void displayMain(){
+        Order_Boundary orderpage = new Order_Boundary();
+        Room_Boundary roompage= new Room_Boundary();
+        orderpage.loadData();
+        roompage.loadData();
+    //    roompage.loadData;
+    //    reservationpage.loadData;
+    //    guestpage.loadData;
+        do {
         System.out.println("Hotel Reservation and Payment System (HRPS)");
 		System.out.println("===========================================");
 		System.out.println("1. About Guest");
@@ -32,9 +50,16 @@ public class Boundary {
 			 break;
 			}
 			 }while(choice!=6);
-	
+		List<String> data = new ArrayList<String>();
+		HashMap<String , String> enumData = new HashMap<String , String>();
+		enumData.put("1", "WALKIN" );
+		enumData.put("2", "RESERVATION");
+		readInputEnum("1. WALKIN\n 2.RESERVATION\n" , enumData);
+		System.out.println("============================================");
     }
     
+   // public abstract void loadData();
+
     public String readInputString(String message) {
     	System.out.println(message);
     	Scanner sc = new Scanner(System.in);
@@ -63,14 +88,39 @@ public class Boundary {
     	}
     	return input;
     }
-    public LocalDateTime readInputDate(String message) {
+    public boolean readInputBoolean(String message) {
+    	boolean bool =  false;
+    	char confirm;
+    	do {
+    	 confirm = readInputString(message).toUpperCase().charAt(0);
+    	 if(confirm == 'Y') {
+    		 bool = true;
+    	 }else if(confirm == 'N') {
+    		 bool = false;
+    	 }
+    	}while(!(confirm == 'Y' || confirm =='N'));
+    	return bool;
+    }
+    public LocalDateTime readInputDate(String message ,LocalDateTime compareDate, boolean isAfter) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime dateTime = null;
 		do {
 		try {
 		String strDateTime = readInputString(message);
 		dateTime = LocalDateTime.parse(strDateTime,formatter);
-		break;
+		if(isAfter) {
+			if(dateTime.isAfter(compareDate)){
+				break;
+			}else {
+				System.out.println("Please enter the correct date");
+			}
+		}else {
+			if(dateTime.isBefore(compareDate)){
+				break;
+			}else {
+				System.out.println("Please enter the correct date");
+			}
+		}
 		}catch(DateTimeParseException e) {
 			System.out.println("Please enter the correct date format");
 		}
@@ -86,6 +136,6 @@ public class Boundary {
     	 }
     	}while(enumData.get(input) == null);
     	return (enumData.get(input));
-    	
     }
+
 }

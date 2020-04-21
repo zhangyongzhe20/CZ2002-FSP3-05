@@ -186,6 +186,19 @@ public class RoomMrg {
 		return r;
 	}
 
+	//modify to apply in Order Boundary
+	public static boolean checkRoomExist(String roomNum) {
+		Room r = null;
+		for (Room room : rooms) {
+			if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
+				r = room;
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	public List<Room> getAvailRoom(RoomType roomType, BedType bedType, boolean hasWifiBool,
 			boolean allowSmokingBool) {
 		List<Room> returnList = new ArrayList<Room>();
