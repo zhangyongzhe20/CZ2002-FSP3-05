@@ -26,7 +26,7 @@ public class Payment_Boundary extends Boundary{
 	private Scanner sc = new Scanner(System.in);
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
 	private Payment payment;
-	final static double TAX = 17.0;
+	final static double TAX = 0.17;
 	
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
