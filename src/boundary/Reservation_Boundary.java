@@ -32,7 +32,7 @@ public class Reservation_Boundary extends Boundary {
 			case "0":
 				break;
 			case "1":
-				createReservationMenu();
+				createReservationMenu(CheckInType.RESERVATION);
 				break;
 			case "2":
 				updateReservationMenu();
@@ -50,17 +50,22 @@ public class Reservation_Boundary extends Boundary {
 
 	}
 
-	private void createReservationMenu() {
-
+	private void createReservationMenu(CheckInType checkInType) {
+		
+		
 		Character confirm;
 		reservationMrg.createNewReservation();
 
 		String ic = readInputString("Enter guest IC : ").toUpperCase();
 		if (GuestMrg.checkGuestExist(ic)) {
-			reservationMrg.setCheckInType(CheckInType.RESERVATION);
+			reservationMrg.setCheckInType(checkInType);
 			reservationMrg.setGuestIC(ic);
 			reservationMrg.setReservationCode(reservationMrg.generateReservationCode(ic));
+			if(checkInType.equals(CheckInType.RESERVATION)) {
 			enterCheckInDate();
+			}else {
+				reservationMrg.setCheckIn(LocalDateTime.now());
+			}
 			enterCheckOutDate();
 			enterNumOfAdult();
 			enterNumOfChild();
@@ -258,7 +263,7 @@ public class Reservation_Boundary extends Boundary {
 			case "0":
 				break;
 			case "1":
-				WalkIncheckInMenu();
+			//	WalkIncheckInMenu();
 				break;
 			case "2":
 				reservationCheckInMenu();
@@ -280,9 +285,6 @@ public class Reservation_Boundary extends Boundary {
 
 	}
 
-	private void WalkIncheckInMenu() {
-
-	}
 
 	private void enterCheckInDate() {
 		do {

@@ -10,16 +10,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import entity.Guest;
 import entity.Reservation;
 import entity.Reservation.CheckInType;
 import entity.Reservation.ReservationStatus;
-import entity.Room;
-import entity.Room.BedType;
-import entity.Room.Facing;
 import entity.Room.RoomStatus;
-import entity.Room.RoomType;
 
 public class ReservationMrg {
 	public static List<Reservation> reservations = new ArrayList<Reservation>();
@@ -135,15 +129,31 @@ public class ReservationMrg {
 	}
 
 	public void createReservation() {
-		reservations.add(reservation);
+		boolean updateData = false;
+		if(reservation.getCheckInType().equals(CheckInType.RESERVATION)) {
+			updateData = true;
+			reservations.add(reservation);
 		if (reservation.getRoomNum() != null) {
 			RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.RESERVED);
 		}
+		}else if(reservation.getCheckInType().equals(CheckInType.WALKIN)) {
+			if (reservation.getRoomNum() != null) {
+				updateData = true;
+				reservation.setReservationStatus(ReservationStatus.CHECKIN);
+				RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
+				reservations.add(reservation);
+				
+			}else {
+				System.out.println("Unable to check in as no room is selected");
+			}
+		}
+		if(updateData) {
 		try {
 			writeReservationData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
 		}
 	}
 
@@ -180,7 +190,7 @@ public class ReservationMrg {
 		}
 		return false;
 	}
-	public void checkInReservation(Reservation reservation) {
+	public void checkInReservation() {
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 		
 		try {
