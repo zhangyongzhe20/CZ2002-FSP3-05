@@ -1,0 +1,2 @@
+867216bf-745e-47f1-9ba6-5fe03ee1aad8,101,20/04/2020 13:20,thank you,CONFIRMED,UNBILLED,
+coca,softdrink,1.5;chicken rice,food,3.0;

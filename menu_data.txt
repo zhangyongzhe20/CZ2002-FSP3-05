@@ -1,0 +1,2 @@
+coca,softdrink,1.5
+chicken rice,food,3.0
