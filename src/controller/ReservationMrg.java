@@ -87,17 +87,7 @@ public class ReservationMrg {
 		}
 		return false;
 	}
-	public static boolean checkReservationExist(String reservationCode , ReservationStatus rs , CheckInType checkInType) {
-		for (Reservation reservation : reservations) {
-			if (reservation.getReservationCode().equalsIgnoreCase(reservationCode)) {
-				if(reservation.getReservationStatus().equals(rs) &&
-						reservation.getCheckInType().equals(checkInType)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+
 	public ReservationStatus strToReservationStatus(String StrReservationStatus) {
 		ReservationStatus reservationStatus = null;
 		if (StrReservationStatus.equalsIgnoreCase("CONFIRMED")) {
@@ -184,12 +174,7 @@ public class ReservationMrg {
 		}
 	}
 	
-	public boolean isReservationStatus(ReservationStatus rs) {
-		if(rs.equals(reservation.getReservationStatus())) {
-			return true;
-		}
-		return false;
-	}
+
 	public void checkInReservation() {
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 		

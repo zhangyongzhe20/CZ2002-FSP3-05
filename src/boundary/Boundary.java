@@ -48,6 +48,7 @@ public class Boundary {
              orderpage.displayMain();
 			 break;
              case "5":
+            	 reservationpage.checkInMenu();
              break;
              case "6":
              break;
