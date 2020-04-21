@@ -39,10 +39,13 @@ public class Boundary {
 		choice = sc.nextLine();
 		switch(choice) {
 			case "1":
+				guestpage.displayMain();
 			break;
 			case "2":
+				roompage.displayMain();
 	    	 break;
     		 case "3":
+    			reservationpage.displayMain();
              break;		
         	 case "4":
              orderpage.displayMain();

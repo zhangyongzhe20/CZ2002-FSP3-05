@@ -50,7 +50,7 @@ public class Reservation_Boundary extends Boundary{
 				break;
 			}
 		} while (!choice.equalsIgnoreCase("0"));
-		sc.close();
+	
 	}
 
 	private void createReservationMenu() {
