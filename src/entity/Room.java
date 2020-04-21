@@ -144,7 +144,7 @@ public class Room {
 
 
 	public void printRoomInfo() {
-		System.out.println(" -------------------------------------------");
+		System.out.println("-------------------------------------------");
 		System.out.println("1.Room No: " + this.getRoomNumber());
 		System.out.println("2.Room Type: " + this.getRoomType());
 		System.out.println("3.Bed Type: " + this.getBedType());

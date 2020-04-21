@@ -1,6 +1,5 @@
 package boundary;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -19,12 +18,12 @@ import entity.Room;
 import entity.Room.BedType;
 import entity.Room.RoomType;
 
-public class Reservation_Boundary {
+public class Reservation_Boundary extends Boundary{
 	private Reservation reservation = ReservationMrg.createNewReservation();
 	private Scanner sc = new Scanner(System.in);
 	private ReservationMrg reservationMrg = ReservationMrg.getInstance();
 
-	public void reservationMain() {
+	public void displayMain() {
 		String choice;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n" + "1. Create Reservation\n"
@@ -63,25 +62,25 @@ public class Reservation_Boundary {
 		String ic = sc.nextLine().toUpperCase();
 		Guest g = GuestMrg.getInstance().getGuestByIC(ic);
 		if (g != null) {
+			reservation.setCheckInType(CheckInType.RESERVATION);
 			reservation.setGuestIC(ic);
-			reservation.setReservationCode(reservationMrg.generateReservationCode());
+			reservation.setReservationCode(reservationMrg.generateReservationCode(ic));
 			enterCheckInDate();
 			enterCheckOutDate();
 			enterNumOfAdult();
 			enterNumOfChild();
 			enterRoomNum();
+			if (reservation.getRoomNum() == null) {
+				reservation.setReservationStatus(ReservationStatus.WAITLIST);
+			}else {
+				reservation.setReservationStatus(ReservationStatus.CONFIRMED);
+			}
 			do {
 				reservation.printInfo();
 				System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
 				confirm = sc.nextLine().toUpperCase().charAt(0);
 				switch (confirm) {
 				case 'Y':
-					if (reservation.getRoomNum() != null) {
-						reservation.setReservationStatus(ReservationStatus.WAITLIST);
-					} else {
-						reservation.setReservationStatus(ReservationStatus.CONFIRMED);
-					}
-					reservation.setCheckInType(CheckInType.RESERVATION);
 					reservationMrg.createReservation(reservation);
 					break;
 				case 'N':
@@ -132,6 +131,7 @@ public class Reservation_Boundary {
 		String reservationCode = sc.nextLine();
 		reservation = reservationMrg.getReservationByCode(reservationCode);
 		if (reservation != null) {
+			String oldRoomNum = reservation.getRoomNum();
 			if (!reservation.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)) {
 				char confirm;
 				do {
@@ -141,7 +141,7 @@ public class Reservation_Boundary {
 					confirm = sc.nextLine().toUpperCase().charAt(0);
 					switch (confirm) {
 					case 'Y':
-						 reservationMrg.updateReservation(reservation);
+						 reservationMrg.updateReservation(reservation,oldRoomNum);
 						break;
 					case 'N':
 						break;
@@ -172,6 +172,11 @@ public class Reservation_Boundary {
 	}
 
 	private void updateReservationWaitList() {
+		List<Reservation> waitList = new ArrayList<Reservation>();
+		waitList = reservationMrg.getReservationByReservationStatus(ReservationStatus.WAITLIST);
+		for(Reservation r : waitList) {
+			r.printInfo();
+		}
 		System.out.println("Enter Reservation Code : ");
 		String reservationCode = sc.nextLine();
 		reservation = reservationMrg.getReservationByCode(reservationCode);
@@ -179,13 +184,18 @@ public class Reservation_Boundary {
 		if (reservation != null && reservation.getCheckInType().equals(CheckInType.RESERVATION)) {
 			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.WAITLIST)) {
 					enterRoomNum();
+					if (reservation.getRoomNum() == null) {
+						reservation.setReservationStatus(ReservationStatus.WAITLIST);
+					}else {
+						reservation.setReservationStatus(ReservationStatus.CONFIRMED);
+					}
 				do {
 					reservation.printInfo();
 					System.out.println("Press Y to confirm," + "N to discard");
-					confirm = sc.nextLine().charAt(0);
+					confirm = sc.nextLine().toUpperCase().charAt(0);
 					switch (confirm) {
 					case 'Y':
-					reservationMrg.updateReservation(reservation);
+					reservationMrg.updateReservation(reservation,null);
 						break;
 					case 'N':
 						break;
@@ -404,21 +414,27 @@ public class Reservation_Boundary {
 
 		roomList = roomMrg.getAvailRoom(roomType, bedType, hasWifiBool, allowSmokingBool);
 		String roomNum;
+		List<String> roomNumList = new ArrayList<String>();
 		if (roomList != null && roomList.size() > 0) {
 			for (Room room : roomList) {
 				System.out.println(
 						"Room Number: " + room.getRoomNumber() + ", Weekday Rate: " +String.format("%.2f",room.getRoomRateWeekday())
 								+ ", Weekend Rate: " +String.format("%.2f",room.getRoomRateWeekend()) + ", Facing: " + room.getFacing());
+				roomNumList.add(room.getRoomNumber());
 			}
 
 			do {
 				System.out.println("Enter the room number to be selected (Enter 0 to exit): ");
 				roomNum = sc.nextLine();
-				for (Room room : roomList) {
-					if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
-						reservation.setRoomNum(roomNum);
-						break;
+				boolean isValid = false;
+				for (String roomNo : roomNumList) {
+					if (roomNo.equalsIgnoreCase(roomNum)) {
+						isValid = true;
 					}
+				}
+				if(isValid) {
+				reservation.setRoomNum(roomNum);
+				break;
 				}
 			} while (!roomNum.equalsIgnoreCase("0"));
 		} else {
@@ -426,19 +442,5 @@ public class Reservation_Boundary {
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			RoomMrg roomMrg = new RoomMrg();
-			GuestMrg guestMrg = new GuestMrg();
-			roomMrg.loadRoomData();
-			guestMrg.loadGuestData();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		Reservation_Boundary reservation_Boundary = new Reservation_Boundary();
-		reservation_Boundary.reservationMain();
-	}
-
+	
 }

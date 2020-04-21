@@ -84,17 +84,26 @@ public class RoomMrg {
 			roomStatus = Room.RoomStatus.OCCUPIED;
 		} else if (strRoomStatus.equalsIgnoreCase("RESERVED")) {
 			roomStatus = Room.RoomStatus.RESERVED;
-		} else if (strRoomStatus.equalsIgnoreCase("UNDER MAINTENANCE")) {
+		} else if (strRoomStatus.equalsIgnoreCase("UNDER_MAINTENANCE")) {
 			roomStatus = Room.RoomStatus.UNDER_MAINTENANCE;
 		}
 		return roomStatus;
 	}
 
+	//modify to apply in Order Boundary
+		public static boolean checkRoomExist(String roomNum) {
+			Room r = null;
+			for (Room room : rooms) {
+				if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
+					r = room;
+					return true;
+				}
+			}
+			return false;
+		}
+		
 	public void createRoom(Room room) {
 		rooms.add(room);
-		for (Room s : rooms) {
-			System.out.println(s.getRoomNumber());
-		}
 		try {
 			writeRoomData();
 		} catch (IOException e) {
@@ -127,7 +136,7 @@ public class RoomMrg {
 
 	public void updateRoomStatus(Room room,RoomStatus rs) {
 		for (Room r : rooms) {
-			if (r.equals(room)) {
+			if (r.getRoomNumber().equalsIgnoreCase(room.getRoomNumber())) {
 				r.setRoomStatus(rs);
 			}
 		}
@@ -185,19 +194,6 @@ public class RoomMrg {
 		}
 		return r;
 	}
-
-	//modify to apply in Order Boundary
-	public static boolean checkRoomExist(String roomNum) {
-		Room r = null;
-		for (Room room : rooms) {
-			if (room.getRoomNumber().equalsIgnoreCase(roomNum)) {
-				r = room;
-				return true;
-			}
-		}
-		return false;
-	}
-
 
 	public List<Room> getAvailRoom(RoomType roomType, BedType bedType, boolean hasWifiBool,
 			boolean allowSmokingBool) {
@@ -289,7 +285,7 @@ public class RoomMrg {
 
 		}
 		System.out.println("Room type occupancy rate");
-
+		System.out.println("-------------------------------------------");
 		System.out.println("Single: Number: " + singleRoomVacantCount + " out of " + singleRoomTotal);
 		System.out.print("	Rooms: ");
 		printRoomNumber(singleRoomList);
