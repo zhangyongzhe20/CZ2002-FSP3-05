@@ -11,33 +11,33 @@ import entity.Reservation;
 import entity.Room;
 import entity.Room.RoomStatus;
 
-public class Room_Boundary {
+public class Room_Boundary extends Boundary {
 
 	private Scanner sc = new Scanner(System.in);
 	private RoomMrg roomMrg = RoomMrg.getInstance();
 	private Room room = RoomMrg.createNewRoom();
 
-	public void roomMain() {
+	public void displayMain() {
 		String choice;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
-					+ "3. Search Room\n" +  "4. Print Room Status Report\n");
+					+ "3. Search Room\n" + "4. Print Room Status Report\n");
 			choice = sc.nextLine();
 
 			switch (choice) {
-			case "0":
-				break;
-			case "1":
-				createRoomMenu();
-				break;
-			case "2":
-				updateRoomMenu();
-				break;
-			case "3":
-				searchRoomMenu();
-				break;
-			case "4":
-				roomMrg.getRoomReportMenu();
+				case "0":
+					break;
+				case "1":
+					createRoomMenu();
+					break;
+				case "2":
+					updateRoomMenu();
+					break;
+				case "3":
+					searchRoomMenu();
+					break;
+				case "4":
+					roomMrg.getRoomReportMenu();
 			}
 		} while (!choice.equalsIgnoreCase("0"));
 		sc.close();
@@ -47,7 +47,7 @@ public class Room_Boundary {
 		Character confirm;
 
 		System.out.println("Create Room");
-		//get user input
+		// get user input
 		enterRoomNum();
 		enterRoomType();
 		enterBedType();
@@ -62,117 +62,13 @@ public class Room_Boundary {
 			System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
 			confirm = sc.nextLine().toUpperCase().charAt(0);
 			switch (confirm) {
-			case 'Y':
-				roomMrg.createRoom(room);
-				break;
-			case 'N':
-				break;
-			case '1':
-				enterRoomNum();
-				break;
-			case '2':
-				enterRoomType();
-				break;
-			case '3':
-				enterBedType();
-				break;
-			case '4':
-				enterFacing();
-				break;
-			case '5':
-				enterWeekdayRate();
-				break;
-			case '6':
-				enterWeekendRate();
-				break;
-			case '7':
-				enterAllowSmoking();
-				break;
-			case '8':
-				enterHasWifi();
-				break;
-			default:
-				break;
-			}
-		} while (!(confirm.equals('Y') || confirm.equals('N')));
-
-	}
-
-	private void searchRoomMenu() {
-		String i;
-		do {
-			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Search Room by Room number\n"
-					+ "2. Search Room by Guest name\n");
-
-			i = sc.nextLine();
-			switch (i) {
-			case "0":
-				break;
-			case "1":
-				searchRoomByRoomNumMenu();
-				break;
-			case "2":
-				searchRoomByGuestNameMenu();
-				break;
-			}
-		} while (!i.equalsIgnoreCase("0"));
-	}
-/*
-	private void checkInMenu() {
-		System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
-		String i;
-		do {
-			i = sc.nextLine();
-			switch (i) {
-			case "0":
-				break;
-			case "1":
-				// WalkIncheckInMenu();
-				break;
-			case "2":
-				reservationCheckInMenu();
-				break;
-			}
-		} while (!i.equalsIgnoreCase("0"));
-	}
-*/
-	private void updateRoomMenu() {
-		String i;
-		do {
-			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Update Room details\n"
-					+ "2. Update Room Status\n");
-			i = sc.nextLine();
-
-			switch (i) {
-			case "0":
-				break;
-			case "1":
-				updateRoomBydetailsMenu();
-				break;
-			case "2":
-				updateRoomStatusMenu();
-				break;
-			}
-		} while (!i.equalsIgnoreCase("0"));
-	}
-
-	private void updateRoomBydetailsMenu() {
-		System.out.println("update Room");
-		System.out.println("Enter room number : ");
-		String roomNum = sc.nextLine();
-		room = roomMrg.getRoomByRoomNum(roomNum);
-		if (room != null) {
-			Character confirm;
-			do {
-				room.printRoomInfo();
-				System.out.println("Press Y to confirm," + "N to discard and "
-						+ "(No.) to edit a field.(Unable to edit Room Number)");
-				confirm = sc.nextLine().charAt(0);
-				switch (confirm) {
 				case 'Y':
-					roomMrg.updateRoomDetails(room);
+					roomMrg.createRoom(room);
 					break;
 				case 'N':
+					break;
+				case '1':
+					enterRoomNum();
 					break;
 				case '2':
 					enterRoomType();
@@ -197,9 +93,102 @@ public class Room_Boundary {
 					break;
 				default:
 					break;
+			}
+		} while (!(confirm.equals('Y') || confirm.equals('N')));
+
+	}
+
+	private void searchRoomMenu() {
+		String i;
+		do {
+			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Search Room by Room number\n"
+					+ "2. Search Room by Guest name\n");
+
+			i = sc.nextLine();
+			switch (i) {
+				case "0":
+					break;
+				case "1":
+					searchRoomByRoomNumMenu();
+					break;
+				case "2":
+					searchRoomByGuestNameMenu();
+					break;
+			}
+		} while (!i.equalsIgnoreCase("0"));
+	}
+
+	/*
+	 * private void checkInMenu() { System.out.println("Room System\n" +
+	 * "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n"); String i;
+	 * do { i = sc.nextLine(); switch (i) { case "0": break; case "1": //
+	 * WalkIncheckInMenu(); break; case "2": reservationCheckInMenu(); break; } }
+	 * while (!i.equalsIgnoreCase("0")); }
+	 */
+	private void updateRoomMenu() {
+		String i;
+		do {
+			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Update Room details\n"
+					+ "2. Update Room Status\n");
+			i = sc.nextLine();
+
+			switch (i) {
+				case "0":
+					break;
+				case "1":
+					updateRoomBydetailsMenu();
+					break;
+				case "2":
+					updateRoomStatusMenu();
+					break;
+			}
+		} while (!i.equalsIgnoreCase("0"));
+	}
+
+	private void updateRoomBydetailsMenu() {
+		System.out.println("update Room");
+		System.out.println("Enter room number : ");
+		String roomNum = sc.nextLine();
+		room = roomMrg.getRoomByRoomNum(roomNum);
+		if (room != null) {
+			Character confirm;
+			do {
+				room.printRoomInfo();
+				System.out.println("Press Y to confirm," + "N to discard and "
+						+ "(No.) to edit a field.(Unable to edit Room Number)");
+				confirm = sc.nextLine().charAt(0);
+				switch (confirm) {
+					case 'Y':
+						roomMrg.updateRoomDetails(room);
+						break;
+					case 'N':
+						break;
+					case '2':
+						enterRoomType();
+						break;
+					case '3':
+						enterBedType();
+						break;
+					case '4':
+						enterFacing();
+						break;
+					case '5':
+						enterWeekdayRate();
+						break;
+					case '6':
+						enterWeekendRate();
+						break;
+					case '7':
+						enterAllowSmoking();
+						break;
+					case '8':
+						enterHasWifi();
+						break;
+					default:
+						break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
-		}else {
+		} else {
 			System.out.println("There are no room existed by this room number");
 		}
 
@@ -215,7 +204,7 @@ public class Room_Boundary {
 			String status;
 			do {
 				System.out.println("Enter Room Status: VACANT, OCCUPIED, RESERVED, MAINTENANCE ");
-				 status = sc.nextLine();
+				status = sc.nextLine();
 				if (status.equalsIgnoreCase("VACANT") || status.equalsIgnoreCase("OCCUPIED")
 						|| status.equalsIgnoreCase("RESERVED") || status.equalsIgnoreCase("MAINTENANCE")) {
 					if (status.equalsIgnoreCase("MAINTENANCE")) {
@@ -233,13 +222,13 @@ public class Room_Boundary {
 				System.out.println("Press Y to confirm," + "N to discard");
 				confirm = sc.nextLine().toUpperCase().charAt(0);
 				switch (confirm) {
-				case 'Y':
-				 roomMrg.updateRoomStatus(room, RoomMrg.strToRoomStatus(status));
-					break;
-				case 'N':
-					break;
-				default:
-					break;
+					case 'Y':
+						roomMrg.updateRoomStatus(room, RoomMrg.strToRoomStatus(status));
+						break;
+					case 'N':
+						break;
+					default:
+						break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
 		}
@@ -251,7 +240,7 @@ public class Room_Boundary {
 		String roomNum = sc.nextLine();
 		room = roomMrg.getRoomByRoomNum(roomNum);
 		room.printRoomInfo();
-		if(room.getRoomStatus().equals(RoomStatus.OCCUPIED)|| room.getRoomStatus().equals(RoomStatus.RESERVED)) {
+		if (room.getRoomStatus().equals(RoomStatus.OCCUPIED) || room.getRoomStatus().equals(RoomStatus.RESERVED)) {
 			Guest g = GuestMrg.getInstance().getGuestByRoomNum(roomNum);
 			System.out.println("Guest Name : " + g.getGuestName());
 		}
@@ -288,6 +277,7 @@ public class Room_Boundary {
 		}
 
 	}
+
 	private void enterRoomNum() {
 		do {
 			System.out.println("Enter room number: ");
@@ -419,6 +409,16 @@ public class Room_Boundary {
 		} while (true);
 	}
 
+	public void loadData() {
+		// TODO Auto-generated method stub
+		try {
+			roomMrg.loadRoomData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args) {
 		try {
 			RoomMrg.getInstance().loadRoomData();
@@ -432,7 +432,9 @@ public class Room_Boundary {
 		Room_Boundary room_Boundary = new Room_Boundary();
 		RoomMrg roomMrg = new RoomMrg();
 		roomMrg.getRoomReportMenu();
-		room_Boundary.roomMain();
+		room_Boundary.displayMain();
 
 	}
+
+
 }

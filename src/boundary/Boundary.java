@@ -9,7 +9,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Boundary {
+    Scanner sc = new Scanner(System.in);
+    int choice;
+
+    Reservation_Boundary reservationpage;
+    Guest_Boundary guestpage;
+
+
     public void displayMain(){
+        Order_Boundary orderpage = new Order_Boundary();
+        Room_Boundary roompage= new Room_Boundary();
+        orderpage.loadData();
+        roompage.loadData();
+    //    roompage.loadData;
+    //    reservationpage.loadData;
+    //    guestpage.loadData;
+        do {
         System.out.println("Hotel Reservation and Payment System (HRPS)");
 		System.out.println("===========================================");
 		System.out.println("1. About Guest");
@@ -18,7 +33,22 @@ public class Boundary {
 		System.out.println("4. About Room Service");
 		System.out.println("5. About Payment");
 		System.out.println("6. Quit");
-		System.out.println("============================================");
+        System.out.println("============================================");
+		choice = Integer.parseInt(sc.nextLine());
+		switch(choice) {
+			case 1:
+			break;
+			case 2:
+	    	 break;
+    		 case 3:
+             break;		
+        	 case 4:
+             orderpage.displayMain();
+			 break;
+			 case 5:
+			 break;
+			}
+			 }while(choice!=6);
 		List<String> data = new ArrayList<String>();
 		HashMap<String , String> enumData = new HashMap<String , String>();
 		enumData.put("1", "WALKIN" );
@@ -26,6 +56,8 @@ public class Boundary {
 		readInputEnum("1. WALKIN\n 2.RESERVATION\n" , enumData);
     }
     
+   // public abstract void loadData();
+
     public String readInputString(String message) {
     	System.out.println(message);
     	Scanner sc = new Scanner(System.in);
@@ -77,6 +109,5 @@ public class Boundary {
     	 }
     	}while(enumData.get(input) == null);
     	return (enumData.get(input));
-    	
     }
 }

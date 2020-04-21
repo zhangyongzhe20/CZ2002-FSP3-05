@@ -15,10 +15,8 @@ import entity.*;
 public class Order_Boundary extends Boundary {
     static Scanner sc = new Scanner(System.in);
     // get the instance of Order Mrg
-    static OrderMrg orderMrg = OrderMrg.getInstance();
-    static Order order = OrderMrg.createNewOrder();
-    static RoomMrg roomMrg = new RoomMrg();
-
+    public static OrderMrg orderMrg = OrderMrg.getInstance();
+    static Order order = new Order();
     public void displayMain() {
         int choice = 0;
         do {
@@ -32,7 +30,7 @@ public class Order_Boundary extends Boundary {
                     createOrderMenu();
                     break;
                 case 2:
-                    updateOrderBydetailsMenu();
+                    updateOrderMenu();
                     break;
                 case 3:
                     OrderReportMenu();
@@ -86,18 +84,16 @@ public class Order_Boundary extends Boundary {
         } while (!(confirm.equals('Y') || confirm.equals('N')));
     }
 
-    // TODO: Need to put in Mrg Class???
+    // use RoomMrg.checkRoomExsit here
     private String enterAndVerifyRoomNum() {
         String roomNum = new String();
         do {
             System.out.println("Enter room number of the Order: ");
             roomNum = sc.nextLine();
             if (roomNum.matches("^[0-9]*$")) {
-                Room r = roomMrg.getRoomByRoomNum(roomNum);
-                if (r == null) {
+                if (!RoomMrg.checkRoomExist(roomNum)) {
                     System.out.println("Room does not exist");
                 } else {
-
                     break;
                 }
             } else {
@@ -107,11 +103,12 @@ public class Order_Boundary extends Boundary {
         return roomNum;
     }
 
+
     private static void enterOrderItem() {
         System.out.println("Hotel Menu:");
         int selection;
         List<Integer> selections = new ArrayList<>();
-        ItemList menu = OrderMrg.getMenu();
+        ItemList menu = orderMrg.getMenu();
         menu.displayItems();
         int numOfItems = menu.getNumOfItems();
         System.out.println("Press 0 to confirm," + "(No.) to add an item to order.");
@@ -143,13 +140,13 @@ public class Order_Boundary extends Boundary {
         order.setOrderTime(orderTime);
     }
 
-    private void updateOrderBydetailsMenu() {
+    private void updateOrderMenu() {
         System.out.println("update Order");
         String roomNum = enterAndVerifyRoomNum();
         Character confirm;
         do {
             order = orderMrg.getUnDeliverOrder(roomNum);
-            orderMrg.displayUnDeliverOrder(roomNum);
+            order.printOrderInfo();
             System.out.println("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.");
             confirm = sc.nextLine().charAt(0);
             switch (confirm) {
@@ -276,6 +273,17 @@ public class Order_Boundary extends Boundary {
         } while (!i.equalsIgnoreCase("0"));
     }
 
+    public void loadData() {
+        // TODO Auto-generated method stub
+        try {
+            orderMrg.loadMenuData();
+            orderMrg.loadOrderData();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         OrderMrg orderMrg = OrderMrg.getInstance();
         RoomMrg roomMrg = RoomMrg.getInstance();
@@ -290,4 +298,6 @@ public class Order_Boundary extends Boundary {
         Order_Boundary oBoundary = new Order_Boundary();
         oBoundary.displayMain();
 	}
+
+
 }
