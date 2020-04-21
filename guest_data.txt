@@ -1,2 +1,0 @@
-James,21365765487846,some places,singapore,Male,PASSPORT,S9876543A,singaporean,11223344,
-Andrew,12354354376,some places,Singapore,Male,PASSPORT,S1122334B,Singporean,123004400,

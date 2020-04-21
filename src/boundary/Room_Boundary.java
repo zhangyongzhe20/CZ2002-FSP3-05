@@ -11,20 +11,17 @@ import entity.Reservation;
 import entity.Room;
 import entity.Room.RoomStatus;
 
-public class Room_Boundary extends Boundary {
+public class Room_Boundary {
 
 	private Scanner sc = new Scanner(System.in);
 	private RoomMrg roomMrg = RoomMrg.getInstance();
-	private Room room;
-	
-	public static Room_Boundary getIstance() {
-		return new Room_Boundary();
-	}
-	public void displayMain() {
+	private Room room = RoomMrg.createNewRoom();
+
+	public void roomMain() {
 		String choice;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
-					+ "3. Search Room\n" +  "4. Print Room Status Report");
+					+ "3. Search Room\n" +  "4. Print Room Status Report\n");
 			choice = sc.nextLine();
 
 			switch (choice) {
@@ -41,16 +38,14 @@ public class Room_Boundary extends Boundary {
 				break;
 			case "4":
 				roomMrg.getRoomReportMenu();
-				break;
 			}
 		} while (!choice.equalsIgnoreCase("0"));
-		
+		sc.close();
 	}
-
 
 	private void createRoomMenu() {
 		Character confirm;
-		room =  RoomMrg.createNewRoom();
+
 		System.out.println("Create Room");
 		//get user input
 		enterRoomNum();
@@ -107,7 +102,7 @@ public class Room_Boundary extends Boundary {
 		String i;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Search Room by Room number\n"
-					+ "2. Search Room by Guest name");
+					+ "2. Search Room by Guest name\n");
 
 			i = sc.nextLine();
 			switch (i) {
@@ -145,7 +140,7 @@ public class Room_Boundary extends Boundary {
 		String i;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Update Room details\n"
-					+ "2. Update Room Status");
+					+ "2. Update Room Status\n");
 			i = sc.nextLine();
 
 			switch (i) {
@@ -171,8 +166,8 @@ public class Room_Boundary extends Boundary {
 			do {
 				room.printRoomInfo();
 				System.out.println("Press Y to confirm," + "N to discard and "
-						+ "(No.) to edit a field.(Unable to edit Room Number and Room Status)");
-				confirm = sc.nextLine().toUpperCase().charAt(0);
+						+ "(No.) to edit a field.(Unable to edit Room Number)");
+				confirm = sc.nextLine().charAt(0);
 				switch (confirm) {
 				case 'Y':
 					roomMrg.updateRoomDetails(room);
@@ -247,8 +242,6 @@ public class Room_Boundary extends Boundary {
 					break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
-		}else {
-			System.out.println("There are no room existed by this room number");
 		}
 
 	}
@@ -426,5 +419,20 @@ public class Room_Boundary extends Boundary {
 		} while (true);
 	}
 
-	
+	public static void main(String[] args) {
+		try {
+			RoomMrg.getInstance().loadRoomData();
+			GuestMrg.getInstance().loadGuestData();
+			ReservationMrg.getInstance().loadReservationData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Room_Boundary room_Boundary = new Room_Boundary();
+		RoomMrg roomMrg = new RoomMrg();
+		roomMrg.getRoomReportMenu();
+		room_Boundary.roomMain();
+
+	}
 }

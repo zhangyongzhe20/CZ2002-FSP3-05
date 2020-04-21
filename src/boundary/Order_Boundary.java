@@ -13,32 +13,32 @@ import controller.RoomMrg;
 import entity.*;
 
 public class Order_Boundary extends Boundary {
-	private Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
     // get the instance of Order Mrg
-    private OrderMrg orderMrg = OrderMrg.getInstance();
-    private Order order = OrderMrg.createNewOrder();
-    private RoomMrg roomMrg = new RoomMrg();
+    static OrderMrg orderMrg = OrderMrg.getInstance();
+    static Order order = OrderMrg.createNewOrder();
+    static RoomMrg roomMrg = new RoomMrg();
 
     public void displayMain() {
-        String choice;
+        int choice = 0;
         do {
             System.out.println("Order System:\n" + "0. Return to previous page\n" + "1. Create Order\n"
                     + "2. Update Order\n" + "3. Search Order\n");
-            choice = sc.nextLine();
+            choice = Integer.parseInt(sc.nextLine());
             switch (choice) {
-                case "0":
+                case 0:
                     break;
-                case "1":
+                case 1:
                     createOrderMenu();
                     break;
-                case "2":
+                case 2:
                     updateOrderBydetailsMenu();
                     break;
-                case "3":
+                case 3:
                     OrderReportMenu();
                     break;
             }
-        } while (!choice.equalsIgnoreCase("0"));
+        } while (choice != 0);
     }
 
     private void createOrderMenu() {
@@ -107,7 +107,7 @@ public class Order_Boundary extends Boundary {
         return roomNum;
     }
 
-    private  void enterOrderItem() {
+    private static void enterOrderItem() {
         System.out.println("Hotel Menu:");
         int selection;
         List<Integer> selections = new ArrayList<>();
@@ -129,14 +129,14 @@ public class Order_Boundary extends Boundary {
         order.setOrderLists(orderLists);
     }
 
-    private  void enterRemarks() {
+    private static void enterRemarks() {
         String remarks = "";
         System.out.println("Remarks to put for the order:");
         remarks = sc.nextLine();
         order.setRemarks(remarks);
     }
 
-    private  void enterOrderTime() {
+    private static void enterOrderTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm");
         LocalDateTime orderTime = LocalDateTime.now();
         orderTime = LocalDateTime.parse(orderTime.format(formatter), formatter);
@@ -184,7 +184,7 @@ public class Order_Boundary extends Boundary {
         } while (!(confirm.equals('Y') || confirm.equals('N')));
     }
 
-    private  void updateOrderItem() {
+    private static void updateOrderItem() {
         String i;
         System.out.println("Update order items:");
         System.out.println("0. Return to previous page\n" + "1. Add new order items\n" + "2. Delete order items\n");
@@ -201,7 +201,7 @@ public class Order_Boundary extends Boundary {
         }
     }
 
-    private  void deleteOrderItem() {
+    private static void deleteOrderItem() {
         order.getOrderLists().displayItems();
         int selection = 1;
         do {
@@ -214,7 +214,7 @@ public class Order_Boundary extends Boundary {
         } while (selection != 0);
     }
 
-    private  void updateOrderStatus() {
+    private static void updateOrderStatus() {
         String i;
         System.out.println("Update order status:");
         System.out.println(
@@ -276,5 +276,18 @@ public class Order_Boundary extends Boundary {
         } while (!i.equalsIgnoreCase("0"));
     }
 
- 
+    public static void main(String[] args) {
+        OrderMrg orderMrg = OrderMrg.getInstance();
+        RoomMrg roomMrg = RoomMrg.getInstance();
+        try {
+            orderMrg.loadMenuData();
+            orderMrg.loadOrderData();
+            roomMrg.loadRoomData();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Order_Boundary oBoundary = new Order_Boundary();
+        oBoundary.displayMain();
+	}
 }

@@ -9,30 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Guest_Boundary extends Boundary{
+public class Guest_Boundary {
 	private Scanner sc = new Scanner(System.in);
 	private GuestMrg guestMrg = GuestMrg.getInstance();
 	private Guest guest;
-	
-	
-	public void displayMain() {
-		String choice;
-		do {
-			System.out.println("Guest System\n" + "0. Return to Main Menu\n" + "1. Create Guest\n" + "2. Update Guest\n"
-					+ "3. Find Guest\n");
-			choice = sc.nextLine();
-
-			switch (choice) {
-			case "0":
-				break;
-			case "1":
-				createGuestMenu();
-				break;
-			default:
-				break;
-			}
-		} while (!choice.equalsIgnoreCase("0"));
-		
+	public static void guestMain() {
+		System.out.println("Guest System\n" + "0. Return to Main Menu\n" + "1. Create Guest\n" + "2. Update Guest\n"
+				+ "3. Find Guest\n");
 	}
 
 	private void createGuestMenu() {
@@ -53,10 +36,9 @@ public class Guest_Boundary extends Boundary{
 			
 			System.out.println(
 					"Press Y to confirm," + "N to discard and " + "(No.) to edit a field and (No.) to edit a field.");
-			confirm = sc.nextLine().toUpperCase().charAt(0);
+			confirm = sc.nextLine().charAt(0);
 			switch (confirm) {
 			case 'Y':
-				guestMrg.createGuest(guest);
 				break;
 			case 'N':
 				break;
@@ -96,11 +78,11 @@ public class Guest_Boundary extends Boundary{
 	}
 
 	private void enterIdentityType() {
-		String choice;;
+		String choice = null;
 	do {
 		System.out.println("Create Guest\n" + "Type of ID:\n" + "1. Passport\n" + "2. Driving License\n");
-		choice = sc.nextLine();
 		if(choice.equalsIgnoreCase("1")) {
+			choice = sc.nextLine();
 			guest.setIdentityType(GuestMrg.strToIdentityType("PASSPORT"));
 		}else if(choice.equalsIgnoreCase("2")) {
 			guest.setIdentityType(GuestMrg.strToIdentityType("DRIVING LICENSE"));
