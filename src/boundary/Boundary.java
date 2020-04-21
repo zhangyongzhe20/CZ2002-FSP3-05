@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Boundary {
     Scanner sc = new Scanner(System.in);
-    int choice;
+    String choice;
 
     Reservation_Boundary reservationpage;
     Guest_Boundary guestpage;
@@ -20,11 +20,12 @@ public class Boundary {
     public void displayMain(){
         Order_Boundary orderpage = new Order_Boundary();
         Room_Boundary roompage= new Room_Boundary();
+        Reservation_Boundary reservationpage = new Reservation_Boundary();
+        Guest_Boundary guestpage = new Guest_Boundary();
         orderpage.loadData();
         roompage.loadData();
-    //    roompage.loadData;
-    //    reservationpage.loadData;
-    //    guestpage.loadData;
+        guestpage.loadData();
+        reservationpage.loadData();
         do {
         System.out.println("Hotel Reservation and Payment System (HRPS)");
 		System.out.println("===========================================");
@@ -35,34 +36,27 @@ public class Boundary {
 		System.out.println("5. About Payment");
 		System.out.println("6. Quit");
         System.out.println("============================================");
-		choice = Integer.parseInt(sc.nextLine());
+		choice = sc.nextLine();
 		switch(choice) {
-			case 1:
+			case "1":
 			break;
-			case 2:
+			case "2":
 	    	 break;
-    		 case 3:
+    		 case "3":
              break;		
-        	 case 4:
+        	 case "4":
              orderpage.displayMain();
 			 break;
-			 case 5:
+			 case "5":
 			 break;
 			}
-			 }while(choice!=6);
-		List<String> data = new ArrayList<String>();
-		HashMap<String , String> enumData = new HashMap<String , String>();
-		enumData.put("1", "WALKIN" );
-		enumData.put("2", "RESERVATION");
-		readInputEnum("1. WALKIN\n 2.RESERVATION\n" , enumData);
-		System.out.println("============================================");
+			 }while(!choice.equalsIgnoreCase("6"));
     }
     
    // public abstract void loadData();
 
     public String readInputString(String message) {
     	System.out.println(message);
-    	Scanner sc = new Scanner(System.in);
     	String input = sc.nextLine();
 		return input;
     }

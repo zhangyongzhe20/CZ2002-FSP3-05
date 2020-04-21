@@ -1,5 +1,6 @@
 package boundary;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -442,5 +443,13 @@ public class Reservation_Boundary extends Boundary{
 		}
 	}
 
-	
+	   public void loadData() {
+	        // TODO Auto-generated method stub
+	        try {
+	        	reservationMrg.loadReservationData();
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
 }

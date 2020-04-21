@@ -5,6 +5,7 @@ import entity.Room;
 import controller.GuestMrg;
 import controller.RoomMrg;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -165,5 +166,14 @@ public class Guest_Boundary extends Boundary{
 		guest.setCreditCard(creditCard);
 
 	}
+	   public void loadData() {
+	        // TODO Auto-generated method stub
+	        try {
+	        	guestMrg.loadGuestData();
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
 
 }
