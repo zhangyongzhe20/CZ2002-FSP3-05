@@ -16,10 +16,12 @@ public class Boundary {
 
 
     public void display_Control(){
-        int choice;
+        String choice;
         Scanner sc = new Scanner(System.in);
         Order_Boundary orderpage = new Order_Boundary();
         Room_Boundary roompage= new Room_Boundary();
+        Reservation_Boundary reservationpage = new Reservation_Boundary();
+        Guest_Boundary guestpage = new Guest_Boundary();
         orderpage.loadData();
         roompage.loadData();
             //    roompage.loadData;
@@ -27,22 +29,24 @@ public class Boundary {
     //    guestpage.loadData;
     do{
         displayMain();
-        choice = Integer.parseInt(sc.nextLine());
 		switch(choice) {
-			case 1:
+			case "1":
+				guestpage.displayMain();
 			break;
-			case 2:
+			case "2":
+				roompage.displayMain();
 	    	 break;
-    		 case 3:
+    		 case "3":
+    			reservationpage.displayMain();
              break;		
-        	 case 4:
+        	 case "4":
              orderpage.displayMain();
 			 break;
              case 5:
              break;
              case 6:
 			}
-			 }while(choice!=7);
+			 }while(!choice.equalsIgnoreCase("7"));
 		// List<String> data = new ArrayList<String>();
 		// HashMap<String , String> enumData = new HashMap<String , String>();
 		// enumData.put("1", "WALKIN" );
@@ -69,7 +73,6 @@ public class Boundary {
 
     public String readInputString(String message) {
     	System.out.println(message);
-    	Scanner sc = new Scanner(System.in);
     	String input = sc.nextLine();
 		return input;
     }
