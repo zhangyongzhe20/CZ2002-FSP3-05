@@ -46,7 +46,7 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	private void createReservationMenu(CheckInType checkInType) {
-		
+
 		Character confirm;
 		reservationMrg.createNewReservation();
 
@@ -56,9 +56,9 @@ public class Reservation_Boundary extends Boundary {
 			System.out.println(checkInType);
 			reservationMrg.setGuestIC(ic);
 			reservationMrg.setReservationCode(reservationMrg.generateReservationCode(ic));
-			if(checkInType.equals(CheckInType.RESERVATION)) {
-			enterCheckInDate();
-			}else {
+			if (checkInType.equals(CheckInType.RESERVATION)) {
+				enterCheckInDate();
+			} else {
 				reservationMrg.setCheckIn(LocalDateTime.now());
 			}
 			enterCheckOutDate();
@@ -76,8 +76,8 @@ public class Reservation_Boundary extends Boundary {
 				case 'N':
 					break;
 				case '1':
-					if(checkInType.equals(CheckInType.RESERVATION)) {
-					enterCheckInDate();
+					if (checkInType.equals(CheckInType.RESERVATION)) {
+						enterCheckInDate();
 					}
 					break;
 				case '2':
@@ -95,7 +95,7 @@ public class Reservation_Boundary extends Boundary {
 					break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
-		}else {
+		} else {
 			System.out.println("Guest does not exist");
 		}
 	}
@@ -124,45 +124,45 @@ public class Reservation_Boundary extends Boundary {
 		String reservationCode = readInputString("Enter reservation code:");
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
-			if(reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
-			if (!(reservationMrg.getReservationStatus().equals(ReservationStatus.EXPIRED)
-					|| reservationMrg.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
-				char confirm;
-				do {
-					reservationMrg.printReservationInfo();
+			if (reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
+				if (!(reservationMrg.getReservationStatus().equals(ReservationStatus.EXPIRED)
+						|| reservationMrg.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
+					char confirm;
+					do {
+						reservationMrg.printReservationInfo();
 
-					confirm = readInputString("Press Y to confirm," + "N to discard and "
-							+ "(No.) to edit a field.(Unable to edit Guest IC and Reservation Code)").toUpperCase()
-									.charAt(0);
+						confirm = readInputString("Press Y to confirm," + "N to discard and "
+								+ "(No.) to edit a field.(Unable to edit Guest IC and Reservation Code)").toUpperCase()
+										.charAt(0);
 
-					switch (confirm) {
-					case 'Y':
-						reservationMrg.updateReservation();
-						break;
-					case 'N':
-						break;
-					case '1':
-						enterCheckInDate();
-						break;
-					case '2':
-						enterCheckOutDate();
-						break;
-					case '3':
-						enterNumOfAdult();
-						break;
-					case '4':
-						enterNumOfChild();
-						break;
-					case '5':
-						enterRoomNum();
-					default:
-						break;
-					}
-				} while (!(confirm == 'Y' || confirm == 'N'));
+						switch (confirm) {
+						case 'Y':
+							reservationMrg.updateReservation();
+							break;
+						case 'N':
+							break;
+						case '1':
+							enterCheckInDate();
+							break;
+						case '2':
+							enterCheckOutDate();
+							break;
+						case '3':
+							enterNumOfAdult();
+							break;
+						case '4':
+							enterNumOfChild();
+							break;
+						case '5':
+							enterRoomNum();
+						default:
+							break;
+						}
+					} while (!(confirm == 'Y' || confirm == 'N'));
+				} else {
+					System.out.println("Reservation had already expired");
+				}
 			} else {
-				System.out.println("Reservation had already expired");
-			}
-			}else {
 				System.out.println("Reservation does not exist by this Reservation code");
 			}
 		} else {
@@ -174,12 +174,12 @@ public class Reservation_Boundary extends Boundary {
 		reservationMrg.printReservationsByStatus(ReservationStatus.WAITLIST);
 		String reservationCode = readInputString("Enter reservation code:");
 		Character confirm;
-		if (ReservationMrg.checkReservationExist(reservationCode)){
+		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
-			if(reservationMrg.getReservationStatus().equals(ReservationStatus.WAITLIST) &&
-					reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
+			if (reservationMrg.getReservationStatus().equals(ReservationStatus.WAITLIST)
+					&& reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
 				enterRoomNum();
-			}else {
+			} else {
 				System.out.println("There is no reservation on waiting list");
 				do {
 					reservationMrg.printReservationInfo();
@@ -195,10 +195,10 @@ public class Reservation_Boundary extends Boundary {
 					}
 				} while (!(confirm.equals('Y') || confirm.equals('N')));
 			}
-		}else {
+		} else {
 			System.out.println("There is no reservation on waiting list");
 		}
-			
+
 	}
 
 	private void deleteReservationMenu() {
@@ -265,9 +265,9 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	public void checkInMenu() {
-	String i;
+		String i;
 		do {
-			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");			
+			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
 			i = readInputString("Enter your choice:");
 			switch (i) {
 			case "0":
@@ -286,22 +286,21 @@ public class Reservation_Boundary extends Boundary {
 		String reservationCode = readInputString("Enter reservation code:");
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
-			if(reservationMrg.getReservationStatus().equals(ReservationStatus.CONFIRMED) &&
-					reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)	) {
-				
+			if (reservationMrg.getReservationStatus().equals(ReservationStatus.CONFIRMED)
+					&& reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
+
 				reservationMrg.setReservationStatus(ReservationStatus.CHECKIN);
 				reservationMrg.checkInReservation();
 				System.out.println("Sucessfully check in to the room");
-			}else {
+			} else {
 				System.out.println("Reservation is not found");
 			}
-			
-		}else {
+
+		} else {
 			System.out.println("Reservation is not found");
 		}
 
 	}
-
 
 	private void enterCheckInDate() {
 		do {
@@ -362,21 +361,21 @@ public class Reservation_Boundary extends Boundary {
 
 		roomNumList = roomMrg.getAndPrintAvailRoom(roomType, bedType, hasWifiBool, allowSmokingBool);
 		String roomNum;
-		
-		if(roomNumList.size() > 0) {
-		do {
-			roomNum = readInputString("Enter the room number to be selected (Enter 0 to exit): ");
-			boolean isValid = false;
-			for (String roomNo : roomNumList) {
-				if (roomNo.equalsIgnoreCase(roomNum)) {
-					isValid = true;
+
+		if (roomNumList.size() > 0) {
+			do {
+				roomNum = readInputString("Enter the room number to be selected (Enter 0 to exit): ");
+				boolean isValid = false;
+				for (String roomNo : roomNumList) {
+					if (roomNo.equalsIgnoreCase(roomNum)) {
+						isValid = true;
+					}
 				}
-			}
-			if (isValid) {
-				reservationMrg.setRoomNum(roomNum);
-				break;
-			}
-		} while (!roomNum.equalsIgnoreCase("0"));
+				if (isValid) {
+					reservationMrg.setRoomNum(roomNum);
+					break;
+				}
+			} while (!roomNum.equalsIgnoreCase("0"));
 		}
 	}
 
