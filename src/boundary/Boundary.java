@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Boundary {
     Scanner sc = new Scanner(System.in);
     int choice;
@@ -54,6 +55,7 @@ public class Boundary {
 		enumData.put("1", "WALKIN" );
 		enumData.put("2", "RESERVATION");
 		readInputEnum("1. WALKIN\n 2.RESERVATION\n" , enumData);
+		System.out.println("============================================");
     }
     
    // public abstract void loadData();
@@ -86,14 +88,39 @@ public class Boundary {
     	}
     	return input;
     }
-    public LocalDateTime readInputDate(String message) {
+    public boolean readInputBoolean(String message) {
+    	boolean bool =  false;
+    	char confirm;
+    	do {
+    	 confirm = readInputString(message).toUpperCase().charAt(0);
+    	 if(confirm == 'Y') {
+    		 bool = true;
+    	 }else if(confirm == 'N') {
+    		 bool = false;
+    	 }
+    	}while(!(confirm == 'Y' || confirm =='N'));
+    	return bool;
+    }
+    public LocalDateTime readInputDate(String message ,LocalDateTime compareDate, boolean isAfter) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime dateTime = null;
 		do {
 		try {
 		String strDateTime = readInputString(message);
 		dateTime = LocalDateTime.parse(strDateTime,formatter);
-		break;
+		if(isAfter) {
+			if(dateTime.isAfter(compareDate)){
+				break;
+			}else {
+				System.out.println("Please enter the correct date");
+			}
+		}else {
+			if(dateTime.isBefore(compareDate)){
+				break;
+			}else {
+				System.out.println("Please enter the correct date");
+			}
+		}
 		}catch(DateTimeParseException e) {
 			System.out.println("Please enter the correct date format");
 		}
@@ -110,4 +137,5 @@ public class Boundary {
     	}while(enumData.get(input) == null);
     	return (enumData.get(input));
     }
+
 }
