@@ -3,10 +3,9 @@ package boundary;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
+
 
 public class Boundary {
     public void displayMain(){
@@ -19,11 +18,6 @@ public class Boundary {
 		System.out.println("5. About Payment");
 		System.out.println("6. Quit");
 		System.out.println("============================================");
-		List<String> data = new ArrayList<String>();
-		HashMap<String , String> enumData = new HashMap<String , String>();
-		enumData.put("1", "WALKIN" );
-		enumData.put("2", "RESERVATION");
-		readInputEnum("1. WALKIN\n 2.RESERVATION\n" , enumData);
     }
     
     public String readInputString(String message) {
@@ -54,14 +48,39 @@ public class Boundary {
     	}
     	return input;
     }
-    public LocalDateTime readInputDate(String message) {
+    public boolean readInputBoolean(String message) {
+    	boolean bool =  false;
+    	char confirm;
+    	do {
+    	 confirm = readInputString(message).toUpperCase().charAt(0);
+    	 if(confirm == 'Y') {
+    		 bool = true;
+    	 }else if(confirm == 'N') {
+    		 bool = false;
+    	 }
+    	}while(!(confirm == 'Y' || confirm =='N'));
+    	return bool;
+    }
+    public LocalDateTime readInputDate(String message ,LocalDateTime compareDate, boolean isAfter) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime dateTime = null;
 		do {
 		try {
 		String strDateTime = readInputString(message);
 		dateTime = LocalDateTime.parse(strDateTime,formatter);
-		break;
+		if(isAfter) {
+			if(dateTime.isAfter(compareDate)){
+				break;
+			}else {
+				System.out.println("Please enter the correct date");
+			}
+		}else {
+			if(dateTime.isBefore(compareDate)){
+				break;
+			}else {
+				System.out.println("Please enter the correct date");
+			}
+		}
 		}catch(DateTimeParseException e) {
 			System.out.println("Please enter the correct date format");
 		}
@@ -79,4 +98,5 @@ public class Boundary {
     	return (enumData.get(input));
     	
     }
+
 }
