@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class HotelApp {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(System.in);
-        String selection = "1";
+        String selection;
         Boundary_Factory bf = new Boundary_Factory();
         bf.loadAllData();
         do {

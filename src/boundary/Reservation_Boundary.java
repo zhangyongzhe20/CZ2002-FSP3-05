@@ -277,6 +277,7 @@ public class Reservation_Boundary extends Boundary {
 
 	private void searchAllReservationMenu() {
 		reservationMrg.printActiveReservation();
+		System.out.println("-------------------------------------------");
 	}
 
 	public void checkInMenu() {
@@ -351,7 +352,7 @@ public class Reservation_Boundary extends Boundary {
 
 	private void enterNumOfChild() {
 		int numOfChild = readInputInt("Enter number of Child(ren): ");
-		reservationMrg.setNumOfAdults(numOfChild);
+		reservationMrg.setNumOfChild(numOfChild);
 	}
 
 	private void enterRoomNum() {

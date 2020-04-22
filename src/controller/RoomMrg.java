@@ -330,7 +330,7 @@ public class RoomMrg {
 		List<Room> occupiedList = new ArrayList<Room>();
 		List<Room> reservedList = new ArrayList<Room>();
 		List<Room> maintenanceList = new ArrayList<Room>();
-
+		System.out.println("-------------------------------------------");
 		System.out.println("Room status");
 
 		for (Room r : rooms) {
@@ -362,6 +362,7 @@ public class RoomMrg {
 		System.out.println("UNDER_MAINTENANCE: ");
 		System.out.print("	Room :");
 		printRoomNumber(maintenanceList);
+		System.out.println("-------------------------------------------");
 	}
 
 	public void printRoomNumber(List<Room> list) {
