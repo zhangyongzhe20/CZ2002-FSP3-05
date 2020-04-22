@@ -1,2 +1,5 @@
-coca,softdrink,1.5
-chicken rice,food,3.0
+Breakfast Set,SETA: two slices of bread with Kaya toasted fresh and a cup of freshly brewed coffee,3.0,
+Lunch Set,Western Food: Chicken Chop with Pasta,4.5,
+Dinner Set,Salad: Sesame dressing,3.0,
+coca,softdrink,1.0,
+chicken rice,food,3.0,
