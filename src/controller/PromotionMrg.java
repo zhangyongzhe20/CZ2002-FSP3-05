@@ -17,15 +17,30 @@ import entity.Reservation;
 public class PromotionMrg {
 	public static List<Promotion> promotions = new ArrayList<Promotion>();
 	final static String fileName = "promotion_data.txt";
+	private Promotion promotion;
 	public static PromotionMrg getInstance() {
 		PromotionMrg promotionMrg = new PromotionMrg();
 		return promotionMrg;
 	}
 
-	public static Promotion createNewPromotion() {
-		return new Promotion();
+	public void createNewPromotion() {
+		promotion = new Promotion();
 	}
-
+	
+	public void setPromotionCode(String promotionCode) {
+		promotion = getPromotionByPromotionCode(promotionCode);
+	}
+	public static boolean checkValidPromotionExist(String promotionCode) {
+		for (Promotion promotion : promotions) {
+			if (promotion.getPromotionCode().equalsIgnoreCase(promotionCode)) {
+				if(promotion.getPromoStartDate().isBefore(LocalDateTime.now())&& promotion.getPromoEndDate().isAfter(LocalDateTime.now())) {
+				return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public void createPromotion(Promotion promotion) {
 		promotions.add(promotion);
 	}
@@ -34,6 +49,9 @@ public class PromotionMrg {
 		promotions.remove(promotion);
 	}
 
+	public double getDiscount() {
+		return promotion.getDiscount();
+	}
 	public boolean updatePromotion(Promotion promotion) {
 		boolean update = false;
 		

@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-import entity.*;
+
+import entity.ItemList;
+import entity.MenuItem;
+import entity.Order;
 import entity.Order.OrderBillStatus;
 import entity.Order.OrderStatus;
 
@@ -239,7 +242,7 @@ public class OrderMrg {
         }
         return orders;
     }
-
+    
     public void displayAllOrders(String roomId) {
         List<Order> roomOrders_ = searchOrderByRoomNum(roomId);
         if(roomOrders_!=null){
@@ -252,7 +255,16 @@ public class OrderMrg {
         }
     }
     
-
+    public void printOrderByRoomNum(String room_id) {
+    	List<Order> orders = searchOrderByRoomNum(room_id);
+    	if(orders.size() != 0) {
+    	for(Order order : orders) {
+			order.printOrderInfo();
+		}
+    	}else {
+    		System.out.println("No room orders found");
+    	}
+    }
         // Used in Order Report page
 	public void printOrderByStatus(OrderStatus status) {
         Boolean found = false;

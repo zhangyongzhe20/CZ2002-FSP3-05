@@ -19,6 +19,7 @@ public class PaymentMrg {
      */
 	public static List<Payment> payments = new ArrayList<Payment>();
 	final static String fileName = "payment_data.txt";
+	private Payment payment;
 	
 	public static PaymentMrg getInstance() {
 		return new PaymentMrg();

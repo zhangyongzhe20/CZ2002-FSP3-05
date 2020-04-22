@@ -217,16 +217,17 @@ public class ReservationMrg {
 		return r;
 	}
 
-	public Reservation getReservationByRoomNum(String roomNum) {
-		Reservation r = null;
+	public boolean setCheckOutReservationByRoomNum(String roomNum) {
+
 		for (Reservation reservation : reservations) {
 			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
-				if (!(reservation.getReservationStatus().equals(ReservationStatus.CHECKOUT)
-						|| reservation.getReservationStatus().equals(ReservationStatus.EXPIRED)))
-					r = reservation;
+				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					this.reservation = reservation;
+					return true;
+				}
 			}
 		}
-		return r;
+		return false;
 	}
 
 	public List<Reservation> getReservationByReservationStatus(ReservationStatus rs) {

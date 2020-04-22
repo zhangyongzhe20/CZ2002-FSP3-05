@@ -14,10 +14,10 @@ public class Boundary {
     Reservation_Boundary reservationpage;
     Guest_Boundary guestpage;
     private Scanner sc = new Scanner(System.in);
-
+	final static double TAX = 0.17;
+	
     public void display_Control(){
         String choice = "0";
-        Scanner sc = new Scanner(System.in);
         Order_Boundary orderpage = new Order_Boundary();
         Room_Boundary roompage= new Room_Boundary();
         Reservation_Boundary reservationpage = new Reservation_Boundary();
