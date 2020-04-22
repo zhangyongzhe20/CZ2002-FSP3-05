@@ -6,15 +6,17 @@ public class HotelApp {
 		Scanner sc  = new Scanner(System.in);
 		String selection = "1";
 		Boundary_Factory bf = new Boundary_Factory();
+		bf.loadAllData();
 		do{
 			displayMain();
 			selection = sc.nextLine();
+			if(Integer.parseInt(selection)>0 && Integer.parseInt(selection)<6){
 			Boundary nextpage = bf.createBoundary(selection);
-			nextpage.loadData();
 			nextpage.displayMain();
 		}while(!selection.equalsIgnoreCase("6"));
 	}
-	
+}
+
 	public static void displayMain(){
 		System.out.println("Hotel Reservation and Payment System (HRPS)");
 		System.out.println("===========================================");
