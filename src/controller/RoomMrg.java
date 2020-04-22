@@ -5,21 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-
 import entity.Guest;
-import entity.Order;
 import entity.Reservation;
 import entity.Room;
 import entity.Room.BedType;
@@ -78,16 +71,6 @@ public class RoomMrg {
 
 	public void setRoomStatus(RoomStatus roomStatus) {
 		room.setRoomStatus(roomStatus);
-	}
-
-	public <T extends Enum<T>> HashMap<String, String> getEnumTypeHashMap(Class<T> enumData) {
-		HashMap<String, String> returnValue = new HashMap<String, String>();
-		int count = 1;
-		for (T value : Arrays.asList(enumData.getEnumConstants())) {
-			returnValue.put(String.valueOf(count), String.valueOf(value));
-			count++;
-		}
-		return returnValue;
 	}
 
 	/*
@@ -425,9 +408,7 @@ public class RoomMrg {
 			System.out.println("No room found by the name " + name);
 		}
 	}
-	public void printOrderByRoomNum() {
-		OrderMrg.getInstance().printOrderByRoomNum(room.getRoomNumber());
-	}
+
 	
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);

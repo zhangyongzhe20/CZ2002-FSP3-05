@@ -197,7 +197,7 @@ public class Room_Boundary extends Boundary {
 			if (RoomMrg.checkRoomExist(roomNum)) {
 			Character confirm;
 			roomMrg.setRoomNumber(roomNum);
-			HashMap<String,String> enumData = roomMrg.getEnumTypeHashMap(RoomStatus.class);
+			HashMap<String,String> enumData = getEnumTypeHashMap(RoomStatus.class);
 			String status = readInputEnum("Enter new status: ",enumData);
 			roomMrg.setRoomStatus(RoomMrg.strToRoomStatus(status));
 			
@@ -254,20 +254,20 @@ public class Room_Boundary extends Boundary {
 	}
 
 	private void enterRoomType() {
-			HashMap<String,String> enumData = roomMrg.getEnumTypeHashMap(RoomType.class);
+			HashMap<String,String> enumData = getEnumTypeHashMap(RoomType.class);
 			String roomType = readInputEnum("Enter room type: ",enumData);
 			roomMrg.setRoomType(roomMrg.strToRoomType(roomType));
 	}
 
 	private void enterBedType() {
-		HashMap<String,String> enumData = roomMrg.getEnumTypeHashMap(BedType.class);
+		HashMap<String,String> enumData = getEnumTypeHashMap(BedType.class);
 		String bedType = readInputEnum("Enter Bed type: ",enumData);
 		roomMrg.setBedType(roomMrg.strToBedType(bedType));
 
 	}
 
 	private void enterFacing() {
-		HashMap<String,String> enumData = roomMrg.getEnumTypeHashMap(Facing.class);
+		HashMap<String,String> enumData = getEnumTypeHashMap(Facing.class);
 		String facing = readInputEnum("Enter Bed type: ",enumData);
 		roomMrg.setFacing(roomMrg.strToFacing(facing));
 

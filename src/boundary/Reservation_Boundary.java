@@ -348,11 +348,11 @@ public class Reservation_Boundary extends Boundary {
 		boolean hasWifiBool;
 		boolean allowSmokingBool;
 
-		HashMap<String, String> enumData = RoomMrg.getInstance().getEnumTypeHashMap(RoomType.class);
+		HashMap<String, String> enumData = getEnumTypeHashMap(RoomType.class);
 		String strRoomType = readInputEnum("Enter room type: ", enumData);
 		roomType = roomMrg.strToRoomType(strRoomType);
 
-		enumData = RoomMrg.getInstance().getEnumTypeHashMap(BedType.class);
+		enumData = getEnumTypeHashMap(BedType.class);
 		String strBedType = readInputEnum("Enter bed type: ", enumData);
 		bedType = roomMrg.strToBedType(strBedType);
 

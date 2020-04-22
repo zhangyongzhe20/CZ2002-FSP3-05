@@ -17,8 +17,8 @@ import entity.Reservation.CheckInType;
 
 public class GuestMrg {
 
-	static List<Guest> guests = new ArrayList<Guest>();
-	final static String fileName = "guest_data.txt";
+	private static List<Guest> guests = new ArrayList<Guest>();
+	final static String FILENAME = "guest_data.txt";
 	private Guest guest;
 	public static GuestMrg getInstance() {
 		GuestMrg guestMrg = new GuestMrg();
@@ -111,7 +111,7 @@ public class GuestMrg {
 	}
 
 	public void loadGuestData() throws FileNotFoundException {
-		File file = new File(fileName);
+		File file = new File(FILENAME);
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
@@ -130,7 +130,7 @@ public class GuestMrg {
 	}
 
 	public void writeGuestData() throws IOException {
-		FileWriter fileWriter = new FileWriter(fileName);
+		FileWriter fileWriter = new FileWriter(FILENAME);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		if (guests.size() > 0) {
 			for (Guest guest : guests) {
