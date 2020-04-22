@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import entity.Reservation;
-import entity.Room;
 import entity.Reservation.CheckInType;
 import entity.Reservation.ReservationStatus;
 import entity.Room.RoomStatus;
@@ -373,13 +372,5 @@ public class ReservationMrg {
 					e.printStackTrace();
 				}
 	 }
-	 public static void main(String args[]) {
-		try {
-			ReservationMrg.getInstance().loadReservationData();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ReservationMrg.getInstance().checkExpiredReservations();
-	 }
+
 }
