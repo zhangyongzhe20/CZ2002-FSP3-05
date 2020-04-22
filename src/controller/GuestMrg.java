@@ -118,8 +118,6 @@ public class GuestMrg {
 			Guest guest = new Guest(temp[0], temp[1], temp[2], temp[3], temp[4], GuestMrg.strToIdentityType(temp[5]), temp[6], temp[7], temp[8]);
 			guests.add(guest);
 		}
-		sc.close();
-		return guests;
 	}
 
 	public void writeGuestData() throws IOException {
