@@ -17,9 +17,6 @@ public class Room_Boundary extends Boundary {
 
 	private RoomMrg roomMrg = RoomMrg.getInstance();
 	
-	public static Room_Boundary getIstance() {
-		return new Room_Boundary();
-	}
 	public void displayMain() {
 		String choice;
 		do {
@@ -40,7 +37,7 @@ public class Room_Boundary extends Boundary {
 				searchRoomMenu();
 				break;
 			case "4":
-				roomMrg.getRoomReportMenu();
+				roomMrg.printRoomReport();
 				break;
 			}
 		} while (!choice.equalsIgnoreCase("0"));
@@ -199,7 +196,7 @@ public class Room_Boundary extends Boundary {
 			roomMrg.setRoomNumber(roomNum);
 			HashMap<String,String> enumData = getEnumTypeHashMap(RoomStatus.class);
 			String status = readInputEnum("Enter new status: ",enumData);
-			roomMrg.setRoomStatus(RoomMrg.strToRoomStatus(status));
+			roomMrg.setRoomStatus(roomMrg.strToRoomStatus(status));
 			
 			do {
 				roomMrg.printRoomInfo();

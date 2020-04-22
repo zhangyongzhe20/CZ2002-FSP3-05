@@ -95,7 +95,7 @@ public class Reservation {
 		this.checkInType = checkInType;
 	}
 
-	public void printInfo() {
+	public void printReservationInfo() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		System.out.println(" -------------------------------------------");
 		System.out.println("Guest IC: " + this.getGuestIC());

@@ -221,7 +221,7 @@ public class Reservation_Boundary extends Boundary {
 
 	}
 
-	private void displayReservationMenu() {
+	private void viewReservationMenu() {
 		String choice;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n"
@@ -361,7 +361,7 @@ public class Reservation_Boundary extends Boundary {
 
 		List<String> roomNumList = new ArrayList<String>();
 
-		roomNumList = roomMrg.getAndPrintAvailRoom(roomType, bedType, hasWifiBool, allowSmokingBool);
+		roomNumList = roomMrg.getAndPrintAvailRoomNum(roomType, bedType, hasWifiBool, allowSmokingBool);
 		String roomNum;
 
 		if (roomNumList.size() > 0) {

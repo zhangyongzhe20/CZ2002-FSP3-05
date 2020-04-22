@@ -73,17 +73,6 @@ public class RoomMrg {
 		room.setRoomStatus(roomStatus);
 	}
 
-	/*
-	 * public HashMap<String,String> getRoomTypeHashMap(){ HashMap<String,String>
-	 * returnValue = new HashMap<String,String>(); returnValue =
-	 * getEnumTypeHashMap(RoomType.class); return returnValue; } public
-	 * HashMap<String,String> getBedTypeHashMap(){ HashMap<String,String>
-	 * returnValue = new HashMap<String,String>(); returnValue =
-	 * getEnumTypeHashMap(BedType.class); return returnValue; } public
-	 * HashMap<String,String> getFacingHashMap(){ HashMap<String,String> returnValue
-	 * = new HashMap<String,String>(); returnValue =
-	 * getEnumTypeHashMap(Facing.class); return returnValue; }
-	 */
 	public RoomType strToRoomType(String type) {
 		RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
@@ -124,7 +113,7 @@ public class RoomMrg {
 		return facing;
 	}
 
-	public static RoomStatus strToRoomStatus(String strRoomStatus) {
+	public RoomStatus strToRoomStatus(String strRoomStatus) {
 		Room.RoomStatus roomStatus = null;
 		if (strRoomStatus.equalsIgnoreCase("VACANT")) {
 			roomStatus = Room.RoomStatus.VACANT;
@@ -228,31 +217,29 @@ public class RoomMrg {
 	public double getRoomCharge(LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 		double price = 0;
 		double total_price = 0;
-		List<Integer> days = getDays(checkInDate, checkOutDate);
+		
+		List<Integer> days = new ArrayList<Integer>();
+		long duration = Duration.between(checkInDate, checkOutDate).toDays();
+		int checkin_ = checkInDate.getDayOfWeek().getValue();
+
+		for (int i = 0; i < duration; i++) {
+			days.add(checkin_);
+			checkin_ = (checkin_ + 1) % 7;
+		}
+		
 		for (int day : days) {
 			if (day == 0 || day == 6) {
 				price = room.getRoomRateWeekend();
-			}
+			}else {
 			price = room.getRoomRateWeekday();
+			}
 			total_price += price;
 
 		}
 		return total_price;
 	}
 
-	public static List<Integer> getDays(LocalDateTime checkin, LocalDateTime checkout) {
-		List<Integer> days = new ArrayList<Integer>();
-		long duration = Duration.between(checkin, checkout).toDays();
-		int checkin_ = checkin.getDayOfWeek().getValue();
-
-		for (int i = 0; i < duration; i++) {
-			days.add(checkin_);
-			checkin_ = (checkin_ + 1) % 7;
-		}
-		return days;
-	}
-
-	public List<String> getAndPrintAvailRoom(RoomType roomType, BedType bedType, boolean hasWifiBool,
+	public List<String> getAndPrintAvailRoomNum(RoomType roomType, BedType bedType, boolean hasWifiBool,
 			boolean allowSmokingBool) {
 		List<String> roomNumList = new ArrayList<String>();
 		for (Room room : rooms) {
@@ -273,7 +260,7 @@ public class RoomMrg {
 	}
 
 	// For Room Boundary
-	public void getRoomReportMenu() {
+	public void printRoomReport() {
 		int singleRoomTotal = 0;
 		int doubleRoomTotal = 0;
 		int deluxeRoomTotal = 0;
@@ -392,10 +379,6 @@ public class RoomMrg {
 
 	public void printRoomInfo() {
 		room.printRoomInfo();
-		if (room.getRoomStatus().equals(RoomStatus.OCCUPIED) || room.getRoomStatus().equals(RoomStatus.RESERVED)) {
-			Guest g = GuestMrg.getInstance().getGuestByRoomNum(room.getRoomNumber());
-			System.out.println("Guest Name : " + g.getGuestName());
-		}
 	}
 
 	public void printRoomByGuestName(String name) {
@@ -432,7 +415,7 @@ public class RoomMrg {
 			r.setRoomRateWeekend(Double.parseDouble(temp[5]));
 			r.setHasWifi(Boolean.parseBoolean(temp[6]));
 			r.setAllowSmoking(Boolean.parseBoolean(temp[7]));
-			r.setRoomStatus(RoomMrg.strToRoomStatus(temp[8]));
+			r.setRoomStatus(strToRoomStatus(temp[8]));
 			rooms.add(r);
 		}
 		sc.close();
@@ -459,13 +442,5 @@ public class RoomMrg {
 		}
 	}
 
-	public static void main(String args[]) {
-		HashMap<String, String> returnValue = new HashMap<String, String>();
-		returnValue = RoomMrg.getInstance().getEnumTypeHashMap(RoomType.class);
-		for (String k : returnValue.keySet()) {
-			System.out.println(k + " : " + returnValue.get(k));
-		}
-		// System.out.println(RoomType.class);
-		// System.out.println(EnumSet.allOf(RoomType.class));
-	}
+	
 }
