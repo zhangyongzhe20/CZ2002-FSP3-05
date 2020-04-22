@@ -31,7 +31,7 @@ public class Payment_Boundary extends Boundary{
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
 	}
-	public void paymentMain(String code) {
+	public void displayMain(String code) {
 		String promoCode;
 		Promotion p = null;
 		do {
@@ -129,7 +129,7 @@ public class Payment_Boundary extends Boundary{
 	   String roomNum = readInputString("Enter room number");
 	   Reservation r = ReservationMrg.getInstance().getReservationByRoomNum(roomNum);
 	   if(r!=null && r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
-		   paymentMain(r.getReservationCode());
+		 displayMain(r.getReservationCode());
 	   }
 	}
 	 public void loadData() {
@@ -141,4 +141,10 @@ public class Payment_Boundary extends Boundary{
 	            e.printStackTrace();
 	        }
 	    }
+
+		@Override
+		public void displayMain() {
+			// TODO Auto-generated method stub
+
+		}
 }

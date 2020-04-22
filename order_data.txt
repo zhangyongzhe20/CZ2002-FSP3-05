@@ -1,4 +1,2 @@
 ef294a01-3baf-4a5b-83a5-aeaa07f47e7f,0101,21/04/2020 20:34,hello,CONFIRMED,UNBILLED,
 coca,softdrink,1.5;chicken rice,food,3.0;
-2a535b43-f0f4-4a5a-9dd8-f05eac1394ec,0101,21/04/2020 22:23,than you,CONFIRMED,UNBILLED,
-coca,softdrink,1.5;chicken rice,food,3.0;
