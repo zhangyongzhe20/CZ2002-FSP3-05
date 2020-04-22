@@ -2,6 +2,7 @@ package boundary;
 
 
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import controller.GuestMrg;
 import controller.OrderMrg;
@@ -10,6 +11,7 @@ import controller.PromotionMrg;
 import controller.ReservationMrg;
 import controller.RoomMrg;
 import entity.Payment.PaymentMethod;
+import entity.Reservation.ReservationStatus;
 public class Payment_Boundary extends Boundary{
 	
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
@@ -23,6 +25,8 @@ public class Payment_Boundary extends Boundary{
 
 		String promoCode;
 		double discount = 0;
+		LocalDateTime checkOutDate = LocalDateTime.now();
+		
 		String roomNum = readInputString("Enter room number");
 		boolean success = ReservationMrg.getInstance().setCheckOutReservationByRoomNum(roomNum);
 		
@@ -42,17 +46,17 @@ public class Payment_Boundary extends Boundary{
 			}
 			}while(true);
 		
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");		
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");	
 			System.out.println("Date Check In: "+formatter.format(ReservationMrg.getInstance().getCheckIn()));
-			System.out.println("Date Check Out:"+formatter.format(ReservationMrg.getInstance().getCheckOut()));
+			System.out.println("Date Check Out:"+formatter.format(checkOutDate));
 			
-			double roomCharge = RoomMrg.getInstance().getRoomCharge(ReservationMrg.getInstance().getCheckIn(),ReservationMrg.getInstance().getCheckOut());
+			double roomCharge = RoomMrg.getInstance().getRoomCharge(ReservationMrg.getInstance().getCheckIn(),checkOutDate);
+			
 			RoomMrg.getInstance().printRoomInfo();
 			System.out.println("Total Room Charge: $"+ String.format("%.2f", roomCharge));
 			
-			double totalRoomServiceCharge = 0;
+			double totalRoomServiceCharge =  OrderMrg.calculateRoomServiceCharge(roomNum);
 			OrderMrg.getInstance().displayAllOrders(roomNum);
-			totalRoomServiceCharge = OrderMrg.calculateRoomServiceCharge(roomNum);
 			System.out.println("Room Service Charge: $"+String.format("%.2f", totalRoomServiceCharge));
 			
 
@@ -97,7 +101,8 @@ public class Payment_Boundary extends Boundary{
 				creditCard = null;
 			}
 			paymentMrg.createNewPayment(reservationCode, promoCode, roomCharge, totalRoomServiceCharge, TAX, discount, totalPay, paymentMethod, creditCard);
-			
+			paymentMrg.createPayment();
+			ReservationMrg.getInstance().checkOutReservation(checkOutDate);
 		}else {
 			System.out.println("Unable to check out");
 		}

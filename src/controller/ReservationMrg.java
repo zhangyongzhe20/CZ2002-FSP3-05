@@ -176,7 +176,7 @@ public class ReservationMrg {
 		}
 	}
 
-	public void updateReservation() {
+	public void updateReservationDetails() {
 		if (roomNum != null) {
 			RoomMrg.getInstance().updateRoomStatus(roomNum, RoomStatus.VACANT);
 		}
@@ -190,7 +190,17 @@ public class ReservationMrg {
 			e.printStackTrace();
 		}
 	}
-
+	public void checkOutReservation(LocalDateTime checkOutDate) {
+		reservation.setCheckOut(checkOutDate);
+		reservation.setReservationStatus(ReservationStatus.CHECKOUT);
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.VACANT);
+	}
 	public void checkInReservation() {
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 
