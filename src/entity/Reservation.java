@@ -113,11 +113,18 @@ public class Reservation {
 				roomNum = this.getRoomNum();
 			}
 			System.out.println("5.Room Number : " + roomNum);
-		} else {
-			System.out.println("1.Check In Date: " + formatter.format(this.getCheckIn()));
+		} else {		
+			System.out.println("Check In Date: " + formatter.format(this.getCheckIn()));
 			System.out.println("2.Check Out Date: " + formatter.format(this.getCheckOut()));
 			System.out.println("3.Number of Adult(s): " + this.getNumOfAdults());
 			System.out.println("4.Number of Child(ren): " + this.getNumOfChild());
+			String roomNum;
+			if(this.getRoomNum() == null) {
+				roomNum = "No room selected";
+			}else {
+				roomNum = this.getRoomNum();
+			}
+			System.out.println("5.Room Number : " + roomNum);
 		}
 	}
 }
