@@ -12,7 +12,7 @@ public class HotelApp {
 			Boundary nextpage = bf.createBoundary(selection);
 			nextpage.loadData();
 			nextpage.displayMain();
-		}while(!selection.equalsIgnoreCase("7"));
+		}while(!selection.equalsIgnoreCase("6"));
 	}
 	
 	public static void displayMain(){
@@ -22,9 +22,8 @@ public class HotelApp {
 		System.out.println("2. About Room");
 		System.out.println("3. About Reservation");
         System.out.println("4. About Room Service");
-        System.out.println("5. About Checkin");
-        System.out.println("6. About Checkout");
-		System.out.println("7. Quit");
+        System.out.println("5. About Payment");
+		System.out.println("6. Quit");
         System.out.println("============================================");
 	}
 }

@@ -429,9 +429,6 @@ public class RoomMrg {
 		OrderMrg.getInstance().printOrderByRoomNum(room.getRoomNumber());
 	}
 	
-	public double calculateRoomServiceCharge() {
-		return OrderMrg.calculateRoomServiceCharge(room.getRoomNumber());
-	}
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {

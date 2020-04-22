@@ -11,7 +11,7 @@ public class Boundary_Factory {
              case "4":
                return new Order_Boundary();
              case "5":
-             case "6":
+            	 return new Payment_Boundary();
              default: return null;
 			}
     }

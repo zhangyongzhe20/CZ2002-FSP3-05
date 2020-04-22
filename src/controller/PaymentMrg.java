@@ -25,8 +25,12 @@ public class PaymentMrg {
 		return new PaymentMrg();
 	}
 	
+	public void createNewPayment(String reservationCode, String promoCode, double roomCharge, double roomServiceCharge, double tax,
+	    	 double discount, double totalPay, PaymentMethod paymentMethod , String creditCard ) {
+		payment = new Payment(reservationCode, promoCode,roomCharge,roomServiceCharge,tax,discount,totalPay,paymentMethod ,creditCard );
+	}
 	
-
+	
 	
 	public static PaymentMethod strToPaymentMethod(String strPaymentMethod) {
 		PaymentMethod paymentMethod = null;
@@ -38,7 +42,7 @@ public class PaymentMrg {
 		return paymentMethod;
 	}
 	
-    public void createPayment(Payment payment) {
+    public void createPayment() {
     	payments.add(payment);
     	try {
 			writePaymentData();

@@ -89,6 +89,13 @@ public class ReservationMrg {
 		return reservation.getReservationStatus();
 	}
 
+	public String getGuestIC() {
+		return reservation.getGuestIC();
+	}
+
+	public String getReservationCode() {
+		return reservation.getReservationCode();
+	}
 	public static boolean checkReservationExist(String reservationCode) {
 		for (Reservation reservation : reservations) {
 			if (reservation.getReservationCode().equalsIgnoreCase(reservationCode)) {
@@ -217,6 +224,19 @@ public class ReservationMrg {
 		return r;
 	}
 
+	public Reservation getReservationByRoomNum(String roomNum) {
+		for (Reservation reservation : reservations) {
+			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
+				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					return reservation;
+					
+				}
+			}
+		}
+		return null;
+	}
+
+	
 	public boolean setCheckOutReservationByRoomNum(String roomNum) {
 
 		for (Reservation reservation : reservations) {

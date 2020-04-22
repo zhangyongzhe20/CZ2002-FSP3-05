@@ -19,7 +19,7 @@ public class GuestMrg {
 
 	static List<Guest> guests = new ArrayList<Guest>();
 	final static String fileName = "guest_data.txt";
-
+	private Guest guest;
 	public static GuestMrg getInstance() {
 		GuestMrg guestMrg = new GuestMrg();
 		return guestMrg;
@@ -33,8 +33,16 @@ public class GuestMrg {
 		}
 		return false;
 	}
-
-	
+	public void setGuestIC(String ic) {
+		if(checkGuestExist(ic)) {
+			guest = getGuestByIC(ic);
+		}else {
+			guest.setIC(ic);
+		}
+	}
+	public String getCreditCard() {
+		return guest.getCreditCard();
+	}
 	public static IdentityType strToIdentityType(String strIdentityType) {
 		IdentityType identityType = null;
 		if (strIdentityType.equalsIgnoreCase("PASSPORT")) {
@@ -56,7 +64,7 @@ public class GuestMrg {
 		}
 		
 	}
-
+	
 	public Guest getGuestByIC(String ic) {
 		Guest g = null;
 		for (Guest guest : guests) {
