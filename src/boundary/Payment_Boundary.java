@@ -28,7 +28,9 @@ public class Payment_Boundary extends Boundary{
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
 	}
+
 	public void paymentMain() {
+
 		String promoCode;
 		double discount = 0;
 		String roomNum = readInputString("Enter room number");
@@ -120,6 +122,7 @@ public class Payment_Boundary extends Boundary{
 		paymentMrg.createPayment(payment);
 	}
 	
+
 	 public void loadData() {
 	        // TODO Auto-generated method stub
 	        try {
@@ -129,4 +132,10 @@ public class Payment_Boundary extends Boundary{
 	            e.printStackTrace();
 	        }
 	    }
+
+		@Override
+		public void displayMain() {
+			// TODO Auto-generated method stub
+
+		}
 }

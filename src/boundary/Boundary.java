@@ -3,74 +3,15 @@ package boundary;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 
+public abstract class Boundary {
+    Scanner sc = new Scanner(System.in);
+    public abstract void displayMain();
+    public abstract void loadData();
 
-public class Boundary {
-    Reservation_Boundary reservationpage;
-    Guest_Boundary guestpage;
-    private Scanner sc = new Scanner(System.in);
-	final static double TAX = 0.17;
-	
-    public void display_Control(){
-        String choice = "0";
-        Order_Boundary orderpage = new Order_Boundary();
-        Room_Boundary roompage= new Room_Boundary();
-        Reservation_Boundary reservationpage = new Reservation_Boundary();
-        Guest_Boundary guestpage = new Guest_Boundary();
-        Payment_Boundary paymentpage = new Payment_Boundary();
-        orderpage.loadData();
-        roompage.loadData();
-        reservationpage.loadData();
-        guestpage.loadData();
-        paymentpage.loadData();
-            //    roompage.loadData;
-    //    reservationpage.loadData;
-    //    guestpage.loadData;
-    do{
-        displayMain();
-        choice = sc.nextLine();
-		switch(choice) {
-			case "1":
-				guestpage.displayMain();
-			break;
-			case "2":
-				roompage.displayMain();
-	    	 break;
-    		 case "3":
-    			reservationpage.displayMain();
-             break;		
-        	 case "4":
-             orderpage.displayMain();
-			 break;
-             case "5":
-            	 reservationpage.checkInMenu();
-             break;
-             case "6":
-             break;
-			}
-			 }while(!choice.equalsIgnoreCase("7"));
-    }
-
-
-    public void displayMain(){
-        System.out.println("Hotel Reservation and Payment System (HRPS)");
-		System.out.println("===========================================");
-		System.out.println("1. About Guest");
-		System.out.println("2. About Room");
-		System.out.println("3. About Reservation");
-        System.out.println("4. About Room Service");
-        System.out.println("5. About Checkin");
-        System.out.println("6. About Checkout");
-		System.out.println("7. Quit");
-        System.out.println("============================================");
-    }
-    
-    public void loadData(){};
 
     public String readInputString(String message) {
     	System.out.println(message);
