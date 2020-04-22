@@ -83,15 +83,7 @@ public class GuestMrg {
 		return guestList;
 	}
 
-	public Guest getGuestByRoomNum(String roomNum) {
-		Guest g = null;
-		Reservation r = ReservationMrg.getInstance().getReservationByRoomNum(roomNum);
-		if (r != null) {
-			g = getGuestByIC(r.getGuestIC());
-		}
-		return g;
-	}
-
+	
 	public static boolean checkGuestExist(String guestName) {
 		for (Guest guest : guests) {
 			if (guest.getGuestName().equalsIgnoreCase(guestName)) {
