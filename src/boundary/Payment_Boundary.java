@@ -11,17 +11,49 @@ import controller.PromotionMrg;
 import controller.ReservationMrg;
 import controller.RoomMrg;
 import entity.Payment.PaymentMethod;
-import entity.Reservation.ReservationStatus;
 public class Payment_Boundary extends Boundary{
 	
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
+	private PromotionMrg promotionMrg = PromotionMrg.getInstance();
     final static double TAX = 0.17;
 	
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
 	}
+	@Override
+	public void displayMain() {
+		// TODO Auto-generated method stub
+		String choice;
+		do {
+			System.out.println("Payment System\n" + "0. Return to Main Menu\n" + "1. Create Promotion\n"
+					+ "2. Update Promotion\n" + "3. Delete Promotion\n" + "4. View Promotions\n"
+							+ "5.Check Out");
+			choice = readInputString("Enter choice : ");
 
-	public void paymentMain() {
+			switch (choice) {
+			case "0":
+				break;
+			case "1":
+				//createReservationMenu(CheckInType.RESERVATION);
+				break;
+			case "2":
+				//updateReservationMenu();
+				break;
+			case "3":
+				//deleteReservationMenu();
+				break;
+			case "4":
+				//displayReservationMenu();
+				break;
+			case "5":
+				displayCheckOut();
+			default:
+				break;
+			}
+		} while (!choice.equalsIgnoreCase("0"));
+	}
+	
+	public void displayCheckOut() {
 
 		String promoCode;
 		double discount = 0;
@@ -34,8 +66,8 @@ public class Payment_Boundary extends Boundary{
 			do {
 			promoCode = readInputString("Enter Promtion Code (Enter 0 for no promotion): ");
 			if(PromotionMrg.checkValidPromotionExist(promoCode)) {
-				PromotionMrg.getInstance().setPromotionCode(promoCode);
-				discount = PromotionMrg.getInstance().getDiscount();
+				promotionMrg.setPromotionCode(promoCode);
+				discount =promotionMrg.getDiscount();
 				break;
 			}else if(promoCode.equalsIgnoreCase("0")) {
 				promoCode = "No promotion";
@@ -120,9 +152,5 @@ public class Payment_Boundary extends Boundary{
 	        }
 	    }
 
-		@Override
-		public void displayMain() {
-			// TODO Auto-generated method stub
-
-		}
+		
 }
