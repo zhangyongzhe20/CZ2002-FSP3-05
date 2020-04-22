@@ -17,7 +17,7 @@ import entity.Room.RoomStatus;
 
 public class ReservationMrg {
 	public static List<Reservation> reservations = new ArrayList<Reservation>();
-	final static String fileName = "reservation_data.txt";
+	final static String FILENAME = "reservation_data.txt";
 	private Reservation reservation;
 	private String roomNum;
 
@@ -190,6 +190,7 @@ public class ReservationMrg {
 			e.printStackTrace();
 		}
 	}
+	
 	public void checkOutReservation(LocalDateTime checkOutDate) {
 		reservation.setCheckOut(checkOutDate);
 		reservation.setReservationStatus(ReservationStatus.CHECKOUT);
@@ -201,6 +202,7 @@ public class ReservationMrg {
 		}
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.VACANT);
 	}
+	
 	public void checkInReservation() {
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 
@@ -246,7 +248,7 @@ public class ReservationMrg {
 		return null;
 	}
 
-	
+
 	public boolean setCheckOutReservationByRoomNum(String roomNum) {
 
 		for (Reservation reservation : reservations) {
@@ -278,14 +280,14 @@ public class ReservationMrg {
 			reservation.setReservationStatus(ReservationStatus.CONFIRMED);
 		}
 
-		reservation.printInfo();
+		reservation.printReservationInfo();
 	}
 
 	public void printReservationsByStatus(ReservationStatus rs) {
 		List<Reservation> rList = new ArrayList<Reservation>();
 		rList = getReservationByReservationStatus(rs);
 		for (Reservation r : rList) {
-			r.printInfo();
+			r.printReservationInfo();
 		}
 	}
 
@@ -294,14 +296,14 @@ public class ReservationMrg {
 			if (r.getCheckInType().equals(CheckInType.RESERVATION)) {
 				if (!(r.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)
 						|| r.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
-					r.printInfo();
+					r.printReservationInfo();
 				}
 			}
 		}
 	}
 
 	public void loadReservationData() throws FileNotFoundException {
-		File file = new File(fileName);
+		File file = new File(FILENAME);
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
@@ -330,7 +332,7 @@ public class ReservationMrg {
 	}
 
 	public void writeReservationData() throws IOException {
-		FileWriter fileWriter = new FileWriter(fileName);
+		FileWriter fileWriter = new FileWriter(FILENAME);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		if (reservations.size() > 0) {

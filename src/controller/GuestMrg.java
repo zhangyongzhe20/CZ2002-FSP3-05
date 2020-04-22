@@ -15,8 +15,8 @@ import entity.Room;
 
 public class GuestMrg {
 
-	static List<Guest> guests = new ArrayList<Guest>();
-	final static String fileName = "guest_data.txt";
+	private static List<Guest> guests = new ArrayList<Guest>();
+	final static String FILENAME = "guest_data.txt";
 	private Guest guest;
 
 	public static GuestMrg getInstance() {
@@ -101,8 +101,9 @@ public class GuestMrg {
 		return false;
 	}
 
-	public List<Guest> loadGuestData() throws FileNotFoundException {
-		File file = new File(fileName);
+	public void loadGuestData() throws FileNotFoundException {
+		File file = new File(FILENAME);
+
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
@@ -117,12 +118,10 @@ public class GuestMrg {
 			Guest guest = new Guest(temp[0], temp[1], temp[2], temp[3], temp[4], GuestMrg.strToIdentityType(temp[5]), temp[6], temp[7], temp[8]);
 			guests.add(guest);
 		}
-		sc.close();
-		return guests;
 	}
 
 	public void writeGuestData() throws IOException {
-		FileWriter fileWriter = new FileWriter(fileName);
+		FileWriter fileWriter = new FileWriter(FILENAME);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		if (guests.size() > 0) {
 			for (Guest guest : guests) {

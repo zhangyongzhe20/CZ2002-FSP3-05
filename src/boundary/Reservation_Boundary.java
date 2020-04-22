@@ -221,7 +221,7 @@ public class Reservation_Boundary extends Boundary {
 
 	}
 
-	private void displayReservationMenu() {
+	private void viewReservationMenu() {
 		String choice;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n"
@@ -348,11 +348,11 @@ public class Reservation_Boundary extends Boundary {
 		boolean hasWifiBool;
 		boolean allowSmokingBool;
 
-		HashMap<String, String> enumData = RoomMrg.getInstance().getEnumTypeHashMap(RoomType.class);
+		HashMap<String, String> enumData = getEnumTypeHashMap(RoomType.class);
 		String strRoomType = readInputEnum("Enter room type: ", enumData);
 		roomType = roomMrg.strToRoomType(strRoomType);
 
-		enumData = RoomMrg.getInstance().getEnumTypeHashMap(BedType.class);
+		enumData = getEnumTypeHashMap(BedType.class);
 		String strBedType = readInputEnum("Enter bed type: ", enumData);
 		bedType = roomMrg.strToBedType(strBedType);
 
@@ -361,7 +361,7 @@ public class Reservation_Boundary extends Boundary {
 
 		List<String> roomNumList = new ArrayList<String>();
 
-		roomNumList = roomMrg.getAndPrintAvailRoom(roomType, bedType, hasWifiBool, allowSmokingBool);
+		roomNumList = roomMrg.getAndPrintAvailRoomNum(roomType, bedType, hasWifiBool, allowSmokingBool);
 		String roomNum;
 
 		if (roomNumList.size() > 0) {

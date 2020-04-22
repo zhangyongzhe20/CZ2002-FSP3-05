@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -82,5 +83,15 @@ public abstract class Boundary {
     	}while(enumData.get(input) == null);
     	return (enumData.get(input));
     }
+    
+	public <T extends Enum<T>> HashMap<String, String> getEnumTypeHashMap(Class<T> enumData) {
+		HashMap<String, String> returnValue = new HashMap<String, String>();
+		int count = 1;
+		for (T value : Arrays.asList(enumData.getEnumConstants())) {
+			returnValue.put(String.valueOf(count), String.valueOf(value));
+			count++;
+		}
+		return returnValue;
+	}
 
 }
