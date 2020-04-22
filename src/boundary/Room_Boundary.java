@@ -16,7 +16,6 @@ import entity.Room.RoomType;
 public class Room_Boundary extends Boundary {
 
 	private RoomMrg roomMrg = RoomMrg.getInstance();
-	
 	public void displayMain() {
 		String choice;
 		do {
@@ -230,7 +229,6 @@ public class Room_Boundary extends Boundary {
 	public void searchRoomByGuestNameMenu() {
 		String name =  readInputString("Enter guest name :");
 		roomMrg.printRoomByGuestName(name);
-
 	}
 
 	private void enterRoomNum() {

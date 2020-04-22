@@ -392,7 +392,7 @@ public class RoomMrg {
 		}
 	}
 
-	
+
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {

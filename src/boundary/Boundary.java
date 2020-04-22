@@ -1,5 +1,6 @@
 package boundary;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public abstract class Boundary {
     Scanner sc = new Scanner(System.in);
-    public abstract void displayMain();
+    public abstract void displayMain() throws FileNotFoundException;
     public abstract void loadData();
 
 
