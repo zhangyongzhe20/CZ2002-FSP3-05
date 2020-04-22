@@ -89,6 +89,13 @@ public class ReservationMrg {
 		return reservation.getReservationStatus();
 	}
 
+	public String getGuestIC() {
+		return reservation.getGuestIC();
+	}
+
+	public String getReservationCode() {
+		return reservation.getReservationCode();
+	}
 	public static boolean checkReservationExist(String reservationCode) {
 		for (Reservation reservation : reservations) {
 			if (reservation.getReservationCode().equalsIgnoreCase(reservationCode)) {
@@ -169,7 +176,7 @@ public class ReservationMrg {
 		}
 	}
 
-	public void updateReservation() {
+	public void updateReservationDetails() {
 		if (roomNum != null) {
 			RoomMrg.getInstance().updateRoomStatus(roomNum, RoomStatus.VACANT);
 		}
@@ -183,7 +190,17 @@ public class ReservationMrg {
 			e.printStackTrace();
 		}
 	}
-
+	public void checkOutReservation(LocalDateTime checkOutDate) {
+		reservation.setCheckOut(checkOutDate);
+		reservation.setReservationStatus(ReservationStatus.CHECKOUT);
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.VACANT);
+	}
 	public void checkInReservation() {
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 
@@ -218,15 +235,29 @@ public class ReservationMrg {
 	}
 
 	public Reservation getReservationByRoomNum(String roomNum) {
-		Reservation r = null;
 		for (Reservation reservation : reservations) {
 			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
-				if (!(reservation.getReservationStatus().equals(ReservationStatus.CHECKOUT)
-						|| reservation.getReservationStatus().equals(ReservationStatus.EXPIRED)))
-					r = reservation;
+				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					return reservation;
+					
+				}
 			}
 		}
-		return r;
+		return null;
+	}
+
+	
+	public boolean setCheckOutReservationByRoomNum(String roomNum) {
+
+		for (Reservation reservation : reservations) {
+			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
+				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					this.reservation = reservation;
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public List<Reservation> getReservationByReservationStatus(ReservationStatus rs) {

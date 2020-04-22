@@ -11,6 +11,7 @@ public class Boundary_Factory {
         allBoundary.add(new Room_Boundary());
         allBoundary.add(new Reservation_Boundary());
         allBoundary.add(new Order_Boundary());
+        allBoundary.add(new Payment_Boundary());
     }
     public Boundary createBoundary(String selection){
 			return allBoundary.get(Integer.parseInt(selection)-1);

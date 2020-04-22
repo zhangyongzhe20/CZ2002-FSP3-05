@@ -6,10 +6,12 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
 public abstract class Boundary {
     Scanner sc = new Scanner(System.in);
     public abstract void displayMain();
     public abstract void loadData();
+
 
     public String readInputString(String message) {
     	System.out.println(message);

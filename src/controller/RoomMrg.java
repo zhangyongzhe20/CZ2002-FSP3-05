@@ -242,7 +242,7 @@ public class RoomMrg {
 		return r;
 	}
 
-	public double getRoomCharge(Room room, LocalDateTime checkInDate, LocalDateTime checkOutDate) {
+	public double getRoomCharge(LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 		double price = 0;
 		double total_price = 0;
 		List<Integer> days = getDays(checkInDate, checkOutDate);
@@ -425,7 +425,10 @@ public class RoomMrg {
 			System.out.println("No room found by the name " + name);
 		}
 	}
-
+	public void printOrderByRoomNum() {
+		OrderMrg.getInstance().printOrderByRoomNum(room.getRoomNumber());
+	}
+	
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {

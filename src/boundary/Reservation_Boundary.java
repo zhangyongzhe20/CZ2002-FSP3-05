@@ -20,7 +20,8 @@ public class Reservation_Boundary extends Boundary {
 		String choice;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n" + "1. Create Reservation\n"
-					+ "2. Update Reservation\n" + "3. Delete Reservation\n" + "4. Get Reservation Details\n");
+					+ "2. Update Reservation\n" + "3. Delete Reservation\n" + "4. Get Reservation Details\n"
+							+ "5.Check In");
 			choice = readInputString("Enter choice : ");
 
 			switch (choice) {
@@ -38,6 +39,8 @@ public class Reservation_Boundary extends Boundary {
 			case "4":
 				displayReservationMenu();
 				break;
+			case "5":
+				checkInMenu();
 			default:
 				break;
 			}

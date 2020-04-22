@@ -17,36 +17,90 @@ import entity.Reservation;
 public class PromotionMrg {
 	public static List<Promotion> promotions = new ArrayList<Promotion>();
 	final static String fileName = "promotion_data.txt";
+	private Promotion promotion;
 	public static PromotionMrg getInstance() {
 		PromotionMrg promotionMrg = new PromotionMrg();
 		return promotionMrg;
 	}
 
-	public static Promotion createNewPromotion() {
-		return new Promotion();
-	}
-
-	public void createPromotion(Promotion promotion) {
-		promotions.add(promotion);
-	}
-
-	public void deletePromotion(Promotion promotion) {
-		promotions.remove(promotion);
-	}
-
-	public boolean updatePromotion(Promotion promotion) {
-		boolean update = false;
-		
-		for (Promotion p : promotions) {
-			if (p.getPromotionCode().equalsIgnoreCase(promotion.getPromotionCode())) {
-				p.setDiscount(promotion.getDiscount());
-				p.setPromoDescription(promotion.getPromoDescription());
-				p.setPromoStartDate(promotion.getPromoStartDate());
-				p.setPromoEndDate(promotion.getPromoEndDate());
-				update = true;
+	public static boolean checkValidPromotionExist(String promotionCode) {
+		for (Promotion promotion : promotions) {
+			if (promotion.getPromotionCode().equalsIgnoreCase(promotionCode)) {
+				if(promotion.getPromoStartDate().isBefore(LocalDateTime.now())&& promotion.getPromoEndDate().isAfter(LocalDateTime.now())) {
+				return true;
+				}
 			}
 		}
-		return update;
+		return false;
+	}
+	public static boolean checkPromotionExist(String promotionCode) {
+		for (Promotion promotion : promotions) {
+			if (promotion.getPromotionCode().equalsIgnoreCase(promotionCode)) {
+				return true;
+	
+			}
+		}
+		return false;
+	}
+	public void setPromotionCode(String promotionCode) {
+		if(checkPromotionExist(promotionCode)) {
+			promotion = getPromotionByPromotionCode(promotionCode)
+		}else {
+		promotion.setPromotionCode(promotionCode);
+		}
+	}
+	public void setPromoDescription(String promoDescription) {
+		promotion.setPromoDescription(promoDescription);
+	}
+	public void setDiscount(double discount) {
+		promotion.setDiscount(discount);
+	}
+	
+	public void setPromoStartDate(LocalDateTime promoStartDate) {
+		promotion.setPromoStartDate(promoStartDate);
+	}
+	
+	public void setPromoEndDate(LocalDateTime promoEndDate) {
+		promotion.setPromoEndDate(promoEndDate);
+	}
+	
+	public double getDiscount() {
+		return promotion.getDiscount();
+	}
+	
+	public void createNewPromotion() {
+		promotion = new Promotion();
+	}
+		
+	
+	public void createPromotion() {
+		promotions.add(promotion);
+		try {
+			writePromotionData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void deletePromotion() {
+		promotions.remove(promotion);
+		try {
+			writePromotionData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+	public void updatePromotion() {
+		try {
+			writePromotionData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Promotion getPromotionByPromotionCode(String promotionCode) {

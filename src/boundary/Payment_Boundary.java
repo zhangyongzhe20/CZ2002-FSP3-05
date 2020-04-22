@@ -4,134 +4,144 @@ package boundary;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Scanner;
-
 import controller.GuestMrg;
 import controller.OrderMrg;
 import controller.PaymentMrg;
 import controller.PromotionMrg;
 import controller.ReservationMrg;
 import controller.RoomMrg;
-import entity.Guest;
-import entity.Order;
-import entity.Payment;
-import entity.Promotion;
-import entity.Reservation;
-import entity.Reservation.ReservationStatus;
-import entity.Room;
-
+import entity.Payment.PaymentMethod;
 public class Payment_Boundary extends Boundary{
-
-	private Scanner sc = new Scanner(System.in);
+	
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
-	private Payment payment;
-	final static double TAX = 0.17;
+	private PromotionMrg promotionMrg = PromotionMrg.getInstance();
+    final static double TAX = 0.17;
 	
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
 	}
-	public void displayMain(String code) {
-		String promoCode;
-		Promotion p = null;
-		do {
-		System.out.println("Enter Promtion Code (Enter 0 to exit): ");
-		promoCode = sc.nextLine();
-		 	if(promoCode.equalsIgnoreCase("0")) {
-		 		break;
-		 	}else {
-		 	 p  = PromotionMrg.getInstance().getPromotionByPromotionCode(promoCode);
-		 	 if(!(p.getPromoStartDate().isBefore(LocalDateTime.now())&& p.getPromoEndDate().isAfter(LocalDateTime.now()))) {
-		 	System.out.println("The promotion has already expired");
-		 		 p = null;
-		 	 }
-		 		if(p != null) {
-		 			break;
-		 		}
-		 	}
-		}while(true);
-		
-		Reservation reservation = ReservationMrg.getInstance().getReservationByCode(code);
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");		
-		System.out.println("Date Check In: "+formatter.format(reservation.getCheckIn()));
-		System.out.println("Date Check Out:"+formatter.format(reservation.getCheckOut()));
-		
-		double totalRoomCharge = 0;
-		Room r = RoomMrg.getInstance().getRoomByRoomNum(reservation.getRoomNum());
-		double roomCharge = RoomMrg.getInstance().getRoomCharge(r , reservation.getCheckIn(),reservation.getCheckOut());
-		System.out.println("Room Number: "+ r.getRoomNumber() + " Room Charge: $"+ String.format("%.2f", roomCharge));
-		
-		
-		double totalRoomServiceCharge = 0;
-		List<Order> orderList = OrderMrg.getInstance().searchOrderByRoomNum(reservation.getRoomNum());
-		for(Order order : orderList) {
-			order.printOrderInfo();
-		}
-		OrderMrg.getInstance();
-		totalRoomServiceCharge = OrderMrg.calculateRoomServiceCharge(reservation.getRoomNum());
-		
-		System.out.println("Room Service Charge: $"+String.format("%.2f", totalRoomServiceCharge));
-		
-		double discount = 0;
-		String promoCodeStr = "No promotion";
-		if(p!=null) {
-			discount = p.getDiscount();
-			promoCodeStr = p.getPromotionCode();
-		}
-		System.out.println("Discount: " + discount+" % ("+promoCodeStr+")");
-		
-		System.out.println("Tax: "+TAX + "%");
-		
-		double totalPay = (roomCharge + totalRoomServiceCharge) * (1-discount) * (1+ TAX);
-		System.out.println("Total Price: $"+String.format("%.2f", totalPay) );
-		
+	@Override
+	public void displayMain() {
+		// TODO Auto-generated method stub
 		String choice;
-		String paymentMethod = "CASH";
-		String creditCard = null;
 		do {
-		System.out.println("Select Payment Mode\n"
-				+ "1. Credit/Debit Card\n"
-				+ "2. Cash");
-		choice = sc.nextLine();
-		switch(choice) {
-		case "1":
-			paymentMethod = "CARD";
-			Guest g = GuestMrg.getInstance().getGuestByIC(reservation.getGuestIC());
-			if(g.getCreditCard()!= null) {
-				char confirm;
-				do {
-				System.out.println("Use existing card details for this payment(Y/N)");
-				confirm = sc.nextLine().toUpperCase().charAt(0);
-				if(confirm == 'Y') {
-					creditCard = g.getCreditCard();
-				}else if(confirm == 'N'){
-					System.out.println("Enter new card details for this payment: ");
-					creditCard = sc.nextLine();
-				}
-				}while(confirm != 'Y' || confirm !='N');
-			}else {
-			System.out.println("Enter card details for this payment: ");
-			creditCard = sc.nextLine();
+			System.out.println("Payment System\n" + "0. Return to Main Menu\n" + "1. Create Promotion\n"
+					+ "2. Update Promotion\n" + "3. Delete Promotion\n" + "4. View Promotions\n"
+							+ "5.Check Out");
+			choice = readInputString("Enter choice : ");
+
+			switch (choice) {
+			case "0":
+				break;
+			case "1":
+				//createReservationMenu(CheckInType.RESERVATION);
+				break;
+			case "2":
+				//updateReservationMenu();
+				break;
+			case "3":
+				//deleteReservationMenu();
+				break;
+			case "4":
+				//displayReservationMenu();
+				break;
+			case "5":
+				displayCheckOut();
+			default:
+				break;
 			}
-        	break;
-		case "2":
-			 paymentMethod = "CASH";
-			default:break;
-		}
-		}while(!(choice.equalsIgnoreCase("1")||choice.equalsIgnoreCase("2")));
-		
-		payment =  new Payment(code,promoCode,totalRoomCharge,totalRoomServiceCharge,TAX,discount,totalPay,PaymentMrg.strToPaymentMethod(paymentMethod),creditCard);
-		paymentMrg.createPayment(payment);
+		} while (!choice.equalsIgnoreCase("0"));
 	}
 	
-	public void checkOutMenu() {
-	   String roomNum = readInputString("Enter room number");
-	   Reservation r = ReservationMrg.getInstance().getReservationByRoomNum(roomNum);
-	   if(r!=null && r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
-		 displayMain(r.getReservationCode());
-	   }
+	public void displayCheckOut() {
+
+		String promoCode;
+		double discount = 0;
+		LocalDateTime checkOutDate = LocalDateTime.now();
+		
+		String roomNum = readInputString("Enter room number");
+		boolean success = ReservationMrg.getInstance().setCheckOutReservationByRoomNum(roomNum);
+		
+		if(success) {
+			do {
+			promoCode = readInputString("Enter Promtion Code (Enter 0 for no promotion): ");
+			if(PromotionMrg.checkValidPromotionExist(promoCode)) {
+				promotionMrg.setPromotionCode(promoCode);
+				discount =promotionMrg.getDiscount();
+				break;
+			}else if(promoCode.equalsIgnoreCase("0")) {
+				promoCode = "No promotion";
+				discount = 0;
+				break;
+			}else {
+				System.out.println("The promotion does not exist");
+			}
+			}while(true);
+		
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");	
+			System.out.println("Date Check In: "+formatter.format(ReservationMrg.getInstance().getCheckIn()));
+			System.out.println("Date Check Out:"+formatter.format(checkOutDate));
+			
+			double roomCharge = RoomMrg.getInstance().getRoomCharge(ReservationMrg.getInstance().getCheckIn(),checkOutDate);
+			
+			RoomMrg.getInstance().printRoomInfo();
+			System.out.println("Total Room Charge: $"+ String.format("%.2f", roomCharge));
+			
+			double totalRoomServiceCharge =  OrderMrg.calculateRoomServiceCharge(roomNum);
+			OrderMrg.getInstance().displayAllOrders(roomNum);
+			System.out.println("Room Service Charge: $"+String.format("%.2f", totalRoomServiceCharge));
+			
+
+			System.out.println("Discount: " + discount+" % ("+promoCode+")");		
+			System.out.println("Tax: "+TAX + "%");
+			
+			double totalPay = (roomCharge + totalRoomServiceCharge) * (1-discount) * (1+ TAX);
+			System.out.println("Total Price: $"+String.format("%.2f", totalPay) );
+			
+			String choice;
+			PaymentMethod paymentMethod = PaymentMethod.CASH;
+			String creditCard = GuestMrg.getInstance().getCreditCard();
+			do {
+			 choice = readInputString("Select Payment Mode\n"
+				+ "1. Credit/Debit Card\n"
+				+ "2. Cash");
+			switch(choice) {
+			case "1":
+				paymentMethod = PaymentMethod.CASH;
+				GuestMrg.getInstance().setGuestIC(ReservationMrg.getInstance().getGuestIC());
+				if(creditCard == null) {
+					char confirm;
+					do {
+						System.out.println("Use existing card details for this payment(Y/N)");
+						confirm = sc.nextLine().toUpperCase().charAt(0);
+						if(confirm == 'N') {
+						creditCard = readInputString("Enter new card details for this payment:");
+						}
+						}while(confirm != 'Y' || confirm !='N');								
+				}else {
+					creditCard = readInputString("Enter new card details for this payment:");
+				}
+				break;			
+			case "2":
+				paymentMethod = PaymentMethod.CASH;
+			break;
+			}
+			}while(!(choice.equalsIgnoreCase("1")||choice.equalsIgnoreCase("2")));
+			
+			String reservationCode = ReservationMrg.getInstance().getReservationCode();
+			if(paymentMethod.equals(PaymentMethod.CASH)) {
+				creditCard = null;
+			}
+			paymentMrg.createNewPayment(reservationCode, promoCode, roomCharge, totalRoomServiceCharge, TAX, discount, totalPay, paymentMethod, creditCard);
+			paymentMrg.createPayment();
+			ReservationMrg.getInstance().checkOutReservation(checkOutDate);
+		}else {
+			System.out.println("Unable to check out");
+		}
+						
 	}
+	
+
 	 public void loadData() {
 	        // TODO Auto-generated method stub
 	        try {
@@ -142,9 +152,5 @@ public class Payment_Boundary extends Boundary{
 	        }
 	    }
 
-		@Override
-		public void displayMain() {
-			// TODO Auto-generated method stub
-
-		}
+		
 }
