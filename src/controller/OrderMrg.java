@@ -16,6 +16,7 @@ import entity.MenuItem;
 import entity.Order;
 import entity.Order.OrderBillStatus;
 import entity.Order.OrderStatus;
+import javafx.scene.control.Menu;
 
 public class OrderMrg {
     private ItemList menu;
@@ -145,6 +146,20 @@ public class OrderMrg {
             menu.addItem(menuItem_);
         }
         sc.close();
+    }
+
+    public void writeMenuData() throws IOException {
+        FileWriter fileWriter = new FileWriter(orderFile);
+        PrintWriter fileOut = new PrintWriter(fileWriter);
+        if (menu.getNumOfItems() > 0) {
+            for (MenuItem menu_item : menu.getItemList()) {
+                fileOut.print(menu_item.getName() + ",");
+                fileOut.print(menu_item.getDescription() + ",");
+                fileOut.print(menu_item.getPrice() + ",");
+                fileOut.println();
+            }
+            fileOut.close();
+        }
     }
 
     /**
@@ -322,9 +337,9 @@ public class OrderMrg {
 	}
 
 	public void deleteItem(int selection) {
-        if (selection > 0 && selection <= order.getOrderLists().getNumOfItems()) {
-            order.getOrderLists().displayItems();
-            order.getOrderLists().deleteItem(selection - 1);
+        if (selection > 0 && selection <= menu.getNumOfItems()) {
+            menu.deleteItem(selection - 1);
+            menu.displayItems();
         }
 	}
 
@@ -333,4 +348,25 @@ public class OrderMrg {
         return menu.getNumOfItems();
 	}
 
+	public void addMenuItem(String name, String description, String price) {
+        MenuItem newItem = new MenuItem(name, description, Double.parseDouble(price));
+        menu.addItem(newItem);
+    }
+
+    public void deleteMenuItem(String index){
+        menu.deleteItem(Integer.parseInt(index));
+    }
+
+    public boolean updateMenu(){
+        boolean bool = false;
+        try {
+            writeMenuData();
+            bool = true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+        }
+        return bool;
+    }
+    
 }
