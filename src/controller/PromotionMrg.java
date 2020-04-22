@@ -120,6 +120,7 @@ public class PromotionMrg {
 	   promotion.printPromotionInfo();
 	}
 	public void printAllPromotionInfo() {
+		PromotionMrg promotionMrg = null;
 		List<Promotion> promotionList = promotionMrg.getAllPromotion();
 		for (Promotion p : promotionList) {
 			p.printPromotionInfo();

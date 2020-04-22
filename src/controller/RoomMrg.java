@@ -425,10 +425,8 @@ public class RoomMrg {
 			System.out.println("No room found by the name " + name);
 		}
 	}
-	public void printOrderByRoomNum() {
-		OrderMrg.getInstance().printOrderByRoomNum(room.getRoomNumber());
-	}
-	
+
+
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
