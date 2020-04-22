@@ -149,7 +149,7 @@ public class OrderMrg {
     }
 
     public void writeMenuData() throws IOException {
-        FileWriter fileWriter = new FileWriter(orderFile);
+        FileWriter fileWriter = new FileWriter(menuFile);
         PrintWriter fileOut = new PrintWriter(fileWriter);
         if (menu.getNumOfItems() > 0) {
             for (MenuItem menu_item : menu.getItemList()) {
@@ -344,6 +344,7 @@ public class OrderMrg {
 	}
 
 	public int showMenu() {
+        System.out.println("Hotel Menu:");
         menu.displayItems();
         return menu.getNumOfItems();
 	}
@@ -368,5 +369,18 @@ public class OrderMrg {
         }
         return bool;
     }
+
+	public void setMenuItemName(int parseInt, String userInput2) {
+        menu.getItemList().get(parseInt-1).setName(userInput2);
+	}
+
+	public void setMenuItemDescription(int parseInt, String userInput2) {
+        menu.getItemList().get(parseInt-1).setDescription(userInput2);
+	}
+
+	public void setMenuItemPrice(int parseInt, String userInput2) {
+        double new_price = Double.parseDouble(userInput2);
+        menu.getItemList().get(parseInt-1).setPrice(new_price);
+	}
     
 }
