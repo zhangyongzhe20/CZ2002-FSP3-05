@@ -37,7 +37,7 @@ public class Reservation_Boundary extends Boundary {
 				deleteReservationMenu();
 				break;
 			case "4":
-				displayReservationMenu();
+				viewReservationMenu();
 				break;
 			case "5":
 				checkInMenu();
@@ -52,9 +52,24 @@ public class Reservation_Boundary extends Boundary {
 
 		Character confirm;
 		reservationMrg.createNewReservation();
-
+		boolean bool = true;
 		String ic = readInputString("Enter guest IC : ").toUpperCase();
-		if (GuestMrg.checkGuestExist(ic)) {
+		if (!GuestMrg.checkGuestExist(ic)) {
+			char input;
+			do {
+			input = readInputString("Press Y to create new guest or N to return").toUpperCase()
+							.charAt(0);
+			if(input == 'Y') {
+				Guest_Boundary gb = new Guest_Boundary();
+				gb.createGuestMenu(ic);
+				bool = true;
+			}else if (input == 'N') {
+				bool = false;
+			}
+			}while(!(input == 'Y' ||input == 'N'));
+			
+		}
+		if(bool) {
 			reservationMrg.setCheckInType(checkInType);
 			reservationMrg.setGuestIC(ic);
 			reservationMrg.setReservationCode(reservationMrg.generateReservationCode(ic));
@@ -97,8 +112,6 @@ public class Reservation_Boundary extends Boundary {
 					break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
-		} else {
-			System.out.println("Guest does not exist");
 		}
 	}
 

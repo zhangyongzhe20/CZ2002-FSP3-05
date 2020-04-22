@@ -1,39 +1,28 @@
 package boundary;
 
-import entity.Guest;
-import entity.Room;
-import controller.GuestMrg;
-import controller.RoomMrg;
 
+import entity.Guest.IdentityType;
+import controller.GuestMrg;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.HashMap;
+
 
 public class Guest_Boundary extends Boundary {
-    private Scanner sc = new Scanner(System.in);
-
     private GuestMrg guestMrg = GuestMrg.getInstance();
-
-    private Guest guest;
-
 
     public void displayMain(){
         String choice;
         do {
-            System.out.println(
-                    "Guest System\n" +
-                            "1. Create Guest\n" +
-                            "2. Update Guest\n" +
-                            "3. Find Guest\n" +
-                            "0. Return to Main Menu\n" +
-                            "Enter Choice");
-
-            choice = sc.nextLine();
+            choice = readInputString( "Guest System\n" +
+                    "1. Create Guest\n" +
+                    "2. Update Guest\n" +
+                    "3. Find Guest\n" +
+                    "0. Return to Main Menu\n" +
+                    "Enter Choice");
 
             switch (choice) {
                 case "1":
-                    createGuestMenu();
+                    createGuestMenu(null);
                     break;
                 case "2":
                     updateGuestMenu();
@@ -73,7 +62,7 @@ public class Guest_Boundary extends Boundary {
                 case 2:
                     System.out.println("Identity Type:");
                     String identityType = sc.nextLine();
-                    guestMrg.setIdentityType(GuestMrg.strToIdentityType(identityType));
+                    guestMrg.setIdentityType(guestMrg.strToIdentityType(identityType));
                     break;
                 case 3:
                     System.out.println("Name:");
@@ -125,30 +114,34 @@ public class Guest_Boundary extends Boundary {
     }
 
 
-    private void createGuestMenu() {
+    public void createGuestMenu(String ic) {
         char confirm;
-        guest = new Guest();
+        guestMrg.createNewGuest();
+        if(ic == null) {
         enterIC();
-        if (guestMrg.getGuestByIC(guest.getIC()) == null) {
+        }else {
+        	guestMrg.setGuestIC(ic);
+        }
+        System.out.println(GuestMrg.checkGuestExist(ic));
+        if (!GuestMrg.checkGuestExist(ic)) {
+        	enterIdentityType();
             enterName();
             enterGender();
             enterContact();
-            enterAddress();
             enterCountry();
             enterNationality();
+            enterAddress();
             enterCreditCard();
 
-            guest.printGuestInfo();
-
-            System.out.println(
-                    "Press Y to confirm," + "N to discard and " + "(No.) to edit a field and (No.) to edit a field.");
-            confirm = sc.nextLine().toUpperCase().charAt(0);
+            guestMrg.printGuestInfo();
+            confirm = readInputString("Press Y to confirm," + "N to discard and " + 
+            "(No.) to edit a field and (No.) to edit a field.").toUpperCase().charAt(0);
             switch (confirm) {
                 case 'Y':
-                    guestMrg.createGuest(guest);
+                    guestMrg.createGuest();
                     break;
                 case '1':
-                    enterIC();
+                    enterIdentityType();
                 case '2':
                     enterName();
                     break;
@@ -159,99 +152,71 @@ public class Guest_Boundary extends Boundary {
                     enterContact();
                     break;
                 case '5':
-                    enterAddress();
+                    enterCountry();
                     break;
                 case '6':
                     enterNationality();
                     break;
                 case '7':
-                    enterGender();
+                    enterAddress();
                     break;
                 case '8':
-                    enterContact();
-                    break;
-                case '9':
-                    enterCreditCard();
+                	enterCreditCard();
                     break;
                 default:
                     break;
             }
-        } else {
-            System.out.println("Guest already exist");
-        }
+        } 
     }
 
     private void enterIC() {
-        String choice;
-        do {
-            System.out.println("Create Guest\n" +
-                    "Type of IC(identity confirmation):\n" +
-                    "1. Passport\n" +
-                    "2. Driving License\n");
-            choice = sc.nextLine();
-            if (choice.equalsIgnoreCase("1")) {
-                guest.setIdentityType(GuestMrg.strToIdentityType("PASSPORT"));
-            } else if (choice.equalsIgnoreCase("2")) {
-                guest.setIdentityType(GuestMrg.strToIdentityType("DRIVING LICENSE"));
-            }
-        } while (!(choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("2")));
-
-        System.out.println("IC(Passport/Driving License):");
-        String ic = sc.nextLine();
-        guest.setIC(ic);
+    	String ic = readInputString("Enter ic: ");
+        guestMrg.setGuestIC(ic);
     }
 
     private void enterIdentityType() {
-        System.out.println("Identity Type:");
-        String identityType = sc.nextLine();
-        guest.setIdentityType(GuestMrg.strToIdentityType(identityType));
+    	HashMap<String,String> enumData = getEnumTypeHashMap(IdentityType.class);
+        String identityType = readInputEnum("Enter identity type: ",enumData);
+        guestMrg.setIdentityType(guestMrg.strToIdentityType(identityType));
     }
 
     private void enterName() {
-        System.out.println("Name:");
-        String name = sc.nextLine();
-        guest.setGuestName(name);
+    	 String name = readInputString("Enter name : ");
+    	 guestMrg.setGuestName(name);
 
     }
 
     private void enterAddress() {
-        System.out.println("Address:");
-        String address = sc.nextLine();
-        guest.setAddress(address);
+        String address = readInputString("Enter address : ");
+        guestMrg.setAddress(address);
 
     }
 
     private void enterCountry() {
-        System.out.println("Country:");
-        String country = sc.nextLine();
-        guest.setCountry(country);
+    	String country = readInputString("Enter country : ");
+        guestMrg.setCountry(country);
 
     }
 
     private void enterNationality() {
-        System.out.println("Nationality:");
-        String nationality = sc.nextLine();
-        guest.setNationality(nationality);
+        String nationality =  readInputString("Enter nationality : ");
+        guestMrg.setNationality(nationality);
     }
 
     private void enterGender() {
-        System.out.println("Gender:");
-        String gender = sc.nextLine();
-        guest.setGender(gender);
+        String gender = readInputString("Enter gender : ");
+        guestMrg.setGender(gender);
     }
 
     private void enterContact() {
-        System.out.println("Contact:");
-        String contact = sc.nextLine();
-        guest.setContact(contact);
+        String contact = readInputString("Enter contact : ");
+        guestMrg.setContact(contact);
 
     }
 
-    private void enterCreditCard() {
-        System.out.println("Credit Card:");
-        String creditCard = sc.nextLine();
-        guest.setCreditCard(creditCard);
-
+    private void enterCreditCard() {	
+    	String creditCard = readInputString("Enter credit card : ");
+        guestMrg.setCreditCard(creditCard);
     }
 
     public void loadData() {

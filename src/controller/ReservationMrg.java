@@ -5,12 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import entity.Reservation;
+import entity.Room;
 import entity.Reservation.CheckInType;
 import entity.Reservation.ReservationStatus;
 import entity.Room.RoomStatus;
@@ -352,5 +354,32 @@ public class ReservationMrg {
 			fileOut.close();
 		}
 	}
-
+	 public void checkExpiredReservations() {
+	      for(Reservation r : reservations) {
+	    	   LocalDateTime now = LocalDateTime.now();
+	    	   LocalDateTime checkIn = r.getCheckIn();
+	    	   
+	    	   Duration duration = Duration.between(now, checkIn);
+	    	   if(duration.toHours() <= -1) {
+	    		   if(r.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
+	    			   r.setReservationStatus(ReservationStatus.EXPIRED);
+	    		   }
+	    	   }	    	   
+	      }
+		   try {
+					writeReservationData();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	 }
+	 public static void main(String args[]) {
+		try {
+			ReservationMrg.getInstance().loadReservationData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ReservationMrg.getInstance().checkExpiredReservations();
+	 }
 }

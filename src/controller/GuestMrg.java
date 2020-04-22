@@ -23,9 +23,15 @@ public class GuestMrg {
 		GuestMrg guestMrg = new GuestMrg();
 		return guestMrg;
 	}
-
+	public void createNewGuest() {
+		guest = new Guest();
+	}
 	public void setGuestIC(String ic) {
+		if(checkGuestExist(ic)) {
+			guest = getGuestByIC(ic);
+		}else {
 		guest.setIC(ic);
+		}
 	}
 
 	public void updateGuest() {
@@ -40,17 +46,17 @@ public class GuestMrg {
 	public String getCreditCard() {
 		return guest.getCreditCard();
 	}
-	public static IdentityType strToIdentityType(String strIdentityType) {
+	public IdentityType strToIdentityType(String strIdentityType) {
 		IdentityType identityType = null;
 		if (strIdentityType.equalsIgnoreCase("PASSPORT")) {
-			identityType = IdentityType.Passport;
-		} else if (strIdentityType.equalsIgnoreCase("DRIVING LICENSE")) {
-			identityType = IdentityType.DrivingLicense;
+			identityType = IdentityType.PASSPORT;
+		} else if (strIdentityType.equalsIgnoreCase("DRIVING_LICENSE")) {
+			identityType = IdentityType.DRIVING_LICENSE;
 		}
 		return identityType;
 	}
 
-	public void createGuest(Guest guest) {
+	public void createGuest() {
 		guests.add(guest);
 
 		try {
@@ -84,13 +90,14 @@ public class GuestMrg {
 	}
 
 	
-	public static boolean checkGuestExist(String guestName) {
+	public static boolean checkGuestExist(String ic) {
+		boolean returnValue = false;
 		for (Guest guest : guests) {
-			if (guest.getGuestName().equalsIgnoreCase(guestName)) {
-				return true;
+			if (guest.getIC().equalsIgnoreCase(ic)) {
+				returnValue = true;
 			}
 		}
-		return false;
+		return returnValue;
 	}
 
 	public void loadGuestData() throws FileNotFoundException {
@@ -107,7 +114,7 @@ public class GuestMrg {
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
-			Guest guest = new Guest(temp[0], temp[1], temp[2], temp[3], temp[4], GuestMrg.strToIdentityType(temp[5]), temp[6], temp[7], temp[8]);
+			Guest guest = new Guest(temp[0], temp[1], temp[2], temp[3], temp[4],strToIdentityType(temp[5]), temp[6], temp[7], temp[8]);
 			guests.add(guest);
 		}
 	}
@@ -143,7 +150,9 @@ public class GuestMrg {
 			System.out.println("No guest found by the name " + name);
 		}
 	}
-
+	public void printGuestInfo() {
+	  guest.printGuestInfo();
+	}
 	public void setIdentityType(IdentityType strToIdentityType) {
 		guest.setIdentityType(strToIdentityType);
 	}
