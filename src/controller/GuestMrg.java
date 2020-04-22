@@ -143,4 +143,37 @@ public class GuestMrg {
 			System.out.println("No guest found by the name " + name);
 		}
 	}
+
+	public void setIdentityType(IdentityType strToIdentityType) {
+		guest.setIdentityType(strToIdentityType);
+	}
+
+	public void setGuestName(String nextLine) {
+		guest.setGuestName(nextLine);
+	}
+	   
+
+	public void setGender(String nextLine) {
+		guest.setGender(nextLine);
+	}
+
+	public void setContact(String nextLine) {
+		guest.setContact(nextLine);
+	}
+
+	public void setCountry(String nextLine) {
+		guest.setCountry(nextLine);
+	}
+
+	public void setNationality(String nextLine) {
+		guest.setNationality(nextLine);
+	}
+
+	public void setAddress(String nextLine) {
+		guest.setAddress(nextLine);
+	}
+
+	public void setCreditCard(String nextLine) {
+		guest.setCreditCard(nextLine);
+		}
 }

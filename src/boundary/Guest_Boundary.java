@@ -18,7 +18,7 @@ public class Guest_Boundary extends Boundary {
     private Guest guest;
 
 
-    public void displayMain() throws FileNotFoundException {
+    public void displayMain(){
         String choice;
         do {
             System.out.println(
@@ -45,7 +45,7 @@ public class Guest_Boundary extends Boundary {
         } while (!choice.equalsIgnoreCase("0"));
     }
 
-    private void findGuestMenu() throws FileNotFoundException {
+    private void findGuestMenu(){
         String guestNameToFind = readInputString("Enter guest name to find :");
         if (guestMrg.checkGuestExist(guestNameToFind)) {
             guestMrg.printGuestInfoByName(guestNameToFind);
@@ -70,44 +70,42 @@ public class Guest_Boundary extends Boundary {
                     String ic = sc.nextLine();
                     guestMrg.setGuestIC(ic);
                     break;
-/*
                 case 2:
                     System.out.println("Identity Type:");
                     String identityType = sc.nextLine();
-                    g.setIdentityType(GuestMrg.strToIdentityType(identityType));
+                    guestMrg.setIdentityType(GuestMrg.strToIdentityType(identityType));
                     break;
                 case 3:
                     System.out.println("Name:");
-                    g.setGuestName(sc.nextLine());
+                    guestMrg.setGuestName(sc.nextLine());
                     break;
                 case 4:
                     System.out.println("Gender:");
-                    g.setGender(sc.nextLine());
+                    guestMrg.setGender(sc.nextLine());
                     break;
                 case 5:
                     System.out.println("Contact:");
-                    g.setContact(sc.nextLine());
+                    guestMrg.setContact(sc.nextLine());
                     break;
                 case 6:
                     System.out.println("Country:");
-
-                    g.setCountry(sc.nextLine());
+                    guestMrg.setCountry(sc.nextLine());
                     break;
 
                 case 7:
                     enterNationality();
-                    g.setNationality(sc.nextLine());
+                    guestMrg.setNationality(sc.nextLine());
                     break;
                 case 8:
                     System.out.println("Address:");
-                    g.setAddress(sc.nextLine());
+                    guestMrg.setAddress(sc.nextLine());
                     break;
                 case 9:
                     System.out.println("CreditCard:");
-                    g.setAddress(sc.nextLine());
+                    guestMrg.setCreditCard(sc.nextLine());
                     break;
                 default:
-                    break;*/
+                    break;
                 }
 
                 do {
@@ -234,7 +232,6 @@ public class Guest_Boundary extends Boundary {
         System.out.println("Nationality:");
         String nationality = sc.nextLine();
         guest.setNationality(nationality);
-
     }
 
     private void enterGender() {
