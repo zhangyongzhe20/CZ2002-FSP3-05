@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public abstract class Boundary {
     Scanner sc = new Scanner(System.in);
-    public abstract void displayMain() throws FileNotFoundException;
-    public abstract void loadData();
+    public abstract void displayMain();
+    public abstract void loadData() throws FileNotFoundException;;
 
 
     public String readInputString(String message) {
