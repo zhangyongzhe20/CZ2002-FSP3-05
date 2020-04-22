@@ -1,18 +1,24 @@
 package boundary;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Boundary_Factory {
+    List<Boundary> allBoundary;
+    public Boundary_Factory(){
+        allBoundary = new ArrayList<>();
+        allBoundary.add(new Guest_Boundary());
+        allBoundary.add(new Room_Boundary());
+        allBoundary.add(new Reservation_Boundary());
+        allBoundary.add(new Order_Boundary());
+    }
     public Boundary createBoundary(String selection){
-        switch(selection) {
-			case "1":
-				return new Guest_Boundary();
-			case "2":
-				return new Room_Boundary();
-    		 case "3":
-    			return new Reservation_Boundary();
-             case "4":
-               return new Order_Boundary();
-             case "5":
-             case "6":
-             default: return null;
-			}
+			return allBoundary.get(Integer.parseInt(selection)-1);
+    }
+
+    public void loadAllData(){
+        for(Boundary boundary : allBoundary){
+            boundary.loadData();
+        }
     }
 }
