@@ -56,7 +56,6 @@ public class Reservation_Boundary extends Boundary {
 		String ic = readInputString("Enter guest IC : ").toUpperCase();
 		if (GuestMrg.checkGuestExist(ic)) {
 			reservationMrg.setCheckInType(checkInType);
-			System.out.println(checkInType);
 			reservationMrg.setGuestIC(ic);
 			reservationMrg.setReservationCode(reservationMrg.generateReservationCode(ic));
 			if (checkInType.equals(CheckInType.RESERVATION)) {
@@ -140,7 +139,7 @@ public class Reservation_Boundary extends Boundary {
 
 						switch (confirm) {
 						case 'Y':
-							reservationMrg.updateReservation();
+							reservationMrg.updateReservationDetails();
 							break;
 						case 'N':
 							break;
@@ -189,7 +188,7 @@ public class Reservation_Boundary extends Boundary {
 					confirm = readInputString("Press Y to confirm," + "N to discard").toUpperCase().charAt(0);
 					switch (confirm) {
 					case 'Y':
-						reservationMrg.updateReservation();
+						reservationMrg.updateReservationDetails();
 						break;
 					case 'N':
 						break;

@@ -255,16 +255,7 @@ public class OrderMrg {
         }
     }
     
-    public void printOrderByRoomNum(String room_id) {
-    	List<Order> orders = searchOrderByRoomNum(room_id);
-    	if(orders.size() != 0) {
-    	for(Order order : orders) {
-			order.printOrderInfo();
-		}
-    	}else {
-    		System.out.println("No room orders found");
-    	}
-    }
+
         // Used in Order Report page
 	public void printOrderByStatus(OrderStatus status) {
         Boolean found = false;

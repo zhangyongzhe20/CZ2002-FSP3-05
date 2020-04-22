@@ -44,7 +44,7 @@ public class PromotionMrg {
 	}
 	public void setPromotionCode(String promotionCode) {
 		if(checkPromotionExist(promotionCode)) {
-			promotion = getPromotionByPromotionCode(promotionCode)
+			promotion = getPromotionByPromotionCode(promotionCode);
 		}else {
 		promotion.setPromotionCode(promotionCode);
 		}
@@ -116,6 +116,15 @@ public class PromotionMrg {
 		return promotions;
 	}
 	
+	public void printPromotionInfo() {
+	   promotion.printPromotionInfo();
+	}
+	public void printAllPromotionInfo() {
+		List<Promotion> promotionList = promotionMrg.getAllPromotion();
+		for (Promotion p : promotionList) {
+			p.printPromotionInfo();
+		}
+	}
 	public void loadPromotionData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
