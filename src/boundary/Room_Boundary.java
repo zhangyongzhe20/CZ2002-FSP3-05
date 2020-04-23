@@ -2,12 +2,8 @@ package boundary;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
-import controller.GuestMrg;
-import controller.ReservationMrg;
+
 import controller.RoomMrg;
-import entity.Room;
 import entity.Room.BedType;
 import entity.Room.Facing;
 import entity.Room.RoomStatus;

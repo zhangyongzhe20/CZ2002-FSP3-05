@@ -20,6 +20,7 @@ public abstract class Boundary {
     	String input = sc.nextLine();
 		return input;
     }
+
     public int readInputInt(String message) {
     	int input = -1;
     	while (input < 0) {

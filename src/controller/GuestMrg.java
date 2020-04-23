@@ -10,31 +10,27 @@ import java.util.List;
 import java.util.Scanner;
 import entity.Guest;
 import entity.Guest.IdentityType;
-import entity.Reservation;
-import entity.Room;
 
 public class GuestMrg {
 
-	private static List<Guest> guests = new ArrayList<Guest>();
-	final static String FILENAME = "guest_data.txt";
-	private Guest guest;
+	private static List<Guest> guests = new ArrayList<Guest>();;
+	private final static String FILENAME = "guest_data.txt";
+	private static Guest guest = new Guest();
 
 	public static GuestMrg getInstance() {
-		GuestMrg guestMrg = new GuestMrg();
-		return guestMrg;
-	}
-	public void createNewGuest() {
-		guest = new Guest();
-	}
-	public void setGuestIC(String ic) {
-		if(checkGuestExist(ic)) {
-			guest = getGuestByIC(ic);
-		}else {
-		guest.setIC(ic);
-		}
+		return new GuestMrg();
 	}
 
+
+
 	public void updateGuest() {
+		int index = 0;
+		for (Guest guest : guests) {
+			if (guest.getGuestName().equalsIgnoreCase(guest.getGuestName())) {
+				guests.set(index, guest);
+			}	
+      	index++;
+		}
 		try {
 			writeGuestData();
 		} catch (IOException e) {
@@ -72,16 +68,28 @@ public class GuestMrg {
 
 	}
 
-	public Guest getGuestByIC(String ic) {
-		Guest g = null;
-		for (Guest guest : guests) {
-			if (guest.getIC().equalsIgnoreCase(ic)) {
-				g = guest;
+	public static boolean checkGuestByIC(String ic) {
+		for (Guest guest_ : guests) {
+			if (guest_.getIC().equalsIgnoreCase(ic)) {
+				guest = guest_;
+				return true;
 			}
 		}
-		return g;
+		return false;
 	}
 
+	public static boolean checkGuestByName(String name) {
+		for (Guest guest_ : guests) {
+			if (guest_.getGuestName().equalsIgnoreCase(name)) {
+				guest = guest_;
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	//used in roomMrg
 	public List<Guest> getGuestByName(String name) {
 		List<Guest> guestList = new ArrayList<>();
 		for (Guest guest : guests) {
@@ -93,16 +101,9 @@ public class GuestMrg {
 		return guestList;
 	}
 
+
 	
-	public static boolean checkGuestExist(String ic) {
-		boolean returnValue = false;
-		for (Guest guest : guests) {
-			if (guest.getIC().equalsIgnoreCase(ic)) {
-				returnValue = true;
-			}
-		}
-		return returnValue;
-	}
+
 
 	public void loadGuestData() throws FileNotFoundException {
 		File file = new File(FILENAME);
@@ -118,9 +119,19 @@ public class GuestMrg {
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
-			Guest guest = new Guest(temp[0], temp[1], temp[2], temp[3], temp[4],strToIdentityType(temp[5]), temp[6], temp[7], temp[8]);
+			Guest guest = new Guest();
+			guest.setGuestName(temp[0]);
+			guest.setCreditCard(temp[1]);
+			guest.setAddress(temp[2]);
+			guest.setCountry(temp[3]);
+			guest.setGender(temp[4]);
+			guest.setIdentityType(strToIdentityType(temp[5]));
+			guest.setIC(temp[6]);
+			guest.setNationality(temp[7]);
+			guest.setContact(temp[8]);
 			guests.add(guest);
 		}
+		sc.close();
 	}
 
 	public void writeGuestData() throws IOException {
@@ -139,32 +150,39 @@ public class GuestMrg {
 				fileOut.print(guest.getContact() + ",");
 				fileOut.println();
 			}
-			System.out.println("finish writing");
 			fileOut.close();
 		}
 	}
 
-	public void printGuestInfoByName(String name) {
-		List<Guest> guestList = getGuestByName(name);
-		if (guestList.size() > 0) {
-			for (Guest g : guestList) {
-				g.printGuestInfo();
-			}
-		} else {
-			System.out.println("No guest found by the name " + name);
-		}
-	}
 	public void printGuestInfo() {
 	  guest.printGuestInfo();
 	}
+
 	public void setIdentityType(IdentityType strToIdentityType) {
 		guest.setIdentityType(strToIdentityType);
 	}
 
-	public void setGuestName(String nextLine) {
-		guest.setGuestName(nextLine);
+	public void setGuestName(String name) {
+		if (checkGuestByName(name))
+			guest = getGuestsByName(name);
+		else
+			guest.setGuestName(name);
 	}
-	   
+
+	
+	private Guest getGuestsByName(String name) {
+		Guest g = null;
+		for (Guest guest : guests) {
+			if (guest.getGuestName().equalsIgnoreCase(name)) {
+				g=guest;
+			}
+		}
+		return g;
+	}
+
+	public void setGuestIC(String ic) {
+		guest.setIC(ic);
+	}
 
 	public void setGender(String nextLine) {
 		guest.setGender(nextLine);
