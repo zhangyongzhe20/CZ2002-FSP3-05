@@ -280,7 +280,7 @@ public class Reservation_Boundary extends Boundary {
 		System.out.println("-------------------------------------------");
 	}
 
-	public void checkInMenu() {
+	private void checkInMenu() {
 		String i;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");

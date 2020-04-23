@@ -22,8 +22,8 @@ import entity.Room.RoomStatus;
 import entity.Room.RoomType;
 
 public class RoomMrg {
-	public static List<Room> rooms = new ArrayList<Room>();
-	final static String fileName = "room_data.txt";
+	private static List<Room> rooms = new ArrayList<Room>();
+	private final static String fileName = "room_data.txt";
 	private Room room;
 
 	public static RoomMrg getInstance() {

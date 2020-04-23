@@ -17,8 +17,8 @@ public class PaymentMrg {
     /**
      * Consider the guest could visit the hotel more than once
      */
-	public static List<Payment> payments = new ArrayList<Payment>();
-	final static String fileName = "payment_data.txt";
+	private static List<Payment> payments = new ArrayList<Payment>();
+	private final static String fileName = "payment_data.txt";
 	private Payment payment;
 	
 	public static PaymentMrg getInstance() {
