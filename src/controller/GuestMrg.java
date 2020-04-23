@@ -15,28 +15,24 @@ import entity.Room;
 
 public class GuestMrg {
 
-	private static List<Guest> guests = new ArrayList<Guest>();
+	private static List<Guest> guests = new ArrayList<Guest>();;
 	private final static String FILENAME = "guest_data.txt";
-	private Guest guest;
+	private static Guest guest = new Guest();
 
 	public static GuestMrg getInstance() {
 		return new GuestMrg();
 	}
 
-	public void createNewGuest() {
-		guest = new Guest();
-	}
 
-
-	public void setGuestIC(String ic) {
-		if(checkGuestExist(ic)) {
-			guest = getGuestByIC(ic);
-		}else {
-		guest.setIC(ic);
-		}
-	}
 
 	public void updateGuest() {
+		int index = 0;
+		for (Guest guest : guests) {
+			if (guest.getGuestName().equalsIgnoreCase(guest.getGuestName())) {
+				guests.set(index, guest);
+			}	
+      	index++;
+		}
 		try {
 			writeGuestData();
 		} catch (IOException e) {
@@ -70,16 +66,28 @@ public class GuestMrg {
 
 	}
 
-	public Guest getGuestByIC(String ic) {
-		Guest g = null;
-		for (Guest guest : guests) {
-			if (guest.getIC().equalsIgnoreCase(ic)) {
-				g = guest;
+	public static boolean checkGuestByIC(String ic) {
+		for (Guest guest_ : guests) {
+			if (guest_.getIC().equalsIgnoreCase(ic)) {
+				guest = guest_;
+				return true;
 			}
 		}
-		return g;
+		return false;
 	}
 
+	public static boolean checkGuestByName(String name) {
+		for (Guest guest_ : guests) {
+			if (guest_.getGuestName().equalsIgnoreCase(name)) {
+				guest = guest_;
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	//used in roomMrg
 	public List<Guest> getGuestByName(String name) {
 		List<Guest> guestList = new ArrayList<>();
 		for (Guest guest : guests) {
@@ -91,25 +99,9 @@ public class GuestMrg {
 		return guestList;
 	}
 
-	public Guest getGuestsByName(String name) {
-		Guest g = null;
-		for (Guest guest : guests) {
-			if (guest.getGuestName().equalsIgnoreCase(name)) {
-				g=guest;
-			}
-		}
-		return g;
-	}
 
 	
-	public static boolean checkGuestExist(String name) {
-		for (Guest guest : guests) {
-			if (guest.getGuestName().equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
+
 
 	public void loadGuestData() throws FileNotFoundException {
 		File file = new File(FILENAME);
@@ -156,7 +148,6 @@ public class GuestMrg {
 				fileOut.print(guest.getContact() + ",");
 				fileOut.println();
 			}
-			System.out.println("finish writing");
 			fileOut.close();
 		}
 	}
@@ -170,12 +161,26 @@ public class GuestMrg {
 	}
 
 	public void setGuestName(String name) {
-		if (checkGuestExist(name))
+		if (checkGuestByName(name))
 			guest = getGuestsByName(name);
 		else
 			guest.setGuestName(name);
 	}
-	   
+
+	
+	private Guest getGuestsByName(String name) {
+		Guest g = null;
+		for (Guest guest : guests) {
+			if (guest.getGuestName().equalsIgnoreCase(name)) {
+				g=guest;
+			}
+		}
+		return g;
+	}
+
+	public void setGuestIC(String ic) {
+		guest.setIC(ic);
+	}
 
 	public void setGender(String nextLine) {
 		guest.setGender(nextLine);

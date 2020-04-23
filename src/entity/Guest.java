@@ -126,6 +126,6 @@ public class Guest {
 		System.out.println("7.Nationality: " + this.getNationality());
 		System.out.println("8.Address: " + this.getAddress());
 		System.out.println("9.Credit Card : " + this.getCreditCard());
-		System.out.println();
+		System.out.println(" -------------------------------------------");
 	}
 }

@@ -54,7 +54,7 @@ public class Reservation_Boundary extends Boundary {
 		reservationMrg.createNewReservation();
 		boolean bool = true;
 		String ic = readInputString("Enter guest IC : ").toUpperCase();
-		if (!GuestMrg.checkGuestExist(ic)) {
+		if (!GuestMrg.checkGuestByIC(ic)) {
 			char input;
 			do {
 			input = readInputString("Press Y to create new guest or N to return").toUpperCase()

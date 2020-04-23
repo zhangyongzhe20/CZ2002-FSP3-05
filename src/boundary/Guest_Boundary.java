@@ -29,7 +29,7 @@ public class Guest_Boundary extends Boundary {
                     updateGuestMenu();
                     break;
                 case "3":
-                    findGuestByNameMenu();
+                findGuestMenu();
                     break;
                 default:
                     break;
@@ -39,7 +39,6 @@ public class Guest_Boundary extends Boundary {
 
     public void createGuestMenu() {
         Character confirm;
-        guestMrg.createNewGuest();
         //get user input
         enterIdentityType();
         enterIC();
@@ -92,10 +91,26 @@ public class Guest_Boundary extends Boundary {
         } while (!(confirm.equals('Y') || confirm.equals('N')));
     }
 
-
+    private void findGuestMenu(){
+        String selection = readInputString("Search guest:\n" + "1. By IC\n" + "2. By Name\n" + "0. Return to previous page");
+        switch(selection){
+            case "0":
+            break;
+            case "1":findGuestByICMenu(); break;
+            case "2":findGuestByNameMenu(); break;
+        }
+    }
     private void findGuestByNameMenu() {
         String guestName = readInputString("Enter guest name to find :");
-        if (guestMrg.checkGuestExist(guestName)) {
+        if (guestMrg.checkGuestByName(guestName)) {
+            guestMrg.printGuestInfo();
+        } else {
+            System.out.println("Guest does not exist");
+        }
+    }
+    private void findGuestByICMenu(){
+        String guestIC = readInputString("Enter guest IC to find :");
+        if (guestMrg.checkGuestByIC(guestIC)) {
             guestMrg.printGuestInfo();
         } else {
             System.out.println("Guest does not exist");
@@ -104,20 +119,16 @@ public class Guest_Boundary extends Boundary {
 
     private void updateGuestMenu() {
         String guestName = readInputString("Enter guest name : ");
-        guestMrg.getGuestsByName(guestName);
-
-        if (GuestMrg.checkGuestExist(guestName)) {
+        if (guestMrg.checkGuestByName(guestName)) {
             Character confirm;
-            guestMrg.setGuestName(guestName);
             do {
                 guestMrg.printGuestInfo();
-
                 confirm = readInputString("Press Y to confirm," + "N to discard and "
                         + "(No.) to edit a field.").toUpperCase().charAt(0);
 
                 switch (confirm) {
                     case 'Y':
-                        guestMrg.createGuest();
+                        guestMrg.updateGuest();
                         break;
                     case '1':
                         enterIC();
@@ -204,11 +215,11 @@ public class Guest_Boundary extends Boundary {
 
     private void enterContact() {
         do {
-            Integer contact = readInputInt("Enter contact : ");
-            if (contact.toString().length() != 8)
+            String contact = readInputString("Enter contact : ");
+            if (contact.length() != 8)
                 System.out.println("Invalid Input! The contact should have 8 numbers.");
             else {
-                guestMrg.setContact(contact.toString());
+                guestMrg.setContact(contact);
                 break;
             }
         } while (true);
