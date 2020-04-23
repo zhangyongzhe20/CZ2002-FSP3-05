@@ -244,6 +244,7 @@ public class Payment_Boundary extends Boundary {
 			String promotionCode = readInputString("Enter promotion code: ");
 			if (!PromotionMrg.checkPromotionExist(promotionCode)) {
 				promotionMrg.setPromotionCode(promotionCode);
+				break;
 			} else {
 				System.out.println("Promotion already exist");
 			}

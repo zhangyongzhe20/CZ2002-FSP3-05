@@ -73,9 +73,11 @@ public class RoomMrg {
 	public void setRoomStatus(RoomStatus roomStatus) {
 		room.setRoomStatus(roomStatus);
 	}
+
 	public RoomStatus getRoomStatus() {
 		return room.getRoomStatus();
 	}
+
 	public RoomType strToRoomType(String type) {
 		RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
@@ -220,7 +222,7 @@ public class RoomMrg {
 	public double getRoomCharge(LocalDateTime checkInDate, LocalDateTime checkOutDate) {
 		double price = 0;
 		double total_price = 0;
-		
+
 		List<Integer> days = new ArrayList<Integer>();
 		long duration = Duration.between(checkInDate, checkOutDate).toDays();
 		int checkin_ = checkInDate.getDayOfWeek().getValue();
@@ -229,12 +231,12 @@ public class RoomMrg {
 			days.add(checkin_);
 			checkin_ = (checkin_ + 1) % 7;
 		}
-		
+
 		for (int day : days) {
 			if (day == 0 || day == 6) {
 				price = room.getRoomRateWeekend();
-			}else {
-			price = room.getRoomRateWeekday();
+			} else {
+				price = room.getRoomRateWeekday();
 			}
 			total_price += price;
 
@@ -396,7 +398,6 @@ public class RoomMrg {
 		}
 	}
 
-
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
@@ -407,83 +408,98 @@ public class RoomMrg {
 
 		Scanner sc = new Scanner(file);
 		String data;
-		if(sc.hasNextLine()) {
-		while (sc.hasNextLine()) {
-			data = sc.nextLine();
-			String[] temp = data.split(",");
-			Room r = new Room();
-			r.setRoomNumber(temp[0]);
-			r.setRoomType(strToRoomType(temp[1]));
-			r.setBedType(strToBedType(temp[2]));
-			r.setFacing(strToFacing(temp[3]));
-			r.setRoomRateWeekday(Double.parseDouble(temp[4]));
-			r.setRoomRateWeekend(Double.parseDouble(temp[5]));
-			r.setHasWifi(Boolean.parseBoolean(temp[6]));
-			r.setAllowSmoking(Boolean.parseBoolean(temp[7]));
-			r.setRoomStatus(strToRoomStatus(temp[8]));
-			rooms.add(r);
-		}
-		}else {
-			for(int i = 2 ; i < 8 ; i++) {
-				for(int j = 1 ; j < 49; j++) {
+		if (sc.hasNextLine()) {
+			while (sc.hasNextLine()) {
+				data = sc.nextLine();
+				String[] temp = data.split(",");
+				Room r = new Room();
+				r.setRoomNumber(temp[0]);
+				r.setRoomType(strToRoomType(temp[1]));
+				r.setBedType(strToBedType(temp[2]));
+				r.setFacing(strToFacing(temp[3]));
+				r.setRoomRateWeekday(Double.parseDouble(temp[4]));
+				r.setRoomRateWeekend(Double.parseDouble(temp[5]));
+				r.setHasWifi(Boolean.parseBoolean(temp[6]));
+				r.setAllowSmoking(Boolean.parseBoolean(temp[7]));
+				r.setRoomStatus(strToRoomStatus(temp[8]));
+				rooms.add(r);
+			}
+		} else {
+			for (int i = 2; i < 8; i++) {
+				for (int j = 1; j < 49; j++) {
 					Room r = new Room();
-					if(j < 10) {
-						r.setRoomNumber("0"+i+"0"+j);
-					}else {
-					r.setRoomNumber("0"+i+j);
+					if (j < 10) {
+						r.setRoomNumber("0" + i + "0" + j);
+					} else {
+						r.setRoomNumber("0" + i + j);
 					}
-					
+
 					Random generator = new Random();
-					
+
 					switch (generator.nextInt(4)) {
-					case 0: r.setRoomType(RoomType.SINGLE);
-					break;
-					case 1: r.setRoomType(RoomType.DOUBLE);
-					break;
-					case 2: r.setRoomType(RoomType.DELUXE);
-					break;
-					case 3: r.setRoomType(RoomType.VIP);
-					break;
+					case 0:
+						r.setRoomType(RoomType.SINGLE);
+						break;
+					case 1:
+						r.setRoomType(RoomType.DOUBLE);
+						break;
+					case 2:
+						r.setRoomType(RoomType.DELUXE);
+						break;
+					case 3:
+						r.setRoomType(RoomType.VIP);
+						break;
 					}
-					
+
 					switch (generator.nextInt(3)) {
-					case 0: r.setBedType(BedType.SINGLE);
-					break;
-					case 1: r.setBedType(BedType.DOUBLE);
-					break;
-					case 2: r.setBedType(BedType.KING);
-					break;
+					case 0:
+						r.setBedType(BedType.SINGLE);
+						break;
+					case 1:
+						r.setBedType(BedType.DOUBLE);
+						break;
+					case 2:
+						r.setBedType(BedType.KING);
+						break;
 					}
-					
+
 					switch (generator.nextInt(4)) {
-					case 0: r.setFacing(Facing.NORTH);
-					break;
-					case 1: r.setFacing(Facing.EAST);
-					break;
-					case 2: r.setFacing(Facing.WEST);
-					break;
-					case 3: r.setFacing(Facing.SOUTH);
-					break;
+					case 0:
+						r.setFacing(Facing.NORTH);
+						break;
+					case 1:
+						r.setFacing(Facing.EAST);
+						break;
+					case 2:
+						r.setFacing(Facing.WEST);
+						break;
+					case 3:
+						r.setFacing(Facing.SOUTH);
+						break;
 					}
-					
-					r.setRoomRateWeekday(generator.nextInt(500)+1);
-					r.setRoomRateWeekend(r.getRoomRateWeekday()+50);
-					
+
+					r.setRoomRateWeekday(generator.nextInt(500) + 1);
+					r.setRoomRateWeekend(r.getRoomRateWeekday() + 50);
+
 					switch (generator.nextInt(2)) {
-					case 0: r.setHasWifi(true);
-					break;
-					case 1:r.setHasWifi(false);
-					break;
+					case 0:
+						r.setHasWifi(true);
+						break;
+					case 1:
+						r.setHasWifi(false);
+						break;
 					}
 					switch (generator.nextInt(2)) {
-					case 0: r.setAllowSmoking(true);
-					break;
-					case 1:r.setAllowSmoking(false);
-					break;
+					case 0:
+						r.setAllowSmoking(true);
+						break;
+					case 1:
+						r.setAllowSmoking(false);
+						break;
 					}
 					r.setRoomStatus(RoomStatus.VACANT);
 					rooms.add(r);
-				}	
+				}
 			}
 			try {
 				writeRoomData();

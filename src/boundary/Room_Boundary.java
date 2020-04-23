@@ -16,11 +16,12 @@ import entity.Room.RoomType;
 public class Room_Boundary extends Boundary {
 
 	private RoomMrg roomMrg = RoomMrg.getInstance();
+
 	public void displayMain() {
 		String choice;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
-					+ "3. Search Room\n" +  "4. Print Room Status Report");
+					+ "3. Search Room\n" + "4. Print Room Status Report");
 			choice = readInputString("Enter choice : ");
 
 			switch (choice) {
@@ -40,14 +41,13 @@ public class Room_Boundary extends Boundary {
 				break;
 			}
 		} while (!choice.equalsIgnoreCase("0"));
-		
-	}
 
+	}
 
 	private void createRoomMenu() {
 		Character confirm;
 		roomMrg.createNewRoom();
-		//get user input
+		// get user input
 		enterRoomNum();
 		enterRoomType();
 		enterBedType();
@@ -59,7 +59,8 @@ public class Room_Boundary extends Boundary {
 		roomMrg.setRoomStatus(Room.RoomStatus.VACANT);
 		do {
 			roomMrg.printRoomInfo();
-			confirm = readInputString("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.").toUpperCase().charAt(0);
+			confirm = readInputString("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.")
+					.toUpperCase().charAt(0);
 			switch (confirm) {
 			case 'Y':
 				roomMrg.createRoom();
@@ -103,7 +104,7 @@ public class Room_Boundary extends Boundary {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Search Room by Room number\n"
 					+ "2. Search Room by Guest name");
 
-			i =  readInputString("Enter choice :");
+			i = readInputString("Enter choice :");
 			switch (i) {
 			case "0":
 				break;
@@ -117,13 +118,12 @@ public class Room_Boundary extends Boundary {
 		} while (!i.equalsIgnoreCase("0"));
 	}
 
-
 	private void updateRoomMenu() {
 		String i;
 		do {
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Update Room details\n"
 					+ "2. Update Room Status");
-			i =  readInputString("Enter choice :");
+			i = readInputString("Enter choice :");
 			switch (i) {
 			case "0":
 				break;
@@ -138,9 +138,9 @@ public class Room_Boundary extends Boundary {
 	}
 
 	private void updateRoomBydetailsMenu() {
-		String roomNum =  readInputString("Enter room number : ");
-	   roomMrg.getRoomByRoomNum(roomNum);
-		
+		String roomNum = readInputString("Enter room number : ");
+		roomMrg.getRoomByRoomNum(roomNum);
+
 		if (RoomMrg.checkRoomExist(roomNum)) {
 			Character confirm;
 			roomMrg.setRoomNumber(roomNum);
@@ -148,7 +148,7 @@ public class Room_Boundary extends Boundary {
 				roomMrg.printRoomInfo();
 				confirm = readInputString("Press Y to confirm," + "N to discard and "
 						+ "(No.) to edit a field.(Unable to edit Room Number and Room Status").toUpperCase().charAt(0);
-				
+
 				switch (confirm) {
 				case 'Y':
 					roomMrg.updateRoom();
@@ -180,57 +180,57 @@ public class Room_Boundary extends Boundary {
 					break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
-		}else {
+		} else {
 			System.out.println("There are no room existed by this room number");
 		}
 
 	}
 
 	private void updateRoomStatusMenu() {
-		String roomNum =  readInputString("Enter room Number : ");
-		   roomMrg.getRoomByRoomNum(roomNum);
-			
-			if (RoomMrg.checkRoomExist(roomNum)) {
+		String roomNum = readInputString("Enter room Number : ");
+		roomMrg.getRoomByRoomNum(roomNum);
+
+		if (RoomMrg.checkRoomExist(roomNum)) {
 			Character confirm;
 			roomMrg.setRoomNumber(roomNum);
-			if(roomMrg.getRoomStatus().equals(RoomStatus.VACANT)) {
-			HashMap<String,String> enumData = getEnumTypeHashMap(RoomStatus.class);
-			String status = readInputEnum("Enter new status: ",enumData);
-			roomMrg.setRoomStatus(roomMrg.strToRoomStatus(status));
-			
-			do {
-				roomMrg.printRoomInfo();
-				confirm = readInputString("Press Y to confirm," + "N to discard").toUpperCase().charAt(0);
-				switch (confirm) {
-				case 'Y':
-				 roomMrg.updateRoom();
-					break;
-				case 'N':
-					break;
-				default:
-					break;
-				}
-			} while (!(confirm.equals('Y') || confirm.equals('N')));
-			}else {
+			if (roomMrg.getRoomStatus().equals(RoomStatus.VACANT)) {
+				HashMap<String, String> enumData = getEnumTypeHashMap(RoomStatus.class);
+				String status = readInputEnum("Enter new status: ", enumData);
+				roomMrg.setRoomStatus(roomMrg.strToRoomStatus(status));
+
+				do {
+					roomMrg.printRoomInfo();
+					confirm = readInputString("Press Y to confirm," + "N to discard").toUpperCase().charAt(0);
+					switch (confirm) {
+					case 'Y':
+						roomMrg.updateRoom();
+						break;
+					case 'N':
+						break;
+					default:
+						break;
+					}
+				} while (!(confirm.equals('Y') || confirm.equals('N')));
+			} else {
 				System.out.println("There are guests being assign to this room");
 			}
-		}else {
+		} else {
 			System.out.println("There are no room existed by this room number");
 		}
 	}
 
 	private void searchRoomByRoomNumMenu() {
-		String roomNum =  readInputString("Enter room number :");
+		String roomNum = readInputString("Enter room number :");
 		if (RoomMrg.checkRoomExist(roomNum)) {
 			roomMrg.printRoomInfo();
-		}else {
+		} else {
 			System.out.println("Room does not exist");
 		}
-		
+
 	}
 
 	public void searchRoomByGuestNameMenu() {
-		String name =  readInputString("Enter guest name :");
+		String name = readInputString("Enter guest name :");
 		roomMrg.printRoomByGuestName(name);
 	}
 
@@ -238,35 +238,35 @@ public class Room_Boundary extends Boundary {
 		do {
 			String roomNum = readInputString("Enter room number: ");
 			System.out.println(roomNum);
-			 if (roomNum.matches("^[0-9]*$")) {
-		if(!RoomMrg.checkRoomExist(roomNum)) {
-			roomMrg.setRoomNumber(roomNum);
-			break;
-		}else {
-			System.out.println("Room number has already been used");
-		}
-			 }else {
-				 System.out.println("Please enter room number in digits");
-			 }
-		}while(true);
+			if (roomNum.matches("^[0-9]*$")) {
+				if (!RoomMrg.checkRoomExist(roomNum)) {
+					roomMrg.setRoomNumber(roomNum);
+					break;
+				} else {
+					System.out.println("Room number has already been used");
+				}
+			} else {
+				System.out.println("Please enter room number in digits");
+			}
+		} while (true);
 	}
 
 	private void enterRoomType() {
-			HashMap<String,String> enumData = getEnumTypeHashMap(RoomType.class);
-			String roomType = readInputEnum("Enter room type: ",enumData);
-			roomMrg.setRoomType(roomMrg.strToRoomType(roomType));
+		HashMap<String, String> enumData = getEnumTypeHashMap(RoomType.class);
+		String roomType = readInputEnum("Enter room type: ", enumData);
+		roomMrg.setRoomType(roomMrg.strToRoomType(roomType));
 	}
 
 	private void enterBedType() {
-		HashMap<String,String> enumData = getEnumTypeHashMap(BedType.class);
-		String bedType = readInputEnum("Enter Bed type: ",enumData);
+		HashMap<String, String> enumData = getEnumTypeHashMap(BedType.class);
+		String bedType = readInputEnum("Enter Bed type: ", enumData);
 		roomMrg.setBedType(roomMrg.strToBedType(bedType));
 
 	}
 
 	private void enterFacing() {
-		HashMap<String,String> enumData = getEnumTypeHashMap(Facing.class);
-		String facing = readInputEnum("Enter Bed type: ",enumData);
+		HashMap<String, String> enumData = getEnumTypeHashMap(Facing.class);
+		String facing = readInputEnum("Enter Bed type: ", enumData);
 		roomMrg.setFacing(roomMrg.strToFacing(facing));
 
 	}
@@ -277,7 +277,7 @@ public class Room_Boundary extends Boundary {
 	}
 
 	private void enterWeekendRate() {
-		
+
 		Double weekendRate = readInputDouble("Enter weekend rate: ");
 		roomMrg.setRoomRateWeekend(weekendRate);
 	}
@@ -292,13 +292,13 @@ public class Room_Boundary extends Boundary {
 		roomMrg.setHasWifi(bool);
 	}
 
-    public void loadData() {
-        // TODO Auto-generated method stub
-        try {
-        	roomMrg.loadRoomData();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	public void loadData() {
+		// TODO Auto-generated method stub
+		try {
+			roomMrg.loadRoomData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
