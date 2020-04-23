@@ -46,6 +46,14 @@ public class GuestMrg {
 		}
 		return null;
 	}
+	public Guest getGuestByIC(String ic) {
+		for(Guest guest : guests) {
+			if(guest.getIC().equalsIgnoreCase(ic)) {
+				return guest;
+			}
+		}
+		return null;
+	}
 	public IdentityType strToIdentityType(String strIdentityType) {
 		IdentityType identityType = null;
 		if (strIdentityType.equalsIgnoreCase("PASSPORT")) {
