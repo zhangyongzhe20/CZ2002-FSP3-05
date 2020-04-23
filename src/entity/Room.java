@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
-public class Room {
+public class  Room{
 	
 	private String roomNumber;
     private RoomType roomType;

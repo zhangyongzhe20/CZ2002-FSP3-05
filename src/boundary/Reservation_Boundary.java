@@ -322,7 +322,7 @@ public class Reservation_Boundary extends Boundary {
 
 				reservationMrg.setReservationStatus(ReservationStatus.CHECKIN);
 				reservationMrg.updateReservationDetails();
-				// System.out.println("Sucessfully check in to the room");
+				// System.out.println("Successfully check in to the room");
 			} else {
 				System.out.println("Reservation is not found");
 			}

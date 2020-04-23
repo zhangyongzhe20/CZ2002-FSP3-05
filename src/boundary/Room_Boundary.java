@@ -240,24 +240,18 @@ public class Room_Boundary extends Boundary {
 				+ "2. Print Room Report By Room Status");
 		switch(input) {
 		case "0":
-			RoomStatusReportMenu();
 			break;
 		case "1":
 			roomMrg.printRoomReport();
 			break;
 		case "2":
-			RoomStatusReportMenu();
+			roomMrg.printRoomStatusReport();
 			break;
 			default : break;
 		}
 		}while(!input.equalsIgnoreCase("0"));
 	}
 	
-	private void RoomStatusReportMenu() {
-		HashMap<String, String> enumData = getEnumTypeHashMap(RoomStatus.class);
-		String roomStatus = readInputEnum("Enter room Status: ", enumData);
-		roomMrg.printRoomStatusReport(roomStatus);
-	}
 	private void searchRoomByRoomNumMenu() {
 		String roomNum = readInputString("Enter room number :");
 		if (RoomMrg.checkRoomExist(roomNum)) {

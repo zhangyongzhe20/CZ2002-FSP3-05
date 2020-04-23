@@ -335,43 +335,6 @@ public class RoomMrg {
 		System.out.println("VIP:    Number: " + vipRoomListVacantCount + " out of " + vipRoomListTotal);
 		System.out.print("	Rooms: ");
 		printRoomNumber(vipRoomList);
-
-		List<Room> vacantList = new ArrayList<Room>();
-		List<Room> occupiedList = new ArrayList<Room>();
-		List<Room> reservedList = new ArrayList<Room>();
-		List<Room> maintenanceList = new ArrayList<Room>();
-		System.out.println("-------------------------------------------");
-		System.out.println("Room status");
-
-		for (Room r : rooms) {
-			if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
-				vacantList.add(r);
-			}
-			if (r.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
-				occupiedList.add(r);
-			}
-			if (r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
-				reservedList.add(r);
-			}
-			if (r.getRoomStatus().equals(Room.RoomStatus.UNDER_MAINTENANCE)) {
-				maintenanceList.add(r);
-			}
-		}
-		System.out.println("Vacant: ");
-		System.out.print("	Room :");
-		printRoomNumber(vacantList);
-
-		System.out.println("OCCUPIED: ");
-		System.out.print("	Room :");
-		printRoomNumber(occupiedList);
-
-		System.out.println("RESERVED: ");
-		System.out.print("	Room :");
-		printRoomNumber(reservedList);
-
-		System.out.println("UNDER_MAINTENANCE: ");
-		System.out.print("	Room :");
-		printRoomNumber(maintenanceList);
 		System.out.println("-------------------------------------------");
 	}
 
@@ -411,16 +374,44 @@ public class RoomMrg {
 		  System.out.println("Unable to find such room");
 	  }
 	}
-	public void printRoomStatusReport(String roomStatus) {
-		RoomStatus rs = strToRoomStatus(roomStatus);
-		List<Room> roomList = getRoomByRoomStatus(rs);
-		if(roomList.size() > 0) {
-		for(Room r : roomList){
-			r.printRoomInfo();
+	public void printRoomStatusReport() {
+		List<Room> vacantList = new ArrayList<Room>();
+		List<Room> occupiedList = new ArrayList<Room>();
+		List<Room> reservedList = new ArrayList<Room>();
+		List<Room> maintenanceList = new ArrayList<Room>();
+		System.out.println("-------------------------------------------");
+		System.out.println("Room status");
+
+		for (Room r : rooms) {
+			if (r.getRoomStatus().equals(Room.RoomStatus.VACANT)) {
+				vacantList.add(r);
+			}
+			if (r.getRoomStatus().equals(Room.RoomStatus.OCCUPIED)) {
+				occupiedList.add(r);
+			}
+			if (r.getRoomStatus().equals(Room.RoomStatus.RESERVED)) {
+				reservedList.add(r);
+			}
+			if (r.getRoomStatus().equals(Room.RoomStatus.UNDER_MAINTENANCE)) {
+				maintenanceList.add(r);
+			}
 		}
-		}else {
-			System.out.println("There are no room with this status");
-		}
+		System.out.println("Vacant: ");
+		System.out.print("	Room :");
+		printRoomNumber(vacantList);
+
+		System.out.println("OCCUPIED: ");
+		System.out.print("	Room :");
+		printRoomNumber(occupiedList);
+
+		System.out.println("RESERVED: ");
+		System.out.print("	Room :");
+		printRoomNumber(reservedList);
+
+		System.out.println("UNDER_MAINTENANCE: ");
+		System.out.print("	Room :");
+		printRoomNumber(maintenanceList);
+		System.out.println("-------------------------------------------");
 	}
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
