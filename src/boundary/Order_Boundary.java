@@ -16,8 +16,10 @@ public class Order_Boundary extends Boundary {
     Character confirm;
     public void displayMain(){
         do {
+            System.out.println("-------------------------------------------");
             System.out.println("Service System:\n" + "0. Return to previous page\n" + "1. Order Page\n"
-                    + "2. Menu Page\n");
+                    + "2. Menu Page");
+            System.out.println("-------------------------------------------");
             userInput = readInputString("Please Enter Your Choice:");
             switch(userInput){
 			case "1":
