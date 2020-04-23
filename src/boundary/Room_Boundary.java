@@ -188,15 +188,28 @@ public class Room_Boundary extends Boundary {
 
 	private void updateRoomStatusMenu() {
 		String roomNum = readInputString("Enter room Number : ");
-		roomMrg.getRoomByRoomNum(roomNum);
-
 		if (RoomMrg.checkRoomExist(roomNum)) {
 			Character confirm;
+			String choice;
 			roomMrg.setRoomNumber(roomNum);
-			if (roomMrg.getRoomStatus().equals(RoomStatus.VACANT)) {
-				HashMap<String, String> enumData = getEnumTypeHashMap(RoomStatus.class);
-				String status = readInputEnum("Enter new status: ", enumData);
-				roomMrg.setRoomStatus(roomMrg.strToRoomStatus(status));
+			RoomStatus status = roomMrg.getRoomStatus();
+			if (roomMrg.getRoomStatus().equals(RoomStatus.VACANT)|| 
+					roomMrg.getRoomStatus().equals(RoomStatus.UNDER_MAINTENANCE)) {
+				do {
+				System.out.println("Enter new room status: ");
+				choice = readInputString("1. VACANT\n2. UNDER_MAINTENANCE");
+				switch (choice) {
+				case "1":
+					status = RoomStatus.VACANT;
+					break;
+				case "2":
+					status = RoomStatus.UNDER_MAINTENANCE;
+					break;
+					default:
+						break;
+				}
+				}while(!(choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("2")));
+				roomMrg.setRoomStatus(status);
 
 				do {
 					roomMrg.printRoomInfo();
@@ -222,6 +235,7 @@ public class Room_Boundary extends Boundary {
 	private void searchRoomByRoomNumMenu() {
 		String roomNum = readInputString("Enter room number :");
 		if (RoomMrg.checkRoomExist(roomNum)) {
+			roomMrg.setRoomNumber(roomNum);
 			roomMrg.printRoomInfo();
 		} else {
 			System.out.println("Room does not exist");

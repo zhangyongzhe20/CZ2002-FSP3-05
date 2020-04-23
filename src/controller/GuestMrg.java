@@ -43,8 +43,12 @@ public class GuestMrg {
 		}
 
 	}
-	public String getCreditCard() {
-		return guest.getCreditCard();
+	public String getCreditCardByGuestIC(String ic) {
+		Guest g = getGuestByIC(ic);
+		if(g!=null && g.getCreditCard() != null) {
+			return g.getCreditCard();
+		}
+		return null;
 	}
 	public IdentityType strToIdentityType(String strIdentityType) {
 		IdentityType identityType = null;

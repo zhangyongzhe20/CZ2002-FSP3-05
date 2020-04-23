@@ -398,6 +398,14 @@ public class RoomMrg {
 		}
 	}
 
+	public void printRoomByRoomNumber(String roomNum) {
+	  room = getRoomByRoomNum(roomNum);
+	  if(room !=null) {
+	  printRoomInfo();
+	  }else {
+		  System.out.println("Unable to find such room");
+	  }
+	}
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
