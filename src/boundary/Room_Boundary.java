@@ -193,6 +193,7 @@ public class Room_Boundary extends Boundary {
 			if (RoomMrg.checkRoomExist(roomNum)) {
 			Character confirm;
 			roomMrg.setRoomNumber(roomNum);
+			if(roomMrg.getRoomStatus().equals(RoomStatus.VACANT)) {
 			HashMap<String,String> enumData = getEnumTypeHashMap(RoomStatus.class);
 			String status = readInputEnum("Enter new status: ",enumData);
 			roomMrg.setRoomStatus(roomMrg.strToRoomStatus(status));
@@ -210,10 +211,12 @@ public class Room_Boundary extends Boundary {
 					break;
 				}
 			} while (!(confirm.equals('Y') || confirm.equals('N')));
+			}else {
+				System.out.println("There are guests being assign to this room");
+			}
 		}else {
 			System.out.println("There are no room existed by this room number");
 		}
-
 	}
 
 	private void searchRoomByRoomNumMenu() {

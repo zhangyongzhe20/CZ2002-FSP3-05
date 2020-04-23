@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import entity.Guest;
 import entity.Reservation;
@@ -72,7 +73,9 @@ public class RoomMrg {
 	public void setRoomStatus(RoomStatus roomStatus) {
 		room.setRoomStatus(roomStatus);
 	}
-
+	public RoomStatus getRoomStatus() {
+		return room.getRoomStatus();
+	}
 	public RoomType strToRoomType(String type) {
 		RoomType roomtype = null;
 		if (type.equalsIgnoreCase("SINGLE")) {
@@ -404,6 +407,7 @@ public class RoomMrg {
 
 		Scanner sc = new Scanner(file);
 		String data;
+		if(sc.hasNextLine()) {
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
@@ -418,6 +422,75 @@ public class RoomMrg {
 			r.setAllowSmoking(Boolean.parseBoolean(temp[7]));
 			r.setRoomStatus(strToRoomStatus(temp[8]));
 			rooms.add(r);
+		}
+		}else {
+			for(int i = 2 ; i < 8 ; i++) {
+				for(int j = 1 ; j < 49; j++) {
+					Room r = new Room();
+					if(j < 10) {
+						r.setRoomNumber("0"+i+"0"+j);
+					}else {
+					r.setRoomNumber("0"+i+j);
+					}
+					
+					Random generator = new Random();
+					
+					switch (generator.nextInt(4)) {
+					case 0: r.setRoomType(RoomType.SINGLE);
+					break;
+					case 1: r.setRoomType(RoomType.DOUBLE);
+					break;
+					case 2: r.setRoomType(RoomType.DELUXE);
+					break;
+					case 3: r.setRoomType(RoomType.VIP);
+					break;
+					}
+					
+					switch (generator.nextInt(3)) {
+					case 0: r.setBedType(BedType.SINGLE);
+					break;
+					case 1: r.setBedType(BedType.DOUBLE);
+					break;
+					case 2: r.setBedType(BedType.KING);
+					break;
+					}
+					
+					switch (generator.nextInt(4)) {
+					case 0: r.setFacing(Facing.NORTH);
+					break;
+					case 1: r.setFacing(Facing.EAST);
+					break;
+					case 2: r.setFacing(Facing.WEST);
+					break;
+					case 3: r.setFacing(Facing.SOUTH);
+					break;
+					}
+					
+					r.setRoomRateWeekday(generator.nextInt(500)+1);
+					r.setRoomRateWeekend(r.getRoomRateWeekday()+50);
+					
+					switch (generator.nextInt(2)) {
+					case 0: r.setHasWifi(true);
+					break;
+					case 1:r.setHasWifi(false);
+					break;
+					}
+					switch (generator.nextInt(2)) {
+					case 0: r.setAllowSmoking(true);
+					break;
+					case 1:r.setAllowSmoking(false);
+					break;
+					}
+					r.setRoomStatus(RoomStatus.VACANT);
+					rooms.add(r);
+				}	
+			}
+			try {
+				writeRoomData();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		sc.close();
 	}
