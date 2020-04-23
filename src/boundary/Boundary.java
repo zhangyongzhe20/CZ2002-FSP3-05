@@ -71,10 +71,9 @@ public abstract class Boundary {
 		return dateTime;
 	}
     public String readInputEnum(String message , HashMap<String, String> enumData) {
-    	message = message+"\n";
     	String input;
     	for(String key : enumData.keySet()) {
-    		message = message + key+". "+ enumData.get(key)+"\n";
+    		message = message + "\n" + key+". "+ enumData.get(key);
     	}
     	do {
     	 input = readInputString(message);   

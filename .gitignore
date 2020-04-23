@@ -8,7 +8,6 @@ VC_workspace_java.code-workspace
 cz2002 project.iml
 *.lck
 /bin/
-*.txt
 *.tmp
 *.tmp-journal
 *.lck

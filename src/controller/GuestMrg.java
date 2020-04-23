@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 import entity.Guest;
 import entity.Guest.IdentityType;
-import entity.Reservation;
-import entity.Room;
 
 public class GuestMrg {
 
@@ -23,7 +21,18 @@ public class GuestMrg {
 		return new GuestMrg();
 	}
 
-
+	public void createNewGuest() {
+		guest = new Guest();
+	}
+	public static boolean checkGuestExist(String ic) {
+		boolean returnValue = false;
+		for (Guest guest : guests) {
+			if (guest.getIC().equalsIgnoreCase(ic)) {
+				returnValue = true;
+			}
+		}
+		return returnValue;
+	}
 
 	public void updateGuest() {
 		int index = 0;
@@ -41,8 +50,20 @@ public class GuestMrg {
 		}
 
 	}
-	public String getCreditCard() {
-		return guest.getCreditCard();
+	public String getCreditCardByGuestIC(String ic) {
+		Guest g = getGuestByIC(ic);
+		if(g!=null && g.getCreditCard() != null) {
+			return g.getCreditCard();
+		}
+		return null;
+	}
+	public Guest getGuestByIC(String ic) {
+		for(Guest guest : guests) {
+			if(guest.getIC().equalsIgnoreCase(ic)) {
+				return guest;
+			}
+		}
+		return null;
 	}
 	public IdentityType strToIdentityType(String strIdentityType) {
 		IdentityType identityType = null;
@@ -179,9 +200,12 @@ public class GuestMrg {
 	}
 
 	public void setGuestIC(String ic) {
+		if(checkGuestExist(ic)) {
+			guest = getGuestByIC(ic);
+		}else {
 		guest.setIC(ic);
+		}
 	}
-
 	public void setGender(String nextLine) {
 		guest.setGender(nextLine);
 	}

@@ -42,6 +42,15 @@ public class ReservationMrg {
 		}
 	}
 
+	public void setReservationCodeByRoomNum(String roomNum) {
+		for(Reservation r : reservations) {
+			if(r.getRoomNum().equalsIgnoreCase(roomNum)) {
+				if(r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					reservation = r;
+				}
+			}
+		}
+	}
 	public void setGuestIC(String guestIC) {
 		reservation.setGuestIC(guestIC);
 	}
@@ -94,14 +103,46 @@ public class ReservationMrg {
 		return reservation.getGuestIC();
 	}
 
+	public String getRoomNum() {
+		return reservation.getRoomNum();
+	}
 	public String getReservationCode() {
 		return reservation.getReservationCode();
 	}
+
 	public static boolean checkReservationExist(String reservationCode) {
 		for (Reservation reservation : reservations) {
 			if (reservation.getReservationCode().equalsIgnoreCase(reservationCode)) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	public static boolean checkCheckInExist(String roomNum) {
+
+		for (Reservation reservation : reservations) {
+			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
+				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+
+	public boolean checkReservationExistByGuestIC(String ic) {
+
+		for (Reservation reservation : reservations) {
+			if (reservation.getGuestIC().equalsIgnoreCase(ic)) {
+				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)
+						|| reservation.getReservationStatus().equals(ReservationStatus.CONFIRMED)
+						|| reservation.getReservationStatus().equals(ReservationStatus.WAITLIST)) {
+					return true;
+				}
+			}
+
 		}
 		return false;
 	}
@@ -116,6 +157,8 @@ public class ReservationMrg {
 			reservationStatus = Reservation.ReservationStatus.CHECKIN;
 		} else if (StrReservationStatus.equalsIgnoreCase("EXPIRED")) {
 			reservationStatus = Reservation.ReservationStatus.EXPIRED;
+		}else if (StrReservationStatus.equalsIgnoreCase("CHECKOUT")) {
+			reservationStatus = Reservation.ReservationStatus.CHECKOUT;
 		}
 		return reservationStatus;
 	}
@@ -178,11 +221,22 @@ public class ReservationMrg {
 	}
 
 	public void updateReservationDetails() {
+		RoomStatus rs;
 		if (roomNum != null) {
 			RoomMrg.getInstance().updateRoomStatus(roomNum, RoomStatus.VACANT);
 		}
 		if (reservation.getRoomNum() != null) {
-			RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
+			if(reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+				rs = RoomStatus.OCCUPIED;
+			}else if(reservation.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
+				rs = RoomStatus.RESERVED;
+			}else if(reservation.getReservationStatus().equals(ReservationStatus.WAITLIST)) {
+				rs = RoomStatus.RESERVED;
+			}else {
+				rs = RoomStatus.VACANT;
+			}
+			System.out.println(reservation.getRoomNum() +":" + rs);
+			RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(),rs);
 		}
 		try {
 			writeReservationData();
@@ -191,7 +245,7 @@ public class ReservationMrg {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void checkOutReservation(LocalDateTime checkOutDate) {
 		reservation.setCheckOut(checkOutDate);
 		reservation.setReservationStatus(ReservationStatus.CHECKOUT);
@@ -203,17 +257,7 @@ public class ReservationMrg {
 		}
 		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.VACANT);
 	}
-	
-	public void checkInReservation() {
-		RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(), RoomStatus.OCCUPIED);
 
-		try {
-			writeReservationData();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public Reservation getReservationByCode(String reservationCode) {
 		Reservation r = null;
@@ -242,25 +286,11 @@ public class ReservationMrg {
 			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
 				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
 					return reservation;
-					
+
 				}
 			}
 		}
 		return null;
-	}
-
-
-	public boolean setCheckOutReservationByRoomNum(String roomNum) {
-
-		for (Reservation reservation : reservations) {
-			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
-				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
-					this.reservation = reservation;
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	public List<Reservation> getReservationByReservationStatus(ReservationStatus rs) {
@@ -274,13 +304,6 @@ public class ReservationMrg {
 	}
 
 	public void printReservationInfo() {
-
-		if (reservation.getRoomNum() == null) {
-			reservation.setReservationStatus(ReservationStatus.WAITLIST);
-		} else {
-			reservation.setReservationStatus(ReservationStatus.CONFIRMED);
-		}
-
 		reservation.printReservationInfo();
 	}
 
@@ -320,7 +343,9 @@ public class ReservationMrg {
 			Reservation r = new Reservation();
 			r.setReservationCode(temp[0]);
 			r.setGuestIC(temp[1]);
+			if(!temp[2].equalsIgnoreCase("null")) {
 			r.setRoomNum(temp[2]);
+			}
 			r.setCheckIn(LocalDateTime.parse(temp[3], formatter));
 			r.setCheckOut(LocalDateTime.parse(temp[4], formatter));
 			r.setNumOfAdults(Integer.parseInt(temp[5]));
@@ -353,24 +378,25 @@ public class ReservationMrg {
 			fileOut.close();
 		}
 	}
-	 public void checkExpiredReservations() {
-	      for(Reservation r : reservations) {
-	    	   LocalDateTime now = LocalDateTime.now();
-	    	   LocalDateTime checkIn = r.getCheckIn();
-	    	   
-	    	   Duration duration = Duration.between(now, checkIn);
-	    	   if(duration.toHours() <= -1) {
-	    		   if(r.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
-	    			   r.setReservationStatus(ReservationStatus.EXPIRED);
-	    		   }
-	    	   }	    	   
-	      }
-		   try {
-					writeReservationData();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+	public void checkExpiredReservations() {
+		for (Reservation r : reservations) {
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime checkIn = r.getCheckIn();
+
+			Duration duration = Duration.between(now, checkIn);
+			if (duration.toHours() <= -1) {
+				if (r.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
+					r.setReservationStatus(ReservationStatus.EXPIRED);
 				}
-	 }
+			}
+		}
+		try {
+			writeReservationData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
