@@ -101,7 +101,6 @@ public class GuestMrg {
 	public static boolean checkGuestByName(String name) {
 		for (Guest guest_ : guests) {
 			if (guest_.getGuestName().equalsIgnoreCase(name)) {
-				guest = guest_;
 				return true;
 			}
 		}
@@ -109,7 +108,8 @@ public class GuestMrg {
 	}
 
 
-	//used in roomMrg
+
+	
 	public List<Guest> getGuestByName(String name) {
 		List<Guest> guestList = new ArrayList<>();
 		for (Guest guest : guests) {
@@ -177,7 +177,17 @@ public class GuestMrg {
 	public void printGuestInfo() {
 	  guest.printGuestInfo();
 	}
-
+	public void printGuestInfoByGuestName(String guestName) {
+		List<Guest> guestList = getGuestByName(guestName);
+		if(guestList.size() > 0) {
+		for(Guest guest : guestList) {
+			if(guest.getGuestName().equalsIgnoreCase(guestName))
+			guest.printGuestInfo();
+		}
+		}else {
+			 System.out.println("Guest does not exist");
+		}
+	}
 	public void setIdentityType(IdentityType strToIdentityType) {
 		guest.setIdentityType(strToIdentityType);
 	}

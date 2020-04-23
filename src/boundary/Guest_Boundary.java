@@ -104,15 +104,11 @@ public class Guest_Boundary extends Boundary {
     }
     private void findGuestByNameMenu() {
         String guestName = readInputString("Enter guest name to find :");
-        if (guestMrg.checkGuestByName(guestName)) {
-            guestMrg.printGuestInfo();
-        } else {
-            System.out.println("Guest does not exist");
-        }
+        guestMrg.printGuestInfoByGuestName(guestName);
     }
     private void findGuestByICMenu(){
         String guestIC = readInputString("Enter guest IC to find :");
-        if (guestMrg.checkGuestByIC(guestIC)) {
+        if (GuestMrg.checkGuestByIC(guestIC)) {
             guestMrg.printGuestInfo();
         } else {
             System.out.println("Guest does not exist");
@@ -120,8 +116,8 @@ public class Guest_Boundary extends Boundary {
     }
 
     private void updateGuestMenu() {
-        String guestName = readInputString("Enter guest name : ");
-        if (guestMrg.checkGuestByName(guestName)) {
+        String ic = readInputString("Enter guest ic : ");
+        if (GuestMrg.checkGuestByIC(ic)) {
             Character confirm;
             do {
                 guestMrg.printGuestInfo();
@@ -161,7 +157,7 @@ public class Guest_Boundary extends Boundary {
             } while (!(confirm.equals('Y') || confirm.equals('N')));
 
         } else {
-            System.out.println("There is no guest found by this name");
+            System.out.println("There is no guest found by this ic");
         }
     }
 
