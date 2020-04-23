@@ -17,8 +17,8 @@ import entity.Reservation.ReservationStatus;
 import entity.Room.RoomStatus;
 
 public class ReservationMrg {
-	public static List<Reservation> reservations = new ArrayList<Reservation>();
-	final static String FILENAME = "reservation_data.txt";
+	private static List<Reservation> reservations = new ArrayList<Reservation>();
+	private final static String FILENAME = "reservation_data.txt";
 	private Reservation reservation;
 	private String roomNum;
 
