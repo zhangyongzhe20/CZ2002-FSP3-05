@@ -82,7 +82,6 @@ public class OrderMrg {
             String[] temp = data.split(",");
             Order order = new Order();
             order.setOrderId(temp[0]);
-            ;
             order.setRoomId(temp[1]);
             LocalDateTime orderTime = LocalDateTime.parse(temp[2], formatter);
             order.setOrderTime(orderTime);

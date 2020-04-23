@@ -52,7 +52,7 @@ public class Room_Boundary extends Boundary {
 		enterWeekendRate();
 		enterAllowSmoking();
 		enterHasWifi();
-		roomMrg.setRoomStatus(Room.RoomStatus.VACANT);
+		roomMrg.setRoomStatus(RoomStatus.VACANT);
 		do {
 			roomMrg.printRoomInfo();
 			confirm = readInputString("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.")

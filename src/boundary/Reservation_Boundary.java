@@ -63,7 +63,7 @@ public class Reservation_Boundary extends Boundary {
 							.charAt(0);
 			if(input == 'Y') {
 				Guest_Boundary gb = new Guest_Boundary();
-				gb.createGuestMenu();
+				gb.createGuestMenu(ic);
 				bool = true;
 			}else if (input == 'N') {
 				bool = false;
