@@ -16,8 +16,9 @@ public class Payment_Boundary extends Boundary {
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
 	private PromotionMrg promotionMrg = PromotionMrg.getInstance();
 	private ReservationMrg reservationMrg = ReservationMrg.getInstance();
-	final static double TAX = 0.17;
-
+	final static double TAX = 17;
+	private int days = 0;
+	
 	public static Payment_Boundary getInstance() {
 		return new Payment_Boundary();
 	}
@@ -100,7 +101,7 @@ public class Payment_Boundary extends Boundary {
 			System.out.println("Discount: " + discount + " % (" + displayCode + ")");
 			System.out.println("Tax: " + TAX + "%");
 
-			double totalPay = (roomCharge + totalRoomServiceCharge) * (1 - discount) * (1 + TAX);
+			double totalPay = (roomCharge + totalRoomServiceCharge) * (1 - discount/(double)100) * (1 + TAX/(double)100);
 			System.out.println("Total Price: $" + String.format("%.2f", totalPay));
 
 			String choice;
@@ -244,6 +245,7 @@ public class Payment_Boundary extends Boundary {
 			String promotionCode = readInputString("Enter Promotion Code: ");
 			if (!PromotionMrg.checkPromotionExist(promotionCode)) {
 				promotionMrg.setPromotionCode(promotionCode);
+				break;
 			} else {
 				System.out.println("Promotion already exist");
 			}
@@ -266,6 +268,10 @@ public class Payment_Boundary extends Boundary {
 			LocalDateTime promoStartDate = readInputDate("Enter Promotion Start Date:(DD/MM/YYYY HH:mm)");
 			if (promoStartDate.isAfter(LocalDateTime.now())) {
 				promotionMrg.setPromoStartDate(promoStartDate);
+				if(days > 0) {
+					LocalDateTime promoEndDate = promotionMrg.getPromoStartDate().plusDays(days);
+					promotionMrg.setPromoEndDate(promoEndDate);
+				}
 				break;
 			} else {
 				System.out.println("Please enter the correct Date");
@@ -276,20 +282,23 @@ public class Payment_Boundary extends Boundary {
 
 	private void enterPromoEndDate() {
 		do {
-			LocalDateTime promoEndDate = readInputDate("Enter Promotion End Date:(DD/MM/YYYY HH:mm)");
-			if (promoEndDate.isAfter(LocalDateTime.now())) {
-				promotionMrg.setPromoEndDate(promoEndDate);
-				break;
-			} else {
-				System.out.println("Please enter the correct Date");
+			days = readInputInt("Enter the number of days for the promotion : ");
+			if(days > 0) {
+			LocalDateTime promoEndDate = promotionMrg.getPromoStartDate().plusDays(days);
+			promotionMrg.setPromoEndDate(promoEndDate);
+			break;
+			}else {
+				System.out.println("Please enter the correct days");
 			}
-		} while (true);
+			}while(true);
+		
 	}
 
 	public void loadData() {
 		// TODO Auto-generated method stub
 		try {
 			paymentMrg.loadPaymentData();
+			promotionMrg.loadPromotionData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

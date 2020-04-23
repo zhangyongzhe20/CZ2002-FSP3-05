@@ -49,6 +49,7 @@ public class PromotionMrg {
 		promotion.setPromotionCode(promotionCode);
 		}
 	}
+	
 	public void setPromoDescription(String promoDescription) {
 		promotion.setPromoDescription(promoDescription);
 	}
@@ -68,6 +69,9 @@ public class PromotionMrg {
 		return promotion.getDiscount();
 	}
 	
+	public LocalDateTime getPromoStartDate() {
+		return promotion.getPromoStartDate();
+	}
 	public void createNewPromotion() {
 		promotion = new Promotion();
 	}
