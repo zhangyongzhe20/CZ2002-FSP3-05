@@ -53,7 +53,7 @@ public class Payment_Boundary extends Boundary {
 		} while (!choice.equalsIgnoreCase("0"));
 	}
 
-	public void displayCheckOut() {
+	private void displayCheckOut() {
 
 		String promoCode;
 		double discount = 0;
