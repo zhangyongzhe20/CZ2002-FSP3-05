@@ -16,16 +16,18 @@ import entity.Room;
 public class GuestMrg {
 
 	private static List<Guest> guests = new ArrayList<Guest>();
-	final static String FILENAME = "guest_data.txt";
+	private final static String FILENAME = "guest_data.txt";
 	private Guest guest;
 
 	public static GuestMrg getInstance() {
-		GuestMrg guestMrg = new GuestMrg();
-		return guestMrg;
+		return new GuestMrg();
 	}
+
 	public void createNewGuest() {
 		guest = new Guest();
 	}
+
+
 	public void setGuestIC(String ic) {
 		if(checkGuestExist(ic)) {
 			guest = getGuestByIC(ic);
@@ -89,15 +91,24 @@ public class GuestMrg {
 		return guestList;
 	}
 
-	
-	public static boolean checkGuestExist(String ic) {
-		boolean returnValue = false;
+	public Guest getGuestsByName(String name) {
+		Guest g = null;
 		for (Guest guest : guests) {
-			if (guest.getIC().equalsIgnoreCase(ic)) {
-				returnValue = true;
+			if (guest.getGuestName().equalsIgnoreCase(name)) {
+				g=guest;
 			}
 		}
-		return returnValue;
+		return g;
+	}
+
+	
+	public static boolean checkGuestExist(String name) {
+		for (Guest guest : guests) {
+			if (guest.getGuestName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void loadGuestData() throws FileNotFoundException {
@@ -114,9 +125,19 @@ public class GuestMrg {
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
-			Guest guest = new Guest(temp[0], temp[1], temp[2], temp[3], temp[4],strToIdentityType(temp[5]), temp[6], temp[7], temp[8]);
+			Guest guest = new Guest();
+			guest.setGuestName(temp[0]);
+			guest.setCreditCard(temp[1]);
+			guest.setAddress(temp[2]);
+			guest.setCountry(temp[3]);
+			guest.setGender(temp[4]);
+			guest.setIdentityType(strToIdentityType(temp[5]));
+			guest.setIC(temp[6]);
+			guest.setNationality(temp[7]);
+			guest.setContact(temp[8]);
 			guests.add(guest);
 		}
+		sc.close();
 	}
 
 	public void writeGuestData() throws IOException {
@@ -140,25 +161,19 @@ public class GuestMrg {
 		}
 	}
 
-	public void printGuestInfoByName(String name) {
-		List<Guest> guestList = getGuestByName(name);
-		if (guestList.size() > 0) {
-			for (Guest g : guestList) {
-				g.printGuestInfo();
-			}
-		} else {
-			System.out.println("No guest found by the name " + name);
-		}
-	}
 	public void printGuestInfo() {
 	  guest.printGuestInfo();
 	}
+
 	public void setIdentityType(IdentityType strToIdentityType) {
 		guest.setIdentityType(strToIdentityType);
 	}
 
-	public void setGuestName(String nextLine) {
-		guest.setGuestName(nextLine);
+	public void setGuestName(String name) {
+		if (checkGuestExist(name))
+			guest = getGuestsByName(name);
+		else
+			guest.setGuestName(name);
 	}
 	   
 
