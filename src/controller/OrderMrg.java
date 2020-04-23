@@ -119,10 +119,10 @@ public class OrderMrg {
                 fileOut.print(order.getStatus() + ",");
                 fileOut.print(order.getOrderBillStatus() + ",");
                 fileOut.println();
-                for (MenuItem menuItem_ : order.getOrderLists().getItemList()) {
-                    fileOut.print(menuItem_.getName() + ",");
-                    fileOut.print(menuItem_.getDescription() + ",");
-                    fileOut.print(menuItem_.getPrice() + ";");
+                for (MenuItem Item_ : order.getOrderLists().getItemList()) {
+                    fileOut.print(Item_.getName() + ",");
+                    fileOut.print(Item_.getDescription() + ",");
+                    fileOut.print(Item_.getPrice() + ";");
                 }
                 fileOut.println();
             }
