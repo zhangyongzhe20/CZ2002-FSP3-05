@@ -68,7 +68,7 @@ public class Promotion {
 		System.out.println(" -------------------------------------------");
 		System.out.println("1.Promotion Code: " + this.getPromotionCode());
 		System.out.println("2.Promotion Description: " + this.getPromoDescription());
-		System.out.println("3.Promotion Discount: " + this.getDiscount());
+		System.out.println("3.Promotion Discount: " + this.getDiscount()+"%");
 		System.out.println("4.Promotion Start Date: " + formatter.format(this.getPromoStartDate()));
 		System.out.println("5.Promotion End Date: " + formatter.format(this.getPromoEndDate()));
 	}

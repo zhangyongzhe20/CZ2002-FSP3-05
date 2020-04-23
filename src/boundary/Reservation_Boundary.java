@@ -11,7 +11,6 @@ import controller.RoomMrg;
 import entity.Reservation.CheckInType;
 import entity.Reservation.ReservationStatus;
 import entity.Room.BedType;
-import entity.Room.RoomStatus;
 import entity.Room.RoomType;
 
 public class Reservation_Boundary extends Boundary {
@@ -336,7 +335,7 @@ public class Reservation_Boundary extends Boundary {
 			LocalDateTime checkInDate = readInputDate("Enter Check In Date: (DD/MM/YYYY HH:mm)");
 			if (checkInDate.isAfter(LocalDateTime.now())) {
 				reservationMrg.setCheckIn(checkInDate);
-				if(days != 0) {
+				if(days > 0) {
 					LocalDateTime checkOutDate = reservationMrg.getCheckIn().plusDays(days);
 					reservationMrg.setCheckOut(checkOutDate);		
 				}
