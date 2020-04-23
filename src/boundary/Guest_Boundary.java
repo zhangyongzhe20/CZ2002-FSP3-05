@@ -126,7 +126,7 @@ public class Guest_Boundary extends Boundary {
 
                 switch (confirm) {
                 case 'Y':
-                    guestMrg.createGuest();
+                    guestMrg.updateGuest();
                     break;
                 case '1':
                     enterIdentityType();

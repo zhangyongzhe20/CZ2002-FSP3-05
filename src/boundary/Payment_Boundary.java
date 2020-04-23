@@ -86,7 +86,7 @@ public class Payment_Boundary extends Boundary {
 			System.out.println("Date Check In: " + formatter.format(reservationMrg.getCheckIn()));
 			System.out.println("Date Check Out:" + formatter.format(checkOutDate));
 
-			double roomCharge = RoomMrg.getInstance().getRoomCharge(reservationMrg.getCheckIn(), checkOutDate);
+			double roomCharge = RoomMrg.getInstance().getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
 			RoomMrg.getInstance().printRoomByRoomNumber(roomNum);
 			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
 
@@ -135,6 +135,7 @@ public class Payment_Boundary extends Boundary {
 					totalPay, paymentMethod, creditCard);
 			paymentMrg.createPayment();
 			reservationMrg.checkOutReservation(checkOutDate);
+			System.out.println("Successfully check out of the room");
 		} else {
 			System.out.println("Please enter the correct room number");
 		}
