@@ -235,7 +235,6 @@ public class ReservationMrg {
 			}else {
 				rs = RoomStatus.VACANT;
 			}
-			System.out.println(reservation.getRoomNum() +":" + rs);
 			RoomMrg.getInstance().updateRoomStatus(reservation.getRoomNum(),rs);
 		}
 		try {
