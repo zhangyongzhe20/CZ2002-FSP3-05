@@ -69,9 +69,7 @@ public class Order_Boundary extends Boundary {
              "2.Delete menu item\n" + "3.Update menu item\n"+"Please Enter Your Choice:");
             switch (userInput) {
                 case "0":
-                if(orderMrg.updateMenu()){
-                    System.out.println("Update Menu successfully!");
-                }
+                orderMrg.updateMenu();
                     break;
                 case "1":
                 enterMenuItem();
@@ -152,7 +150,6 @@ public class Order_Boundary extends Boundary {
                 case "Y":
                     // Confirm order then set the order time and set the order status
                     if (orderMrg.createOrders()) {
-                        System.out.println("Order is created successfully!");
                     }
                     break;
                 case "N":
@@ -223,11 +220,6 @@ public class Order_Boundary extends Boundary {
             switch (userInput) {
                 case "Y":
                     boolean success = orderMrg.updateOrderDetail();
-                    if (success) {
-                        System.out.println("Successfully update order");
-                    } else {
-                        System.out.println("Unable to update order");
-                    }
                     break;
                 case "N":
                     break;

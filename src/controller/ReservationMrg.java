@@ -201,6 +201,8 @@ public class ReservationMrg {
 		if (updateData) {
 			try {
 				writeReservationData();
+				System.out.println("Reservation is created successfully!");
+				System.out.println("-------------------------------------------");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -239,6 +241,8 @@ public class ReservationMrg {
 		}
 		try {
 			writeReservationData();
+			System.out.println("Reservation is updated successfully!");
+			System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -212,7 +212,7 @@ public class Reservation_Boundary extends Boundary {
 					confirm = readInputString("Press Y to confirm," + "N to discard").toUpperCase().charAt(0);
 					switch (confirm) {
 					case 'Y':
-						reservationMrg.updateReservationDetails();
+					reservationMrg.updateReservationDetails();
 						break;
 					case 'N':
 						break;
@@ -296,7 +296,7 @@ public class Reservation_Boundary extends Boundary {
 	private void checkInMenu() {
 		String i;
 		do {
-			System.out.println("Room System\n" + "0.Return to Main Menu\n" + "1.Walk In \n" + "2.Reservation");
+			System.out.println("Check In:\n" + "0.Return to Main Menu\n" + "1.Walk In \n" + "2.By Reservation");
 			i = readInputString("Enter your choice:");
 			switch (i) {
 			case "0":

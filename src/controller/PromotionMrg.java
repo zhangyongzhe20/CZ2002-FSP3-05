@@ -81,6 +81,8 @@ public class PromotionMrg {
 		promotions.add(promotion);
 		try {
 			writePromotionData();
+			System.out.println("Promotion is created successfully!");
+			System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,6 +103,8 @@ public class PromotionMrg {
 	public void updatePromotion() {
 		try {
 			writePromotionData();
+			System.out.println("Promotion is updated successfully!");
+			System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

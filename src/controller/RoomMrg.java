@@ -146,6 +146,8 @@ public class RoomMrg {
 		rooms.add(room);
 		try {
 			writeRoomData();
+			System.out.println("Room is created successfully!");
+			System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -155,6 +157,8 @@ public class RoomMrg {
 	public void updateRoom() {
 		try {
 			writeRoomData();
+			System.out.println("Room is updated successfully!");
+			System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -190,6 +190,8 @@ public class OrderMrg {
         }
         try {
             writeOrderData();
+            System.out.println("Order is created successfully!");
+            System.out.println("-------------------------------------------");
             bool = true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -216,7 +218,9 @@ public class OrderMrg {
             }
         }
 		try {
-			writeOrderData();
+            writeOrderData();
+            System.out.println("Order is updated successfully!");
+            System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -368,6 +372,8 @@ public class OrderMrg {
         boolean bool = false;
         try {
             writeMenuData();
+            System.out.println("Menu is updated successfully!");
+            System.out.println("-------------------------------------------");
             bool = true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
