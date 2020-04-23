@@ -439,7 +439,7 @@ public class RoomMrg {
 			}
 		} else {
 			for (int i = 2; i < 8; i++) {
-				for (int j = 1; j < 49; j++) {
+				for (int j = 1; j < 9; j++) {
 					Room r = new Room();
 					if (j < 10) {
 						r.setRoomNumber("0" + i + "0" + j);
@@ -491,8 +491,8 @@ public class RoomMrg {
 						break;
 					}
 
-					r.setRoomRateWeekday(generator.nextInt(500) + 1);
-					r.setRoomRateWeekend(r.getRoomRateWeekday() + 50);
+					r.setRoomRateWeekday(generator.nextInt(400) + 100);
+					r.setRoomRateWeekend(r.getRoomRateWeekday() + 20);
 
 					switch (generator.nextInt(2)) {
 					case 0:

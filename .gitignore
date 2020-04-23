@@ -11,7 +11,4 @@ cz2002 project.iml
 *.tmp
 *.tmp-journal
 *.lck
-guest_data.txt
-menu_data.txt
-guest_data.txt
 *.txt
