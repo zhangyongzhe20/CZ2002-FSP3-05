@@ -45,7 +45,7 @@ public class Guest_Boundary extends Boundary {
         }else {
         	guestMrg.setGuestIC(ic);
         }
-        System.out.println(GuestMrg.checkGuestExist(ic));
+       // System.out.println(GuestMrg.checkGuestExist(ic));
         if (!GuestMrg.checkGuestExist(ic)) {
         	enterIdentityType();
             enterName();
@@ -55,7 +55,7 @@ public class Guest_Boundary extends Boundary {
             enterNationality();
             enterAddress();
             enterCreditCard();
-
+         do{
             guestMrg.printGuestInfo();
             confirm = readInputString("Press Y to confirm," + "N to discard and " + 
             "(No.) to edit a field and (No.) to edit a field.").toUpperCase().charAt(0);
@@ -89,6 +89,7 @@ public class Guest_Boundary extends Boundary {
                 default:
                     break;
             }
+        }while(confirm!='Y' && confirm!='N');
         } 
     }
 

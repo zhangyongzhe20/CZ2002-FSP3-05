@@ -162,7 +162,6 @@ public class PromotionMrg {
 				fileOut.print(p.getPromoEndDate().format(formatter) + ",");
 				fileOut.println();
 			}
-			System.out.println("finish writing");
 			fileOut.close();
 		}
 	}

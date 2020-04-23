@@ -54,24 +54,25 @@ public class Reservation_Boundary extends Boundary {
 		Character confirm;
 		reservationMrg.createNewReservation();
 		
-		boolean bool = true;
+		//boolean bool = true;
 		String ic = readInputString("Enter guest IC : ").toUpperCase();
 		if (!GuestMrg.checkGuestByIC(ic)) {
-			char input;
-			do {
-			input = readInputString("Press Y to create new guest or N to return").toUpperCase()
-							.charAt(0);
-			if(input == 'Y') {
+			System.out.println("New guest, please type in guest information first.");
+			// char input;
+			// do {
+			// input = readInputString("Press Y to create new guest or N to return").toUpperCase()
+			// 				.charAt(0);
+			// if(input == 'Y') {
 				Guest_Boundary gb = new Guest_Boundary();
 				gb.createGuestMenu(ic);
-				bool = true;
-			}else if (input == 'N') {
-				bool = false;
-			}
-			}while(!(input == 'Y' ||input == 'N'));
-			
-		}
-		if(bool) {
+				//bool = true;
+			 }
+			 //else if (input == 'N') {
+			// 	bool = false;
+			// }
+		// 	}while(!(input == 'Y' ||input == 'N'));
+		// }
+		//if(bool) {
 			if(!reservationMrg.checkReservationExistByGuestIC(ic)) {
 			reservationMrg.setGuestIC(ic);
 			reservationMrg.setCheckInType(checkInType);
@@ -124,7 +125,7 @@ public class Reservation_Boundary extends Boundary {
 			}else{
 				System.out.println("The guest has already book a reservation");
 			}
-		}
+		//}
 	}
 
 	private void updateReservationMenu() {

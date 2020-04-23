@@ -80,6 +80,7 @@ public class GuestMrg {
 
 		try {
 			writeGuestData();
+			System.out.println("Guest information is recorded successfully!");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

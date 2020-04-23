@@ -105,7 +105,6 @@ public class PaymentMrg {
 				fileOut.print(payment.getCreditCard()+",");
 				fileOut.println();
 			}
-			System.out.println("finish writing");
 			fileOut.close();
 		}
 	}

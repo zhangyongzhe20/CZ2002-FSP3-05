@@ -535,7 +535,6 @@ public class RoomMrg {
 				fileOut.print(room.getRoomStatus() + ",");
 				fileOut.println();
 			}
-			System.out.println("finish writing");
 			fileOut.close();
 		}
 	}

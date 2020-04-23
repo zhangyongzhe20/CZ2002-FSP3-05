@@ -373,7 +373,6 @@ public class ReservationMrg {
 				fileOut.print(r.getCheckInType() + ",");
 				fileOut.println();
 			}
-			System.out.println("finish writing");
 			fileOut.close();
 		}
 	}
