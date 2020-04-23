@@ -12,13 +12,14 @@ public class Guest_Boundary extends Boundary {
     public void displayMain() {
         String choice;
         do {
+            System.out.println("-------------------------------------------");
             System.out.println("Guest System\n" +
                             "0. Return to Main Menu\n"+
                     "1. Create Guest\n" +
                     "2. Update Guest\n" +
                     "3. Find Guest"
                     );
-
+            System.out.println("-------------------------------------------");
             choice = readInputString("Enter choice : ");
 
             switch (choice) {

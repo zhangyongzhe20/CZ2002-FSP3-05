@@ -16,8 +16,10 @@ public class Room_Boundary extends Boundary {
 	public void displayMain() {
 		String choice;
 		do {
+			System.out.println("-------------------------------------------");
 			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Create Room\n" + "2. Update Room\n"
 					+ "3. Search Room\n" + "4. Print Room Status Report");
+			System.out.println("-------------------------------------------");
 			choice = readInputString("Enter choice : ");
 
 			switch (choice) {

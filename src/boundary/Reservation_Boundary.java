@@ -19,9 +19,11 @@ public class Reservation_Boundary extends Boundary {
 	public void displayMain() {
 		String choice;
 		do {
+			System.out.println("-------------------------------------------");
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n" + "1. Create Reservation\n"
 					+ "2. Update Reservation\n" + "3. Delete Reservation\n" + "4. Get Reservation Details\n"
 							+ "5. Check In");
+			System.out.println("-------------------------------------------");
 			choice = readInputString("Enter choice : ");
 
 			switch (choice) {
@@ -320,7 +322,7 @@ public class Reservation_Boundary extends Boundary {
 
 				reservationMrg.setReservationStatus(ReservationStatus.CHECKIN);
 				reservationMrg.updateReservationDetails();
-				System.out.println("Sucessfully check in to the room");
+				// System.out.println("Sucessfully check in to the room");
 			} else {
 				System.out.println("Reservation is not found");
 			}
