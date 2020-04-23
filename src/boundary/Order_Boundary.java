@@ -16,8 +16,8 @@ public class Order_Boundary extends Boundary {
     Character confirm;
     public void displayMain(){
         do {
-            System.out.println("Service System:\n" + "0. Return to previous page\n" + "1.Order Page\n"
-                    + "2.Menu Page\n");
+            System.out.println("Service System:\n" + "0. Return to previous page\n" + "1. Order Page\n"
+                    + "2. Menu Page\n");
             userInput = readInputString("Please Enter Your Choice:");
             switch(userInput){
 			case "1":
@@ -130,7 +130,7 @@ public class Order_Boundary extends Boundary {
         do {
             userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to delete a menu item.");
             if(!userInput.equals("N") && !userInput.equals("Y"))
-            orderMrg.deleteItem(Integer.parseInt(userInput));
+            orderMrg.deleteItem(true, Integer.parseInt(userInput));
         } while (!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N"));
     }
 
@@ -216,9 +216,9 @@ public class Order_Boundary extends Boundary {
 
     private void updateOrderMenu() {
         System.out.println("update Order");
-        userInput = enterRoomNum();
+        String userInput2 = enterRoomNum();
         do {
-            orderMrg.printUndeliveredOrderInfo(userInput);
+            orderMrg.printUndeliveredOrderInfo(userInput2);
             userInput = readInputString("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.").toUpperCase();
             switch (userInput) {
                 case "Y":
@@ -269,7 +269,7 @@ public class Order_Boundary extends Boundary {
     private void deleteOrderItem(){
         do {
             userInput = readInputString("Press 0 to previous page " + "(No.) to delete a order item.");
-            orderMrg.deleteItem(Integer.parseInt(userInput));
+            orderMrg.deleteItem(false, Integer.parseInt(userInput));
         } while (!userInput.equalsIgnoreCase("0"));
     }
 

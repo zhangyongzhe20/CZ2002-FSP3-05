@@ -41,7 +41,6 @@ public class OrderMrg {
         menu = new ItemList();
         roomOrders = new ArrayList<>();
         order = new Order();
-
     }
 
     private static OrderStatus strToOrderType(String status) {
@@ -328,6 +327,7 @@ public class OrderMrg {
 
 	public void printUndeliveredOrderInfo(String roomNum) {
         order = getUnDeliverOrder(roomNum);
+        if(order!=null)
         order.printOrderInfo();
 	}
 
@@ -335,13 +335,20 @@ public class OrderMrg {
         order.getOrderLists().displayItems();
 	}
 
-	public void deleteItem(int selection) {
-        if (selection > 0 && selection <= menu.getNumOfItems()) {
-            menu.deleteItem(selection - 1);
-            menu.displayItems();
+	public void deleteItem(Boolean isMenu, int selection) {
+        ItemList itemlist_;
+        if(isMenu){
+            itemlist_ = menu;
         }
-	}
-
+        else{
+            itemlist_ = order.getOrderLists();
+        }
+        if (selection > 0 && selection <= itemlist_.getNumOfItems()) {
+            itemlist_.deleteItem(selection - 1);
+            itemlist_.displayItems();
+        }
+    }
+    
 	public int showMenu() {
         System.out.println("Hotel Menu:");
         menu.displayItems();

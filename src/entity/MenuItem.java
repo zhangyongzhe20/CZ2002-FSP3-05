@@ -53,6 +53,6 @@ public class MenuItem {
 
     @Override
     public String toString() {
-        return "[name=" + name + ", description=" + description + ",  price=" + price + "]";
+        return "[name: " + name + ", description: " + description + ",  price: " + price + "]";
     }
 }
