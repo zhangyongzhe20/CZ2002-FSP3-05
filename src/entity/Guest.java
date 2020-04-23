@@ -102,16 +102,15 @@ public class Guest {
     }
 
     public void printGuestInfo() {
-        System.out.println(" -------------------------------------------");
-        System.out.println("1.IC: " + this.getIC());
-        System.out.println("2.Identity Type: " + this.getIdentityType());
-        System.out.println("3.Name: " + this.getGuestName());
-        System.out.println("4.Gender: " + this.getGender());
-        System.out.println("5.Contact: " + this.getContact());
-        System.out.println("6.Country: " + this.getCountry());
-        System.out.println("7.Nationality: " + this.getNationality());
-        System.out.println("8.Address: " + this.getAddress());
-        System.out.println("9.Credit Card : " + this.getCreditCard());
-        System.out.println(" -------------------------------------------");
-    }
+		System.out.println(" -------------------------------------------");
+		System.out.println("IC: " + this.getIC());
+		System.out.println("1.Identity Type: " + this.getIdentityType());
+		System.out.println("2.Name: " + this.getGuestName());
+		System.out.println("3.Gender: " + this.getGender());
+		System.out.println("4.Contact: " + this.getContact());
+		System.out.println("5.Country: " + this.getCountry());
+		System.out.println("6.Nationality: " + this.getNationality());
+		System.out.println("7.Address: " + this.getAddress());
+		System.out.println("8.Credit Card : " + this.getCreditCard());
+	}
 }

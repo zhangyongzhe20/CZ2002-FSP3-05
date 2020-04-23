@@ -23,7 +23,7 @@ public class Guest_Boundary extends Boundary {
 
             switch (choice) {
                 case "1":
-                    createGuestMenu();
+                    createGuestMenu(null);
                     break;
                 case "2":
                     updateGuestMenu();
@@ -37,58 +37,59 @@ public class Guest_Boundary extends Boundary {
         } while (!choice.equalsIgnoreCase("0"));
     }
 
-    public void createGuestMenu() {
-        Character confirm;
-        //get user input
-        enterIdentityType();
+    public void createGuestMenu(String ic) {
+        char confirm;
+        guestMrg.createNewGuest();
+        if(ic == null) {
         enterIC();
-        enterName();
-        enterGender();
-        enterContact();
-        enterCountry();
-        enterNationality();
-        enterAddress();
-        enterCreditCard();
+        }else {
+        	guestMrg.setGuestIC(ic);
+        }
+        System.out.println(GuestMrg.checkGuestExist(ic));
+        if (!GuestMrg.checkGuestExist(ic)) {
+        	enterIdentityType();
+            enterName();
+            enterGender();
+            enterContact();
+            enterCountry();
+            enterNationality();
+            enterAddress();
+            enterCreditCard();
 
-        do {
             guestMrg.printGuestInfo();
-            confirm = readInputString("Press Y to confirm," + "N to discard and " +
-                    "(No.) to edit a field and (No.) to edit a field.").toUpperCase().charAt(0);
+            confirm = readInputString("Press Y to confirm," + "N to discard and " + 
+            "(No.) to edit a field and (No.) to edit a field.").toUpperCase().charAt(0);
             switch (confirm) {
                 case 'Y':
                     guestMrg.createGuest();
                     break;
                 case '1':
-                    enterIC();
-                    break;
-                case '2':
                     enterIdentityType();
-                    break;
-                case '3':
+                case '2':
                     enterName();
                     break;
-                case '4':
+                case '3':
                     enterGender();
                     break;
-                case '5':
+                case '4':
                     enterContact();
                     break;
-                case '6':
+                case '5':
                     enterCountry();
                     break;
-                case '7':
+                case '6':
                     enterNationality();
                     break;
-                case '8':
+                case '7':
                     enterAddress();
                     break;
-                case '9':
-                    enterCreditCard();
+                case '8':
+                	enterCreditCard();
                     break;
                 default:
                     break;
             }
-        } while (!(confirm.equals('Y') || confirm.equals('N')));
+        } 
     }
 
     private void findGuestMenu(){
@@ -127,35 +128,31 @@ public class Guest_Boundary extends Boundary {
                         + "(No.) to edit a field.").toUpperCase().charAt(0);
 
                 switch (confirm) {
-                    case 'Y':
-                        guestMrg.updateGuest();
-                        break;
-                    case '1':
-                        enterIC();
-                        break;
-                    case '2':
-                        enterIdentityType();
-                        break;
-                    case '3':
-                        enterName();
-                        break;
-                    case '4':
-                        enterGender();
-                        break;
-                    case '5':
-                        enterContact();
-                        break;
-                    case '6':
-                        enterCountry();
-                        break;
-                    case '7':
-                        enterNationality();
-                        break;
-                    case '8':
-                        enterAddress();
-                        break;
-                    case '9':
-                        enterCreditCard();
+                case 'Y':
+                    guestMrg.createGuest();
+                    break;
+                case '1':
+                    enterIdentityType();
+                case '2':
+                    enterName();
+                    break;
+                case '3':
+                    enterGender();
+                    break;
+                case '4':
+                    enterContact();
+                    break;
+                case '5':
+                    enterCountry();
+                    break;
+                case '6':
+                    enterNationality();
+                    break;
+                case '7':
+                    enterAddress();
+                    break;
+                case '8':
+                	enterCreditCard();
                         break;
                     default:
                         break;

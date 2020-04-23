@@ -21,7 +21,18 @@ public class GuestMrg {
 		return new GuestMrg();
 	}
 
-
+	public void createNewGuest() {
+		guest = new Guest();
+	}
+	public static boolean checkGuestExist(String ic) {
+		boolean returnValue = false;
+		for (Guest guest : guests) {
+			if (guest.getIC().equalsIgnoreCase(ic)) {
+				returnValue = true;
+			}
+		}
+		return returnValue;
+	}
 
 	public void updateGuest() {
 		int index = 0;
@@ -189,9 +200,12 @@ public class GuestMrg {
 	}
 
 	public void setGuestIC(String ic) {
+		if(checkGuestExist(ic)) {
+			guest = getGuestByIC(ic);
+		}else {
 		guest.setIC(ic);
+		}
 	}
-
 	public void setGender(String nextLine) {
 		guest.setGender(nextLine);
 	}
