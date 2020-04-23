@@ -411,6 +411,17 @@ public class RoomMrg {
 		  System.out.println("Unable to find such room");
 	  }
 	}
+	public void printRoomStatusReport(String roomStatus) {
+		RoomStatus rs = strToRoomStatus(roomStatus);
+		List<Room> roomList = getRoomByRoomStatus(rs);
+		if(roomList.size() > 0) {
+		for(Room r : roomList){
+			r.printRoomInfo();
+		}
+		}else {
+			System.out.println("There are no room with this status");
+		}
+	}
 	public void loadRoomData() throws FileNotFoundException {
 		File file = new File(fileName);
 		try {
