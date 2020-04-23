@@ -219,7 +219,8 @@ public class RoomMrg {
 		return r;
 	}
 
-	public double getRoomCharge(LocalDateTime checkInDate, LocalDateTime checkOutDate) {
+	public double getRoomCharge(String roomNum,LocalDateTime checkInDate, LocalDateTime checkOutDate) {
+		room = getRoomByRoomNum(roomNum);
 		double price = 0;
 		double total_price = 0;
 
