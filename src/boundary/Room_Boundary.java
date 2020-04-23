@@ -2,13 +2,8 @@ package boundary;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
-import controller.GuestMrg;
-import controller.ReservationMrg;
 import controller.RoomMrg;
-import entity.Room;
 import entity.Room.BedType;
 import entity.Room.Facing;
 import entity.Room.RoomStatus;
@@ -22,13 +17,14 @@ public class Room_Boundary extends Boundary {
         String choice;
         do {
             System.out.println("Room System\n" +
+                    "0. Return to Main Menu\n"+
                     "1. Create Room\n" +
                     "2. Update Room\n" +
                     "3. Search Room\n" +
-                    "4. Print Room Status Report\n" +
-                    "0. Return to Main Menu");
+                    "4. Print Room Status Report"
+                    );
 
-            choice = readInputString("Please Enter Your Choice:");
+            choice = readInputString("Enter choice : ");
 
             switch (choice) {
                 case "0":
@@ -232,13 +228,13 @@ public class Room_Boundary extends Boundary {
     }
 
     public void searchRoomByGuestNameMenu() {
-        String name = readInputString("Enter guest name :");
+        String name = readInputString("Enter Guest Name :");
         roomMrg.printRoomByGuestName(name);
     }
 
     private void enterRoomNum() {
         do {
-            String roomNum = readInputString("Enter room number: ");
+            String roomNum = readInputString("Enter Room Number: ");
             if (roomNum.matches("^[0-9]*$")) {
                 if (!RoomMrg.checkRoomExist(roomNum)) {
                     roomMrg.setRoomNumber(roomNum);
@@ -254,37 +250,37 @@ public class Room_Boundary extends Boundary {
 
     private void enterRoomType() {
         HashMap<String, String> enumData = getEnumTypeHashMap(RoomType.class);
-        String roomType = readInputEnum("Enter room type: ", enumData);
+        String roomType = readInputEnum("Enter Room Type: ", enumData);
         roomMrg.setRoomType(roomMrg.strToRoomType(roomType));
     }
 
     private void enterBedType() {
         HashMap<String, String> enumData = getEnumTypeHashMap(BedType.class);
-        String bedType = readInputEnum("Enter Bed type: ", enumData);
+        String bedType = readInputEnum("Enter Bed Type: ", enumData);
         roomMrg.setBedType(roomMrg.strToBedType(bedType));
 
     }
 
     private void enterFacing() {
         HashMap<String, String> enumData = getEnumTypeHashMap(Facing.class);
-        String facing = readInputEnum("Enter Bed type: ", enumData);
+        String facing = readInputEnum("Enter Bed Type: ", enumData);
         roomMrg.setFacing(roomMrg.strToFacing(facing));
 
     }
 
     private void enterWeekdayRate() {
-        Double weekdayRate = readInputDouble("Enter weekday rate: ");
+        Double weekdayRate = readInputDouble("Enter Weekday Date: ");
         roomMrg.setRoomRateWeekday(weekdayRate);
     }
 
     private void enterWeekendRate() {
 
-        Double weekendRate = readInputDouble("Enter weekend rate: ");
+        Double weekendRate = readInputDouble("Enter Weekend Rate: ");
         roomMrg.setRoomRateWeekend(weekendRate);
     }
 
     private void enterAllowSmoking() {
-        boolean bool = readInputBoolean("Enter allow Smoking (Y/N): ");
+        boolean bool = readInputBoolean("Enter Allow Smoking (Y/N): ");
         roomMrg.setAllowSmoking(bool);
     }
 

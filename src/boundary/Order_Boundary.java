@@ -1,7 +1,6 @@
 package boundary;
 
 import controller.OrderMrg;
-import controller.RoomMrg;
 import entity.Order;
 
 import java.io.FileNotFoundException;
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Order_Boundary extends Boundary {
     // get the instance of Order Mrg
@@ -19,8 +17,8 @@ public class Order_Boundary extends Boundary {
     public void displayMain(){
         do {
             System.out.println("Service System:\n" + "0. Return to previous page\n" + "1.Order Page\n"
-                    + "2. Menu Page\n");
-            userInput = readInputString("Enter userInput : ");
+                    + "2.Menu Page\n");
+            userInput = readInputString("Please Enter Your Choice:");
             switch(userInput){
 			case "1":
                 OrderPage();
@@ -33,8 +31,8 @@ public class Order_Boundary extends Boundary {
     }
     private void OrderPage() {
         do {
-            userInput = readInputString("Order Page:\n" + "0. Return to previous page\n" + "1. Create Order\n"
-            + "2. Update Order\n" + "3. Search Order\n" + "Enter userInput : ");
+            userInput = readInputString("Order Page:\n" + "0. Return to previous page\n" + "1.Create Order\n"
+            + "2.Update Order\n" + "3.Search Order\n" + "Please Enter Your Choice:");
             switch (userInput) {
                 case "1":
                     createOrderMenu();
@@ -51,8 +49,8 @@ public class Order_Boundary extends Boundary {
     private void MenuPage(){
         String userInput;
         do {
-            userInput = readInputString("Menu Page:\n" + "0. Return to previous page\n" + "1. Display Menu\n"
-               + "2. Update Menu");
+            userInput = readInputString("Menu Page:\n" + "0.Return to previous page\n" + "1.Display Menu\n"
+               + "2.Update Menu\n"+"Please Enter Your Choice:");
             switch (userInput) {
                 case "1":
                     orderMrg.showMenu();
@@ -67,8 +65,8 @@ public class Order_Boundary extends Boundary {
     private void updateMenuPage(){
         String userInput;
         do {
-            userInput = readInputString("Update Menu Page:\n" + "0. Return to previous page\n" + "1. Add menu item\n" +
-             "2. Delete menu item\n" + "3. Update menu item");
+            userInput = readInputString("Update Menu Page:\n" + "0.Return to previous page\n" + "1.Add menu item\n" +
+             "2.Delete menu item\n" + "3.Update menu item\n"+"Please Enter Your Choice:");
             switch (userInput) {
                 case "0":
                 if(orderMrg.updateMenu()){
@@ -95,7 +93,7 @@ public class Order_Boundary extends Boundary {
             userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to edit a menu item.");
             if(!userInput.equals("N") && !userInput.equals("Y")){
                 String userInput2;
-                userInput2 = readInputString("1. Update name\n" + "2. Update description\n" + "3. Update Price");
+                userInput2 = readInputString("1.Update name\n" + "2.Update description\n" + "3.Update Price\n"+"Please Enter Your Choice:");
                 switch(userInput2){
                     case "1": 
                     userInput2 = readInputString("New name:");
@@ -118,9 +116,9 @@ public class Order_Boundary extends Boundary {
     private void enterMenuItem() {
         do{
         String name, description, price;
-        name = readInputString("Enter item name:");
-        description = readInputString("Enter item description:");
-        price = readInputString("Enter item price:");
+        name = readInputString("Enter Item Name:");
+        description = readInputString("Enter Item Description:");
+        price = readInputString("Enter Item Price:");
         userInput = readInputString("Press Y to confirm," + "N to discard and " + "C to continue").toUpperCase();
         if(!userInput.equals("N"))
         orderMrg.addMenuItem(name, description, price);
@@ -184,7 +182,7 @@ public class Order_Boundary extends Boundary {
     private String enterRoomNum() {
         String roomNum;
         do{
-        roomNum = readInputString("Enter room number of the Order: ");
+        roomNum = readInputString("Enter Room Number of the Order: ");
         }while(!orderMrg.setAndVerifyRoomNum(roomNum));
         return roomNum;
     }
@@ -226,7 +224,7 @@ public class Order_Boundary extends Boundary {
                 case "Y":
                     boolean success = orderMrg.updateOrderDetail();
                     if (success) {
-                        System.out.println("Sucessfully update order");
+                        System.out.println("Successfully update order");
                     } else {
                         System.out.println("Unable to update order");
                     }
@@ -255,7 +253,7 @@ public class Order_Boundary extends Boundary {
     }
 
     private void updateOrderItem() {
-        userInput = readInputString("Update order items:\n" + "0. Return to previous page\n" + "1. Add new order items\n" + "2. Delete order items\n");
+        userInput = readInputString("Update order items:\n" + "0.Return to previous page\n" + "1.Add new order items\n" + "2.Delete order items");
         switch (userInput) {
             case "0":
                 break;
@@ -309,8 +307,8 @@ public class Order_Boundary extends Boundary {
 
     private void displayOrderByStatus() {
         do {
-            userInput = readInputString("0. Return to previous page\n" + "1. Print All Confirmed Orders\n"
-            + "2. Print All Preparing Orders \n" + "3. Print All Delivered Orders\n");
+            userInput = readInputString("0.Return to previous page\n" + "1.Print All Confirmed Orders\n"
+            + "2.Print All Preparing Orders \n" + "3.Print All Delivered Orders\n");
             switch (userInput) {
                 case "1":
                     orderMrg.printOrderByStatus(Order.OrderStatus.CONFIRMED);

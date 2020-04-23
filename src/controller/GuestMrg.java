@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 import entity.Guest;
 import entity.Guest.IdentityType;
-import entity.Reservation;
-import entity.Room;
 
 public class GuestMrg {
 

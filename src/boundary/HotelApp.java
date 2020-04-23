@@ -3,7 +3,6 @@ package boundary;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-
 public class HotelApp {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(System.in);
@@ -30,5 +29,7 @@ public class HotelApp {
         System.out.println("5. About Payment");
         System.out.println("6. Quit");
         System.out.println("============================================");
+        System.out.println("Enter choice : ");
     }
+
 }

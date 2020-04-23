@@ -1,6 +1,5 @@
 package boundary;
 
-import entity.Guest;
 import entity.Guest.IdentityType;
 import controller.GuestMrg;
 
@@ -14,12 +13,13 @@ public class Guest_Boundary extends Boundary {
         String choice;
         do {
             System.out.println("Guest System\n" +
+                            "0. Return to Main Menu\n"+
                     "1. Create Guest\n" +
                     "2. Update Guest\n" +
-                    "3. Find Guest\n" +
-                    "0. Return to Main Menu");
+                    "3. Find Guest"
+                    );
 
-            choice = readInputString("Please Enter Your Choice:");
+            choice = readInputString("Enter choice : ");
 
             switch (choice) {
                 case "1":
@@ -92,7 +92,7 @@ public class Guest_Boundary extends Boundary {
     }
 
     private void findGuestMenu(){
-        String selection = readInputString("Search guest:\n" + "1. By IC\n" + "2. By Name\n" + "0. Return to previous page");
+        String selection = readInputString("Search guest:\n" + "0. Return to previous page\n"+"1. By IC\n" + "2. By Name");
         switch(selection){
             case "0":
             break;
@@ -170,42 +170,42 @@ public class Guest_Boundary extends Boundary {
     private void enterIdentityType() {
         HashMap<String, String> enumData = getEnumTypeHashMap(IdentityType.class);
         System.out.println();
-        String identityType = readInputEnum("Enter identity type:", enumData);
+        String identityType = readInputEnum("Enter Identity Type : ", enumData);
         guestMrg.setIdentityType(guestMrg.strToIdentityType(identityType));
     }
 
     private void enterIC() {
-        String ic = readInputString("Enter IC: ");
+        String ic = readInputString("Enter IC : ");
         guestMrg.setGuestIC(ic);
     }
 
     private void enterName() {
-        String name = readInputString("Enter name : ");
+        String name = readInputString("Enter Name : ");
         guestMrg.setGuestName(name);
     }
 
     private void enterAddress() {
-        String address = readInputString("Enter address : ");
+        String address = readInputString("Enter Address : ");
         guestMrg.setAddress(address);
 
     }
 
     private void enterCountry() {
-        String country = readInputString("Enter country : ");
+        String country = readInputString("Enter Country : ");
         guestMrg.setCountry(country);
 
     }
 
     private void enterNationality() {
-        String nationality = readInputString("Enter nationality : ");
+        String nationality = readInputString("Enter Nationality : ");
         guestMrg.setNationality(nationality);
     }
 
     private void enterGender() {
         do {
-            String gender = readInputString("Enter gender (M/F): ");
+            String gender = readInputString("Enter Gender (M/F) : ");
             if ((!gender.equalsIgnoreCase("M")) && (!gender.equalsIgnoreCase("F"))) {
-                System.out.println("Invalid Input! The gender should be M/F.");
+                System.out.println("The gender should be M/F.");
             } else {
                 guestMrg.setGender(gender);
                 break;
@@ -215,9 +215,9 @@ public class Guest_Boundary extends Boundary {
 
     private void enterContact() {
         do {
-            String contact = readInputString("Enter contact : ");
+            String contact = readInputString("Enter Contact : ");
             if (contact.length() != 8)
-                System.out.println("Invalid Input! The contact should have 8 numbers.");
+                System.out.println("The contact should have 8 numbers.");
             else {
                 guestMrg.setContact(contact);
                 break;
@@ -227,11 +227,11 @@ public class Guest_Boundary extends Boundary {
 
     private void enterCreditCard() {
         do {
-            String creditCard = readInputString("Enter credit card : ");
+            String creditCard = readInputString("Enter Credit Card : ");
             if (creditCard.length() != 16)
-                System.out.println("Invalid Input! The credit card should have 16 characters.");
+                System.out.println("The credit card should have 16 characters.");
             else {
-                guestMrg.setCreditCard(creditCard.toString());
+                guestMrg.setCreditCard(creditCard);
                 break;
             }
         } while (true);

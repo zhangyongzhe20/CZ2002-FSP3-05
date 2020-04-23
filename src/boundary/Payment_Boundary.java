@@ -59,12 +59,12 @@ public class Payment_Boundary extends Boundary {
 		double discount = 0;
 		LocalDateTime checkOutDate = LocalDateTime.now();
 
-		String roomNum = readInputString("Enter room number");
+		String roomNum = readInputString("Enter Room Number");
 		boolean success = ReservationMrg.getInstance().setCheckOutReservationByRoomNum(roomNum);
 
 		if (success) {
 			do {
-				promoCode = readInputString("Enter Promtion Code (Enter 0 for no promotion): ");
+				promoCode = readInputString("Enter Promotion Code (Enter 0 for no promotion): ");
 				if (PromotionMrg.checkValidPromotionExist(promoCode)) {
 					promotionMrg.setPromotionCode(promoCode);
 					discount = promotionMrg.getDiscount();
@@ -102,7 +102,7 @@ public class Payment_Boundary extends Boundary {
 			PaymentMethod paymentMethod = PaymentMethod.CASH;
 			String creditCard = GuestMrg.getInstance().getCreditCard();
 			do {
-				choice = readInputString("Select Payment Mode\n" + "1. Credit/Debit Card\n" + "2. Cash");
+				choice = readInputString("Select Payment Mode\n" + "1.Credit/Debit Card\n" + "2.Cash");
 				switch (choice) {
 				case "1":
 					paymentMethod = PaymentMethod.CASH;
@@ -113,11 +113,11 @@ public class Payment_Boundary extends Boundary {
 							System.out.println("Use existing card details for this payment(Y/N)");
 							confirm = sc.nextLine().toUpperCase().charAt(0);
 							if (confirm == 'N') {
-								creditCard = readInputString("Enter new card details for this payment:");
+								creditCard = readInputString("Enter new card details for this payment : ");
 							}
 						} while (confirm != 'Y' || confirm != 'N');
 					} else {
-						creditCard = readInputString("Enter new card details for this payment:");
+						creditCard = readInputString("Enter new card details for this payment : ");
 					}
 					break;
 				case "2":
@@ -183,7 +183,7 @@ public class Payment_Boundary extends Boundary {
 	}
 
 	private void updatePromotionMenu() {
-		String promotionCode = readInputString("Enter promotion code:");
+		String promotionCode = readInputString("Enter Promotion Code:");
 		if (PromotionMrg.checkPromotionExist(promotionCode)) {
 			char confirm;
 			do {
@@ -220,7 +220,7 @@ public class Payment_Boundary extends Boundary {
 
 	private void deletePromotionMenu() {
 
-		String promotionCode = readInputString("Enter promotion code:");
+		String promotionCode = readInputString("Enter Promotion Code:");
 		char confirm;
 		if (PromotionMrg.checkPromotionExist(promotionCode)) {
 			do {
@@ -241,7 +241,7 @@ public class Payment_Boundary extends Boundary {
 
 	private void enterPromotionCode() {
 		do {
-			String promotionCode = readInputString("Enter promotion code: ");
+			String promotionCode = readInputString("Enter Promotion Code: ");
 			if (!PromotionMrg.checkPromotionExist(promotionCode)) {
 				promotionMrg.setPromotionCode(promotionCode);
 				break;
@@ -253,18 +253,18 @@ public class Payment_Boundary extends Boundary {
 	}
 
 	private void enterPromotionDescription() {
-		String promoDescription = readInputString("Enter promotion description:");
+		String promoDescription = readInputString("Enter Promotion Description:");
 		promotionMrg.setPromoDescription(promoDescription);
 	}
 
 	private void enterDiscount() {
-		double discount = readInputDouble("Enter discount percentage:");
+		double discount = readInputDouble("Enter Discount Percentage:");
 		promotionMrg.setDiscount(discount);
 	}
 
 	private void enterPromoStartDate() {
 		do {
-			LocalDateTime promoStartDate = readInputDate("Enter promotion start date:(DD/MM/YYYY HH:mm)");
+			LocalDateTime promoStartDate = readInputDate("Enter Promotion Start Date:(DD/MM/YYYY HH:mm)");
 			if (promoStartDate.isAfter(LocalDateTime.now())) {
 				promotionMrg.setPromoStartDate(promoStartDate);
 				break;
@@ -277,7 +277,7 @@ public class Payment_Boundary extends Boundary {
 
 	private void enterPromoEndDate() {
 		do {
-			LocalDateTime promoEndDate = readInputDate("Enter promotion end date:(DD/MM/YYYY HH:mm)");
+			LocalDateTime promoEndDate = readInputDate("Enter Promotion End Date:(DD/MM/YYYY HH:mm)");
 			if (promoEndDate.isAfter(LocalDateTime.now())) {
 				promotionMrg.setPromoEndDate(promoEndDate);
 				break;

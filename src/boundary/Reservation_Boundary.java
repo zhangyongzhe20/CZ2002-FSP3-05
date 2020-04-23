@@ -119,7 +119,7 @@ public class Reservation_Boundary extends Boundary {
 		String i;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n"
-					+ "1. Update Reservation By Details\n" + "2. Update Reservation WaitList\n");
+					+ "1. Update Reservation By Details\n" + "2. Update Reservation WaitList");
 
 			i = readInputString("Enter choice :");
 			switch (i) {
@@ -136,7 +136,7 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	private void updateReservationDetails() {
-		String reservationCode = readInputString("Enter reservation code:");
+		String reservationCode = readInputString("Enter Reservation Code:");
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
 			if (reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
@@ -187,7 +187,7 @@ public class Reservation_Boundary extends Boundary {
 
 	private void updateReservationWaitList() {
 		reservationMrg.printReservationsByStatus(ReservationStatus.WAITLIST);
-		String reservationCode = readInputString("Enter reservation code:");
+		String reservationCode = readInputString("Enter Reservation Code:");
 		Character confirm;
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
@@ -217,7 +217,7 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	private void deleteReservationMenu() {
-		String reservationCode = readInputString("Enter reservation code:");
+		String reservationCode = readInputString("Enter Reservation Code:");
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
 			reservationMrg.printReservationInfo();
@@ -238,7 +238,7 @@ public class Reservation_Boundary extends Boundary {
 		String choice;
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n"
-					+ "1. Search reservation by reservation code\n" + "2. Display all reservation\n");
+					+ "1. Search reservation by reservation code\n" + "2. Display all reservation");
 
 			choice = readInputString("Enter choice :");
 			switch (choice) {
@@ -255,7 +255,7 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	private void searchByReservationCodeMenu() {
-		String reservationCode = readInputString("Enter reservation code:");
+		String reservationCode = readInputString("Enter Reservation Code:");
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
 			if (reservationMrg.getCheckInType().equals(CheckInType.RESERVATION)) {
@@ -283,7 +283,7 @@ public class Reservation_Boundary extends Boundary {
 	private void checkInMenu() {
 		String i;
 		do {
-			System.out.println("Room System\n" + "0. Return to Main Menu\n" + "1. Walk In \n" + "2. Reservation\n");
+			System.out.println("Room System\n" + "0.Return to Main Menu\n" + "1.Walk In \n" + "2.Reservation");
 			i = readInputString("Enter your choice:");
 			switch (i) {
 			case "0":
@@ -299,7 +299,7 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	private void reservationCheckInMenu() {
-		String reservationCode = readInputString("Enter reservation code:");
+		String reservationCode = readInputString("Enter Reservation Code:");
 		if (ReservationMrg.checkReservationExist(reservationCode)) {
 			reservationMrg.setReservationCode(reservationCode);
 			if (reservationMrg.getReservationStatus().equals(ReservationStatus.CONFIRMED)
@@ -345,13 +345,13 @@ public class Reservation_Boundary extends Boundary {
 	}
 
 	private void enterNumOfAdult() {
-		int numOfAdult = readInputInt("Enter number of adult(s): ");
+		int numOfAdult = readInputInt("Enter Number of Adult(s): ");
 		reservationMrg.setNumOfAdults(numOfAdult);
 
 	}
 
 	private void enterNumOfChild() {
-		int numOfChild = readInputInt("Enter number of Child(ren): ");
+		int numOfChild = readInputInt("Enter Number of Child(ren): ");
 		reservationMrg.setNumOfChild(numOfChild);
 	}
 
@@ -363,15 +363,15 @@ public class Reservation_Boundary extends Boundary {
 		boolean allowSmokingBool;
 
 		HashMap<String, String> enumData = getEnumTypeHashMap(RoomType.class);
-		String strRoomType = readInputEnum("Enter room type: ", enumData);
+		String strRoomType = readInputEnum("Enter Room Type: ", enumData);
 		roomType = roomMrg.strToRoomType(strRoomType);
 
 		enumData = getEnumTypeHashMap(BedType.class);
-		String strBedType = readInputEnum("Enter bed type: ", enumData);
+		String strBedType = readInputEnum("Enter Bed Type: ", enumData);
 		bedType = roomMrg.strToBedType(strBedType);
 
 		hasWifiBool = readInputBoolean("Enter Has Wifi (Y/N): ");
-		allowSmokingBool = readInputBoolean("Enter allow Smoking (Y/N): ");
+		allowSmokingBool = readInputBoolean("Enter Allow Smoking (Y/N): ");
 
 		List<String> roomNumList = new ArrayList<String>();
 
