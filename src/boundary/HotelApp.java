@@ -5,13 +5,17 @@ import java.util.Scanner;
 
 public class HotelApp {
     public static void main(String[] args) throws FileNotFoundException {
+
         Scanner sc = new Scanner(System.in);
+
         String selection;
         Boundary_Factory bf = new Boundary_Factory();
         bf.loadAllData();
         do {
             displayMain();
+            System.out.print(Boundary.ANSI_RED);
             selection = sc.nextLine();
+            System.out.print(Boundary.ANSI_RESET);
             if (Integer.parseInt(selection) > 0 && Integer.parseInt(selection) < 6) {
                 Boundary nextpage = bf.createBoundary(selection);
                 nextpage.displayMain();
