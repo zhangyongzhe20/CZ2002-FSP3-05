@@ -15,7 +15,7 @@ import entity.Promotion;
 import entity.Reservation;
 
 public class PromotionMrg {
-	private List<Promotion> promotions = new ArrayList<Promotion>();
+	private static List<Promotion> promotions = new ArrayList<Promotion>();
 	private final static String FILENAME = "promotion_data.txt";
 	private Promotion promotion;
 	public static PromotionMrg getInstance() {
