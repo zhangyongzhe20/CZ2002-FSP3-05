@@ -43,13 +43,15 @@ public class ReservationMrg {
 	}
 
 	public void setReservationCodeByRoomNum(String roomNum) {
+		if(reservations!=null){
 		for(Reservation r : reservations) {
-			if(r.getRoomNum().equalsIgnoreCase(roomNum)) {
+			if(r.getRoomNum()!=null && r.getRoomNum().equalsIgnoreCase(roomNum)) {
 				if(r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
 					reservation = r;
 				}
 			}
 		}
+	}
 	}
 	public void setGuestIC(String guestIC) {
 		reservation.setGuestIC(guestIC);
@@ -122,7 +124,7 @@ public class ReservationMrg {
 	public static boolean checkCheckInExist(String roomNum) {
 
 		for (Reservation reservation : reservations) {
-			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
+			if (reservation.getRoomNum()!=null && reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
 				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
 					return true;
 				}
@@ -321,8 +323,7 @@ public class ReservationMrg {
 	public void printActiveReservation() {
 		for (Reservation r : reservations) {
 			if (r.getCheckInType().equals(CheckInType.RESERVATION)) {
-				if (!(r.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)
-						|| r.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
+				if (!r.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)) {
 					r.printReservationInfo();
 				}
 			}
@@ -357,6 +358,7 @@ public class ReservationMrg {
 			r.setCheckInType(strToCheckInType(temp[8]));
 			reservations.add(r);
 		}
+		checkExpiredReservations();
 		sc.close();
 	}
 
@@ -388,9 +390,11 @@ public class ReservationMrg {
 
 			Duration duration = Duration.between(now, checkIn);
 			if (duration.toHours() <= -1) {
+				if(r.getCheckInType().equals(CheckInType.RESERVATION)) {
 				if (r.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
 					r.setReservationStatus(ReservationStatus.EXPIRED);
 				}
+			}
 			}
 		}
 		try {
