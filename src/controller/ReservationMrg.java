@@ -203,7 +203,11 @@ public class ReservationMrg {
 		if (updateData) {
 			try {
 				writeReservationData();
+				if(reservation.getCheckInType().equals(CheckInType.RESERVATION)) {
 				System.out.println("Reservation is created successfully!");
+				}else {
+					System.out.println("Check In Successfully!");	
+				}
 				System.out.println("-------------------------------------------");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
