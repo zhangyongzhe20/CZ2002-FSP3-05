@@ -307,7 +307,14 @@ public class ReservationMrg {
 		}
 		return rList;
 	}
-
+	public String getReservationRoomByIC(String ic) {
+		Reservation reservation = getReservationByGuestIC(ic);
+		if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CHECKIN)||
+				reservation.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
+				return reservation.getRoomNum();
+		}
+		return null;
+	}
 	public void printReservationInfo() {
 		reservation.printReservationInfo();
 	}

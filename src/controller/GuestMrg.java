@@ -180,6 +180,16 @@ public class GuestMrg {
 	public void printGuestInfo() {
 	  guest.printGuestInfo();
 	}
+	public List<String> getGuestsICByGuestName(String name){
+		List<String> icList = new ArrayList<String>();
+		List<Guest> guestList = getGuestByName(name);
+		for(Guest guest : guestList) {
+			if(guest.getGuestName().equalsIgnoreCase(name)) {
+				icList.add(guest.getIC());
+			}
+		}
+		return icList;
+	}
 	public void printGuestInfoByGuestName(String guestName) {
 		List<Guest> guestList = getGuestByName(guestName);
 		if(guestList.size() > 0) {

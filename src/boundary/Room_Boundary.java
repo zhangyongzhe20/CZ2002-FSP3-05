@@ -314,6 +314,7 @@ public class Room_Boundary extends Boundary {
 
 		Double weekendRate = readInputDouble("Enter weekend rate: ");
 		roomMrg.setRoomRateWeekend(weekendRate);
+		
 	}
 
 	private void enterAllowSmoking() {
