@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import entity.Guest;
-import entity.Reservation;
 import entity.Room;
 import entity.Room.BedType;
 import entity.Room.Facing;
@@ -180,15 +178,12 @@ public class RoomMrg {
 
 	public List<Room> getRoomByGuestName(String name) {
 		List<Room> roomList = new ArrayList<Room>();
-		List<Guest> guestList = GuestMrg.getInstance().getGuestByName(name);
-		for (Guest g : guestList) {
-			String guestIC = g.getIC();
-			Reservation reservation = ReservationMrg.getInstance().getReservationByGuestIC(guestIC);
-			if (reservation.getReservationStatus().equals(Reservation.ReservationStatus.CHECKIN)) {
-				String roomNum = reservation.getRoomNum();
-				Room r = getRoomByRoomNum(roomNum);
-				roomList.add(r);
-			}
+		List<String> guestICList = GuestMrg.getInstance().getGuestsICByGuestName(name);
+		for (String ic : guestICList) {
+				String roomNum = ReservationMrg.getInstance().getReservationRoomByIC(ic);
+				if(roomNum != null) {
+					roomList.add(getRoomByRoomNum(roomNum));
+				}
 		}
 		return roomList;
 	}

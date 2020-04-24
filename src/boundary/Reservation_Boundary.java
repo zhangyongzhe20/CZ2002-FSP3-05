@@ -87,13 +87,13 @@ public class Reservation_Boundary extends Boundary {
 			enterNumOfAdult();
 			enterNumOfChild();
 			enterRoomNum();
-			if (reservationMrg.getRoomNum() == null) {
-				reservationMrg.setReservationStatus(ReservationStatus.WAITLIST);
-			} else {
-				reservationMrg.setReservationStatus(ReservationStatus.CONFIRMED);
-			}
-
 			do {
+				if (reservationMrg.getRoomNum() == null) {
+					reservationMrg.setReservationStatus(ReservationStatus.WAITLIST);
+				} else {
+					reservationMrg.setReservationStatus(ReservationStatus.CONFIRMED);
+				}
+
 				reservationMrg.printReservationInfo();
 				confirm = readInputString("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.")
 						.toUpperCase().charAt(0);
@@ -158,7 +158,7 @@ public class Reservation_Boundary extends Boundary {
 						|| reservationMrg.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
 					char confirm;
 					do {
-						System.out.println("boundary");
+						
 						reservationMrg.printReservationInfo();
 
 						confirm = readInputString("Press Y to confirm," + "N to discard and "
@@ -379,7 +379,6 @@ public class Reservation_Boundary extends Boundary {
 		BedType bedType;
 		boolean hasWifiBool;
 		boolean allowSmokingBool;
-
 		HashMap<String, String> enumData = getEnumTypeHashMap(RoomType.class);
 		String strRoomType = readInputEnum("Enter Room Type: ", enumData);
 		roomType = roomMrg.strToRoomType(strRoomType);
@@ -408,6 +407,9 @@ public class Reservation_Boundary extends Boundary {
 				if (isValid) {
 					reservationMrg.setRoomNum(roomNum);
 					break;
+				}
+				if(roomNum.equalsIgnoreCase("0")) {
+					reservationMrg.setRoomNum(null);
 				}
 			} while (!roomNum.equalsIgnoreCase("0"));
 		}
