@@ -21,9 +21,6 @@ public class Payment_Boundary extends Boundary {
 	final static double TAX = 17;
 	private int days = 0;
 	
-	public static Payment_Boundary getInstance() {
-		return new Payment_Boundary();
-	}
 
 	@Override
 	public void displayMain() {
@@ -59,7 +56,7 @@ public class Payment_Boundary extends Boundary {
 		} while (!choice.equalsIgnoreCase("0"));
 	}
 
-	public void displayCheckOut() {
+	private void displayCheckOut() {
 
 		String promoCode;
 		double discount = 0;

@@ -18,7 +18,7 @@ public class PaymentMrg {
      * Consider the guest could visit the hotel more than once
      */
 	private static List<Payment> payments = new ArrayList<Payment>();
-	private final static String fileName = "payment_data.txt";
+	private final static String FILENAME = "payment_data.txt";
 	private Payment payment;
 	
 	public static PaymentMrg getInstance() {
@@ -52,17 +52,9 @@ public class PaymentMrg {
 		}
     }
 
-    public Payment getPaymentById(String id) {
-    	for (Payment p : payments) {
-    		if(p.getReservationCode().equalsIgnoreCase(id)) {
-    			return p;
-    		}
-    	}
-    	return null;
-    }
-    
+
 	public void loadPaymentData() throws FileNotFoundException {
-		File file = new File(fileName);
+		File file = new File(FILENAME);
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
@@ -90,7 +82,7 @@ public class PaymentMrg {
 	}
 
 	public void writePaymentData() throws IOException {
-		FileWriter fileWriter = new FileWriter(fileName);
+		FileWriter fileWriter = new FileWriter(FILENAME);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		if (payments.size() > 0) {
 			for (Payment payment : payments) {
