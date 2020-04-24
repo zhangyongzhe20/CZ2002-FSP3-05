@@ -17,7 +17,7 @@ public class Guest_Boundary extends Boundary {
                             "0. Return to Main Menu\n"+
                     "1. Create Guest\n" +
                     "2. Update Guest\n" +
-                    "3. Find Guest"
+                    "3. Search Guest"
                     );
             System.out.println("-------------------------------------------");
             choice = readInputString("Enter choice : ");
