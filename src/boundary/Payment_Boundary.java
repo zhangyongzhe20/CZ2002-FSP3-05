@@ -17,6 +17,7 @@ public class Payment_Boundary extends Boundary {
 	private PromotionMrg promotionMrg = PromotionMrg.getInstance();
 	private ReservationMrg reservationMrg = ReservationMrg.getInstance();
 	private OrderMrg orderMrg = OrderMrg.getInstance();
+	private RoomMrg roomMrg = RoomMrg.getInstance();
 	final static double TAX = 17;
 	private int days = 0;
 	
@@ -115,11 +116,11 @@ public class Payment_Boundary extends Boundary {
 			System.out.println("Date Check In: " + formatter.format(reservationMrg.getCheckIn()));
 			System.out.println("Date Check Out:" + formatter.format(checkOutDate));
 
-			double roomCharge = RoomMrg.getInstance().getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
-			RoomMrg.getInstance().printRoomByRoomNumber(roomNum);
-			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
-
+			double roomCharge = roomMrg.getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
 			double totalRoomServiceCharge = orderMrg.calculateRoomServiceCharge(roomNum);
+			
+			roomMrg.printRoomByRoomNumber(roomNum);
+			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
 			orderMrg.displayAllOrders(roomNum);
 			System.out.println("Room Service Charge: $" + String.format("%.2f", totalRoomServiceCharge));
 			
