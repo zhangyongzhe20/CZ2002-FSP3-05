@@ -16,7 +16,7 @@ import entity.Reservation;
 
 public class PromotionMrg {
 	private static List<Promotion> promotions = new ArrayList<Promotion>();
-	private final static String fileName = "promotion_data.txt";
+	private final static String FILENAME = "promotion_data.txt";
 	private Promotion promotion;
 	public static PromotionMrg getInstance() {
 		PromotionMrg promotionMrg = new PromotionMrg();
@@ -133,7 +133,7 @@ public class PromotionMrg {
 		}
 	}
 	public void loadPromotionData() throws FileNotFoundException {
-		File file = new File(fileName);
+		File file = new File(FILENAME);
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
@@ -158,7 +158,7 @@ public class PromotionMrg {
 	}
 
 	public void writePromotionData() throws IOException {
-		FileWriter fileWriter = new FileWriter(fileName);
+		FileWriter fileWriter = new FileWriter(FILENAME);
 		PrintWriter fileOut = new PrintWriter(fileWriter);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		if (promotions.size() > 0) {
