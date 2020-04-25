@@ -115,21 +115,23 @@ public class Payment_Boundary extends Boundary {
 			
 			paymentMrg.createNewPayment(reservationMrg.getReservationCode(), promoCode, roomCharge, totalRoomServiceCharge, TAX, discount,
 			totalPay, paymentMethod, creditCard);
+			
+			printInvoice(roomNum,checkInDate , checkOutDate);
+			
 			reservationMrg.checkOutReservation(checkOutDate);
 			orderMrg.setOrdersToBilled(roomNum);
 			System.out.println("Successfully check out of the room");
-			printInvoice(checkInDate , checkOutDate);
 		} else {
 			System.out.println("Please enter the correct room number");
 		}
 
 	}
-	private void printInvoice(LocalDateTime checkInDate,LocalDateTime checkOutDate) {
+	private void printInvoice(String roomNum , LocalDateTime checkInDate,LocalDateTime checkOutDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		System.out.println("-------------------------------------------");
 		System.out.println("Date Check In: " + formatter.format(checkInDate));
 		System.out.println("Date Check Out:" + formatter.format(checkOutDate));
-		orderMrg.printOrderInfo();
+		orderMrg.displayAllOrders(roomNum);
 		paymentMrg.printPaymentInfo();
 		
 	}
