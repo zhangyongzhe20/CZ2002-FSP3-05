@@ -131,7 +131,7 @@ public class Payment_Boundary extends Boundary {
 		System.out.println("-------------------------------------------");
 		System.out.println("Date Check In: " + formatter.format(checkInDate));
 		System.out.println("Date Check Out:" + formatter.format(checkOutDate));
-		orderMrg.displayAllOrders(roomNum);
+		orderMrg.displayUnbilledOrders(roomNum);
 		paymentMrg.printPaymentInfo();
 		
 	}
