@@ -23,11 +23,12 @@ public class PromotionMrg {
 		return promotionMrg;
 	}
 
-	public static boolean checkValidPromotionExist(String promotionCode) {
+	public boolean checkValidPromotionExist(String promotionCode) {
 		for (Promotion promotion : promotions) {
 			if (promotion.getPromotionCode().equalsIgnoreCase(promotionCode)) {
 				if(promotion.getPromoStartDate().isBefore(LocalDateTime.now())&& promotion.getPromoEndDate().isAfter(LocalDateTime.now())) {
-				return true;
+				this.promotion = promotion;
+					return true;
 				}
 			}
 		}

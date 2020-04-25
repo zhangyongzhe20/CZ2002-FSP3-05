@@ -69,8 +69,7 @@ public class Payment_Boundary extends Boundary {
 		if (reservationMrg.checkCheckInExist(roomNum)) {
 			do {
 				promoCode = readInputString("Enter Promotion Code (Enter 0 for no promotion): ");
-				if (PromotionMrg.checkValidPromotionExist(promoCode)) {
-					promotionMrg.setPromotionCode(promoCode);
+				if (promotionMrg.checkValidPromotionExist(promoCode)) {
 					discount = promotionMrg.getDiscount();
 					break;
 				} else if (promoCode.equalsIgnoreCase("0")) {
