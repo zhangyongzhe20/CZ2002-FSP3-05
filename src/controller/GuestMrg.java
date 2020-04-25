@@ -116,7 +116,6 @@ public class GuestMrg {
 	public List<Guest> getGuestByName(String name) {
 		List<Guest> guestList = new ArrayList<>();
 		for (Guest guest : guests) {
-			System.out.println(guest.getGuestName());
 			if (guest.getGuestName().equalsIgnoreCase(name)) {
 				guestList.add(guest);
 			}

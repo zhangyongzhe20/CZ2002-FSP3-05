@@ -271,7 +271,6 @@ public class Room_Boundary extends Boundary {
 	private void enterRoomNum() {
 		do {
 			String roomNum = readInputString("Enter room number: ");
-			System.out.println(roomNum);
 			if (roomNum.matches("^[0-9]*$")) {
 				if (!RoomMrg.checkRoomExist(roomNum)) {
 					roomMrg.setRoomNumber(roomNum);
