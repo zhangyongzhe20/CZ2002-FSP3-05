@@ -273,7 +273,17 @@ public class OrderMrg {
         }
     }
     
-
+ public void displayUnbilledOrders(String roomId) {
+     List<Order> roomOrders_ = searchOrderByRoomNum(roomId);
+     if(roomOrders_!=null){
+         for(Order order_ : roomOrders_){
+        	 if(order_.getOrderBillStatus().equals(OrderBillStatus.UNBILLED)){
+             order_.printOrderInfo();
+        	 }
+         }
+     }
+ }
+ 
         // Used in Order Report page
 	public void printOrderByStatus(OrderStatus status) {
         Boolean found = false;
