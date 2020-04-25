@@ -132,10 +132,10 @@ public class Order_Boundary extends Boundary {
         String userInput;
         orderMrg.showMenu();
         do {
-            userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to delete a menu item.").toUpperCase();
-            if(!userInput.equals("N") && !userInput.equals("Y"))
+            userInput = readInputString("Press Y to confirm or (No.) to delete a menu item.").toUpperCase();
+            if(!userInput.equals("Y"))
             orderMrg.deleteItem(true, Integer.parseInt(userInput));
-        } while (!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N"));
+        } while (!userInput.equalsIgnoreCase("Y"));
     }
 
 
