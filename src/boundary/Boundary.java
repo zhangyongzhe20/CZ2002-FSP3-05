@@ -19,9 +19,9 @@ public abstract class Boundary {
 
     public String readInputString(String message) {
 		System.out.println(message);
-		System.out.print(ANSI_RED);
+	//	System.out.print(ANSI_RED);
 		String input = sc.nextLine();
-		System.out.print(ANSI_RESET);
+		//System.out.print(ANSI_RESET);
 		return input;
     }
 

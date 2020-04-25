@@ -52,7 +52,9 @@ public class PaymentMrg {
 			e.printStackTrace();
 		}
     }
-
+    public void printPaymentInfo() {
+    	payment.printPaymentInfo();
+    }
 
 	public void loadPaymentData() throws FileNotFoundException {
 		File file = new File(FILENAME);
@@ -68,14 +70,24 @@ public class PaymentMrg {
 			data = sc.nextLine();
 			String[] temp = data.split(",");
 			String reservationCode = temp[0];
-			String promoCode = temp[1];
+			String promoCode;
+			if(temp[1].equalsIgnoreCase("null")) {
+			 promoCode = null;
+			}else {
+			 promoCode = temp[1];
+			}
 			double roomCharge =Double.parseDouble(temp[2]);
 			double roomServiceCharge =Double.parseDouble(temp[3]);
 			double tax =Double.parseDouble(temp[4]);
 			double discount =Double.parseDouble(temp[5]);
 			double totalPay =Double.parseDouble(temp[6]);
 			String paymentMethod =temp[7];
-			String creditCard = temp[8];
+			String creditCard;
+			if(temp[8].equalsIgnoreCase("null")) {
+				creditCard = null;
+			}else {
+				creditCard = temp[8];
+			}
 			Payment p = new Payment(reservationCode,promoCode,roomCharge,roomServiceCharge,tax,discount,totalPay,strToPaymentMethod(paymentMethod),creditCard);
 			payments.add(p);
 		}

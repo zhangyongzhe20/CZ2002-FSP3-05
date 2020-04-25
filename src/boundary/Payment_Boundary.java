@@ -106,44 +106,33 @@ public class Payment_Boundary extends Boundary {
 					break;
 				}
 			} while (!(choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("2")));
-
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-			System.out.println("Date Check In: " + formatter.format(reservationMrg.getCheckIn()));
-			System.out.println("Date Check Out:" + formatter.format(checkOutDate));
-
-			double roomCharge = roomMrg.getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
-			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
-						
-		
-			double totalRoomServiceCharge = orderMrg.printAndGetRoomServiceCharge(roomNum);
-			System.out.println("Room Service Charge: $" + String.format("%.2f", totalRoomServiceCharge));
 			
-			String displayCode = "no promotion";
-			if(promoCode != null) {
-				displayCode = promoCode;
-			}
-			System.out.println("Discount: " + discount + " % (" + displayCode + ")");
-			System.out.println("Tax: " + TAX + "%");
-
+			
+			LocalDateTime checkInDate = reservationMrg.getCheckIn();
+     		double roomCharge = roomMrg.getRoomCharge(roomNum,checkInDate, checkOutDate);					
+			double totalRoomServiceCharge = orderMrg.getRoomServiceCharge(roomNum);
 			double totalPay = (roomCharge + totalRoomServiceCharge) * (1 - discount/(double)100) * (1 + TAX/(double)100);
-			System.out.println("Total Price: $" + String.format("%.2f", totalPay));
-			System.out.println("Pay by: " + paymentMethod.toString());
-			if(paymentMethod.equals(PaymentMethod.CARD))
-			System.out.println("Card number: " + creditCard);
-
-
-
+			
 			paymentMrg.createNewPayment(reservationMrg.getReservationCode(), promoCode, roomCharge, totalRoomServiceCharge, TAX, discount,
 			totalPay, paymentMethod, creditCard);
 			reservationMrg.checkOutReservation(checkOutDate);
 			orderMrg.setOrdersToBilled(roomNum);
 			System.out.println("Successfully check out of the room");
+			printInvoice(checkInDate , checkOutDate);
 		} else {
 			System.out.println("Please enter the correct room number");
 		}
 
 	}
-
+	private void printInvoice(LocalDateTime checkInDate,LocalDateTime checkOutDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		System.out.println("-------------------------------------------");
+		System.out.println("Date Check In: " + formatter.format(checkInDate));
+		System.out.println("Date Check Out:" + formatter.format(checkOutDate));
+		orderMrg.printOrderInfo();
+		paymentMrg.printPaymentInfo();
+		
+	}
 	private void createPromotionMenu() {
 		Character confirm;
 		promotionMrg.createNewPromotion();

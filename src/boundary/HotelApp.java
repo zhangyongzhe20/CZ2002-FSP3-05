@@ -13,9 +13,9 @@ public class HotelApp {
         bf.loadAllData();
         do {
             displayMain();
-            System.out.print(Boundary.ANSI_RED);
+          //  System.out.print(Boundary.ANSI_RED);
             selection = sc.nextLine();
-            System.out.print(Boundary.ANSI_RESET);
+           // System.out.print(Boundary.ANSI_RESET);
             if (Integer.parseInt(selection) > 0 && Integer.parseInt(selection) < 6) {
                 Boundary nextpage = bf.createBoundary(selection);
                 nextpage.displayMain();

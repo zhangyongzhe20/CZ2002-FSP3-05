@@ -3,6 +3,7 @@ package entity;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +108,23 @@ public class Payment {
 		this.creditCard = creditCard;
 	}
 
-	
+	public void printPaymentInfo() {
+		
+		System.out.println("Total Service Charge: $" + String.format("%.2f", roomServiceCharge));
+		System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
+		if(promoCode != null) {
+		System.out.println("Discount: " + discount + " % (" + promoCode + ")");
+		}else {
+			System.out.println("Discount: " + discount + " % (No promotion)");
+		}
+		System.out.println("Tax: " + tax + "%");
+		System.out.println("Total Price: $" + String.format("%.2f", totalPay));
+		System.out.println("Payment pay by: " + paymentMethod);
+		if(paymentMethod.equals(PaymentMethod.CARD)) {
+		System.out.println("Credit card :" + creditCard);
+		System.out.println(" -------------------------------------------");
+		}
+		
+	}
   
 }
