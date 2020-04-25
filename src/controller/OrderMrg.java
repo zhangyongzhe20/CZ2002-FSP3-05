@@ -29,7 +29,6 @@ public class OrderMrg {
      * Applied Singelton Desgin Pattern in Mrg classes
      */
     private static OrderMrg SINGLE_INSTANCE;
-
     public static OrderMrg getInstance() {
         if (SINGLE_INSTANCE == null) {
             SINGLE_INSTANCE = new OrderMrg();
@@ -165,7 +164,7 @@ public class OrderMrg {
      * 
      * @return total charge of service
      */
-    public static double calculateRoomServiceCharge(String room_id) {
+    public double calculateRoomServiceCharge(String room_id) {
         double total_charge = 0;
         if (roomOrders != null) {
             for (Order order : roomOrders) {
