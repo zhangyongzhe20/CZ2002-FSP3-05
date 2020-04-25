@@ -164,7 +164,7 @@ public class OrderMrg {
      * 
      * @return total charge of service
      */
-    public double calculateRoomServiceCharge(String room_id) {
+    public double printAndGetRoomServiceCharge(String room_id) {
         double total_charge = 0;
         if (roomOrders != null) {
             for (Order order : roomOrders) {
@@ -172,6 +172,7 @@ public class OrderMrg {
                     total_charge += total_charge + order.getOrderCharge();
             }
         }
+        displayAllOrders(room_id);
         return total_charge;
     }
 

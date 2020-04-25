@@ -28,6 +28,7 @@ public class PaymentMrg {
 	public void createNewPayment(String reservationCode, String promoCode, double roomCharge, double roomServiceCharge, double tax,
 	    	 double discount, double totalPay, PaymentMethod paymentMethod , String creditCard ) {
 		payment = new Payment(reservationCode, promoCode,roomCharge,roomServiceCharge,tax,discount,totalPay,paymentMethod ,creditCard );
+		createPayment();
 	}
 	
 	

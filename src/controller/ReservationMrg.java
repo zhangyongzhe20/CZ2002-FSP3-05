@@ -42,17 +42,7 @@ public class ReservationMrg {
 		}
 	}
 
-	public void setReservationCodeByRoomNum(String roomNum) {
-		if(reservations!=null){
-		for(Reservation r : reservations) {
-			if(r.getRoomNum()!=null && r.getRoomNum().equalsIgnoreCase(roomNum)) {
-				if(r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
-					reservation = r;
-				}
-			}
-		}
-	}
-	}
+
 	public void setGuestIC(String guestIC) {
 		reservation.setGuestIC(guestIC);
 	}
@@ -121,11 +111,12 @@ public class ReservationMrg {
 		return false;
 	}
 
-	public static boolean checkCheckInExist(String roomNum) {
+	public boolean checkCheckInExist(String roomNum) {
 
 		for (Reservation reservation : reservations) {
 			if (reservation.getRoomNum()!=null && reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
 				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
+					this.reservation = reservation;
 					return true;
 				}
 			}
@@ -247,8 +238,6 @@ public class ReservationMrg {
 		}
 		try {
 			writeReservationData();
-			System.out.println("Reservation is updated successfully!");
-			System.out.println("-------------------------------------------");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
