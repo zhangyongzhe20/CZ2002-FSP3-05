@@ -66,8 +66,7 @@ public class Payment_Boundary extends Boundary {
 		String roomNum = readInputString("Enter room number");
 
 
-		if (ReservationMrg.checkCheckInExist(roomNum)) {
-				reservationMrg.setReservationCodeByRoomNum(roomNum);
+		if (reservationMrg.checkCheckInExist(roomNum)) {
 			do {
 				promoCode = readInputString("Enter Promotion Code (Enter 0 for no promotion): ");
 				if (PromotionMrg.checkValidPromotionExist(promoCode)) {
@@ -113,13 +112,11 @@ public class Payment_Boundary extends Boundary {
 			System.out.println("Date Check In: " + formatter.format(reservationMrg.getCheckIn()));
 			System.out.println("Date Check Out:" + formatter.format(checkOutDate));
 
-			roomMrg.printRoomByRoomNumber(roomNum);
 			double roomCharge = roomMrg.getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
 			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
 						
 		
-			orderMrg.displayAllOrders(roomNum);
-			double totalRoomServiceCharge = orderMrg.calculateRoomServiceCharge(roomNum);
+			double totalRoomServiceCharge = orderMrg.printAndGetRoomServiceCharge(roomNum);
 			System.out.println("Room Service Charge: $" + String.format("%.2f", totalRoomServiceCharge));
 			
 			String displayCode = "no promotion";
@@ -139,7 +136,6 @@ public class Payment_Boundary extends Boundary {
 
 			paymentMrg.createNewPayment(reservationMrg.getReservationCode(), promoCode, roomCharge, totalRoomServiceCharge, TAX, discount,
 			totalPay, paymentMethod, creditCard);
-	        paymentMrg.createPayment();
 			reservationMrg.checkOutReservation(checkOutDate);
 			orderMrg.setOrdersToBilled(roomNum);
 			System.out.println("Successfully check out of the room");

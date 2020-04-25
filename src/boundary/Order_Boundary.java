@@ -92,8 +92,8 @@ public class Order_Boundary extends Boundary {
         String userInput;
         do { 
             orderMrg.showMenu();
-            userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to edit a menu item.").toUpperCase();
-            if(!userInput.equals("N") && !userInput.equals("Y")){
+            userInput = readInputString("Press Y to confirm or (No.) to edit a menu item.").toUpperCase();
+            if(!userInput.equals("Y")){
                 String userInput2;
                 userInput2 = readInputString("1.Update name\n" + "2.Update description\n" + "3.Update Price\n"+"Please Enter Your Choice:");
                 switch(userInput2){
@@ -111,7 +111,7 @@ public class Order_Boundary extends Boundary {
                     break;
                 }
             }
-        } while (!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N"));
+        } while (!userInput.equalsIgnoreCase("Y"));
 
     }
 
