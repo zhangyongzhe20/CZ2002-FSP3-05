@@ -1,0 +1,4 @@
+Breakfast setA,Cheese toast set,6.6,
+Lunch SetA,Chicken Chop,6.0,
+Dinner setA,Grilled Fish,7.0,
+BreakFast setB,kaya toast set,5.5,
