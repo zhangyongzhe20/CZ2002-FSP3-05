@@ -214,6 +214,7 @@ public class OrderMrg {
                     order_.setOrderStatus(order.getStatus());
                     order_.setOrderTime(order.getOrderTime());
                     order_.setRemarks(order.getRemarks());
+                    order_.setOrderBillStatus(order.getOrderBillStatus());
 				    bool = true;
             }
         }
@@ -395,10 +396,16 @@ public class OrderMrg {
 	}
 
 	public void setOrdersToBilled(String roomNum) {
-        List<Order> roomOrders_ = searchOrderByRoomNum(roomNum);
-        if(roomOrders_!=null){
-            for(Order order_ : roomOrders_){
+        if(roomOrders!=null){
+            for(Order order_ : roomOrders){
+                if(order_.getRoomId().equals(roomNum))
                 order_.setOrderBillStatus(Order.OrderBillStatus.BILLED);
+            }
+            try {
+                writeOrderData();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
 	}
