@@ -323,8 +323,7 @@ public class ReservationMrg {
 	public void printActiveReservation() {
 		for (Reservation r : reservations) {
 			if (r.getCheckInType().equals(CheckInType.RESERVATION)) {
-				if (!(r.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)
-						|| r.getReservationStatus().equals(ReservationStatus.CHECKOUT))) {
+				if (!r.getReservationStatus().equals(Reservation.ReservationStatus.EXPIRED)) {
 					r.printReservationInfo();
 				}
 			}
@@ -359,6 +358,7 @@ public class ReservationMrg {
 			r.setCheckInType(strToCheckInType(temp[8]));
 			reservations.add(r);
 		}
+		checkExpiredReservations();
 		sc.close();
 	}
 
@@ -390,9 +390,11 @@ public class ReservationMrg {
 
 			Duration duration = Duration.between(now, checkIn);
 			if (duration.toHours() <= -1) {
+				if(r.getCheckInType().equals(CheckInType.RESERVATION)) {
 				if (r.getReservationStatus().equals(ReservationStatus.CONFIRMED)) {
 					r.setReservationStatus(ReservationStatus.EXPIRED);
 				}
+			}
 			}
 		}
 		try {
