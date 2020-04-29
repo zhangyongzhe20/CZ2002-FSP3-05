@@ -12,9 +12,9 @@ import java.util.List;
 public class Order_Boundary extends Boundary {
     // get the instance of Order Mrg
     public static OrderMrg orderMrg = OrderMrg.getInstance();
-    String userInput;
     Character confirm;
     public void displayMain(){
+        String userInput;
         do {
             System.out.println("-------------------------------------------");
             System.out.println("Service System:\n" + "0. Return to previous page\n" + "1. Order Page\n"
@@ -32,6 +32,7 @@ public class Order_Boundary extends Boundary {
         } while (!userInput.equalsIgnoreCase("0"));
     }
     private void OrderPage() {
+        String userInput;
         do {
             userInput = readInputString("Order Page:\n" + "0. Return to previous page\n" + "1.Create Order\n"
             + "2.Update Order\n" + "3.Search Order\n" + "Please Enter Your Choice:");
@@ -88,9 +89,10 @@ public class Order_Boundary extends Boundary {
 
 
     private void updateMenuItem() {
+        String userInput;
         do { 
             orderMrg.showMenu();
-            userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to edit a menu item.");
+            userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to edit a menu item.").toUpperCase();
             if(!userInput.equals("N") && !userInput.equals("Y")){
                 String userInput2;
                 userInput2 = readInputString("1.Update name\n" + "2.Update description\n" + "3.Update Price\n"+"Please Enter Your Choice:");
@@ -114,6 +116,7 @@ public class Order_Boundary extends Boundary {
     }
 
     private void enterMenuItem() {
+        String userInput;
         do{
         String name, description, price;
         name = readInputString("Enter Item Name:");
@@ -126,9 +129,10 @@ public class Order_Boundary extends Boundary {
     }
 
     private void deleteMenuItem(){
+        String userInput;
         orderMrg.showMenu();
         do {
-            userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to delete a menu item.");
+            userInput = readInputString("Press Y to confirm," + "N to discard and" + "(No.) to delete a menu item.").toUpperCase();
             if(!userInput.equals("N") && !userInput.equals("Y"))
             orderMrg.deleteItem(true, Integer.parseInt(userInput));
         } while (!userInput.equalsIgnoreCase("Y") && !userInput.equalsIgnoreCase("N"));
@@ -137,6 +141,7 @@ public class Order_Boundary extends Boundary {
 
 
     private void createOrderMenu() {
+        String userInput;
         System.out.println("Create Order:");
         // get user input
         enterRoomNum();
@@ -214,14 +219,16 @@ public class Order_Boundary extends Boundary {
     }
 
     private void updateOrderMenu() {
+        String userInput;
         System.out.println("update Order");
         String userInput2 = enterRoomNum();
+        if(orderMrg.setUnDeliverOrder(userInput2)){
         do {
-            orderMrg.printUndeliveredOrderInfo(userInput2);
+            orderMrg.printCurrentOrder(userInput2);
             userInput = readInputString("Press Y to confirm," + "N to discard and " + "(No.) to edit a field.").toUpperCase();
             switch (userInput) {
                 case "Y":
-                    boolean success = orderMrg.updateOrderDetail();
+                    orderMrg.updateOrderDetail();
                     break;
                 case "N":
                     break;
@@ -245,9 +252,10 @@ public class Order_Boundary extends Boundary {
             }
         } while (!(userInput.equals("Y") || userInput.equals("N")));
     }
+    }
 
     private void updateOrderItem() {
-        userInput = readInputString("Update order items:\n" + "0.Return to previous page\n" + "1.Add new order items\n" + "2.Delete order items");
+        String userInput = readInputString("Update order items:\n" + "0.Return to previous page\n" + "1.Add new order items\n" + "2.Delete order items");
         switch (userInput) {
             case "0":
                 break;
@@ -261,6 +269,7 @@ public class Order_Boundary extends Boundary {
     }
 
     private void deleteOrderItem(){
+        String userInput;
         do {
             userInput = readInputString("Press 0 to previous page " + "(No.) to delete a order item.");
             orderMrg.deleteItem(false, Integer.parseInt(userInput));
@@ -269,7 +278,7 @@ public class Order_Boundary extends Boundary {
 
 
     private void updateOrderStatus() {
-        userInput = readInputString("Update order status:\n" + "0. Return to previous page\n" + "1. Mark order as Preparing\n" + "2. Mark Order as Delivered\n");
+        String userInput = readInputString("Update order status:\n" + "0. Return to previous page\n" + "1. Mark order as Preparing\n" + "2. Mark Order as Delivered\n");
         switch (userInput) {
             case "0":
                 break;
@@ -283,14 +292,14 @@ public class Order_Boundary extends Boundary {
     }
 
     private void OrderReportMenu() {
-       
+            String userInput;
         do {
-            userInput = readInputString("Order Report Page:\n" + "0. Return to previous page\n" + "1. Print Orders by Room ID\n"
+             userInput = readInputString("Order Report Page:\n" + "0. Return to previous page\n" + "1. Print Orders by Room ID\n"
             + "2. Print Orders by Order Status\n");
             switch (userInput) {
                 case "1":
-                    userInput = readInputString("Enter Room ID:");
-                    orderMrg.displayAllOrders(userInput);
+                    String userInput2 = readInputString("Enter Room ID:");
+                    orderMrg.displayAllOrders(userInput2);
                     break;
                 case "2":
                     displayOrderByStatus();
@@ -300,6 +309,7 @@ public class Order_Boundary extends Boundary {
     }
 
     private void displayOrderByStatus() {
+        String userInput;
         do {
             userInput = readInputString("0.Return to previous page\n" + "1.Print All Confirmed Orders\n"
             + "2.Print All Preparing Orders \n" + "3.Print All Delivered Orders\n");

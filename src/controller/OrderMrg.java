@@ -230,18 +230,19 @@ public class OrderMrg {
 
     
 
-    public Order getUnDeliverOrder(String room_id){
+    public boolean setUnDeliverOrder(String room_id){
         List<Order> orders = searchOrderByRoomNum(room_id);
         if(orders != null){
             for(Order order_ : orders){
                 Order.OrderStatus status = order_.getStatus();
                 if(!status.equals(Order.OrderStatus.DELIVERED)){
-                return order_;
+                order = order_;
+                return true;
                 }
             }
         }
-        System.out.println("No orders are found to update the room");
-        return null;
+        System.out.println("No undelivered Order is found to update");
+        return false;
     }
    
     /**
@@ -329,12 +330,6 @@ public class OrderMrg {
         order.setOrderStatus(status);
 	}
 
-	public void printUndeliveredOrderInfo(String roomNum) {
-        order = getUnDeliverOrder(roomNum);
-        if(order!=null)
-        order.printOrderInfo();
-	}
-
 	public void displayItems() {
         order.getOrderLists().displayItems();
 	}
@@ -393,6 +388,19 @@ public class OrderMrg {
 	public void setMenuItemPrice(int parseInt, String userInput2) {
         double new_price = Double.parseDouble(userInput2);
         menu.getItemList().get(parseInt-1).setPrice(new_price);
+	}
+
+	public void printCurrentOrder(String userInput2) {
+        order.printOrderInfo();
+	}
+
+	public void setOrdersToBilled(String roomNum) {
+        List<Order> roomOrders_ = searchOrderByRoomNum(roomNum);
+        if(roomOrders_!=null){
+            for(Order order_ : roomOrders_){
+                order_.setOrderBillStatus(Order.OrderBillStatus.BILLED);
+            }
+        }
 	}
     
 }

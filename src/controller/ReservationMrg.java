@@ -43,13 +43,15 @@ public class ReservationMrg {
 	}
 
 	public void setReservationCodeByRoomNum(String roomNum) {
+		if(reservations!=null){
 		for(Reservation r : reservations) {
-			if(r.getRoomNum().equalsIgnoreCase(roomNum)) {
+			if(r.getRoomNum()!=null && r.getRoomNum().equalsIgnoreCase(roomNum)) {
 				if(r.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
 					reservation = r;
 				}
 			}
 		}
+	}
 	}
 	public void setGuestIC(String guestIC) {
 		reservation.setGuestIC(guestIC);
@@ -122,7 +124,7 @@ public class ReservationMrg {
 	public static boolean checkCheckInExist(String roomNum) {
 
 		for (Reservation reservation : reservations) {
-			if (reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
+			if (reservation.getRoomNum()!=null && reservation.getRoomNum().equalsIgnoreCase(roomNum)) {
 				if (reservation.getReservationStatus().equals(ReservationStatus.CHECKIN)) {
 					return true;
 				}

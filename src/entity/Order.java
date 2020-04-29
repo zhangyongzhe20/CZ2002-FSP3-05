@@ -151,7 +151,7 @@ public class Order {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		System.out.println("2.Order Time: " + formatter.format(this.orderTime));
 		System.out.println("3.Remarks: " + this.remarks);
-        System.out.println("4.Order Status: " + this.orderStatus);
+        System.out.println("4.Order Status: " + this.orderStatus.toString());
         System.out.println("5.Order Items: ");
         orderItems.displayItems();
 		System.out.println(" -------------------------------------------");

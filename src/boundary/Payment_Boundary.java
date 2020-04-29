@@ -16,6 +16,7 @@ public class Payment_Boundary extends Boundary {
 	private PaymentMrg paymentMrg = PaymentMrg.getInstance();
 	private PromotionMrg promotionMrg = PromotionMrg.getInstance();
 	private ReservationMrg reservationMrg = ReservationMrg.getInstance();
+	private OrderMrg orderMrg = OrderMrg.getInstance();
 	final static double TAX = 17;
 	private int days = 0;
 	
@@ -83,29 +84,6 @@ public class Payment_Boundary extends Boundary {
 					System.out.println("The promotion does not exist");
 				}
 			} while (true);
-
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-			System.out.println("Date Check In: " + formatter.format(reservationMrg.getCheckIn()));
-			System.out.println("Date Check Out:" + formatter.format(checkOutDate));
-
-			double roomCharge = RoomMrg.getInstance().getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
-			RoomMrg.getInstance().printRoomByRoomNumber(roomNum);
-			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
-
-			double totalRoomServiceCharge = OrderMrg.calculateRoomServiceCharge(roomNum);
-			OrderMrg.getInstance().displayAllOrders(roomNum);
-			System.out.println("Room Service Charge: $" + String.format("%.2f", totalRoomServiceCharge));
-			
-			String displayCode = "no promotion";
-			if(promoCode != null) {
-				displayCode = promoCode;
-			}
-			System.out.println("Discount: " + discount + " % (" + displayCode + ")");
-			System.out.println("Tax: " + TAX + "%");
-
-			double totalPay = (roomCharge + totalRoomServiceCharge) * (1 - discount/(double)100) * (1 + TAX/(double)100);
-			System.out.println("Total Price: $" + String.format("%.2f", totalPay));
-
 			String choice;
 			String creditCard = null;
 			PaymentMethod paymentMethod = PaymentMethod.CASH;
@@ -133,10 +111,38 @@ public class Payment_Boundary extends Boundary {
 				}
 			} while (!(choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("2")));
 
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+			System.out.println("Date Check In: " + formatter.format(reservationMrg.getCheckIn()));
+			System.out.println("Date Check Out:" + formatter.format(checkOutDate));
+
+			double roomCharge = RoomMrg.getInstance().getRoomCharge(roomNum,reservationMrg.getCheckIn(), checkOutDate);
+			RoomMrg.getInstance().printRoomByRoomNumber(roomNum);
+			System.out.println("Total Room Charge: $" + String.format("%.2f", roomCharge));
+
+			double totalRoomServiceCharge = orderMrg.calculateRoomServiceCharge(roomNum);
+			orderMrg.displayAllOrders(roomNum);
+			System.out.println("Room Service Charge: $" + String.format("%.2f", totalRoomServiceCharge));
+			
+			String displayCode = "no promotion";
+			if(promoCode != null) {
+				displayCode = promoCode;
+			}
+			System.out.println("Discount: " + discount + " % (" + displayCode + ")");
+			System.out.println("Tax: " + TAX + "%");
+
+			double totalPay = (roomCharge + totalRoomServiceCharge) * (1 - discount/(double)100) * (1 + TAX/(double)100);
+			System.out.println("Total Price: $" + String.format("%.2f", totalPay));
+			System.out.println("Pay by: " + paymentMethod.toString());
+			if(paymentMethod.equals(PaymentMethod.CARD))
+			System.out.println("Card number: " + creditCard);
+
+
+
 			paymentMrg.createNewPayment(reservationMrg.getReservationCode(), promoCode, roomCharge, totalRoomServiceCharge, TAX, discount,
-					totalPay, paymentMethod, creditCard);
-			paymentMrg.createPayment();
+			totalPay, paymentMethod, creditCard);
+	        paymentMrg.createPayment();
 			reservationMrg.checkOutReservation(checkOutDate);
+			orderMrg.setOrdersToBilled(roomNum);
 			System.out.println("Successfully check out of the room");
 		} else {
 			System.out.println("Please enter the correct room number");
