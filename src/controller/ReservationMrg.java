@@ -17,15 +17,25 @@ import entity.Reservation.ReservationStatus;
 import entity.Room.RoomStatus;
 
 public class ReservationMrg {
-	private static List<Reservation> reservations = new ArrayList<Reservation>();
+	private static List<Reservation> reservations;
 	private final static String FILENAME = "reservation_data.txt";
 	private Reservation reservation;
 	private String roomNum;
 
-	public static ReservationMrg getInstance() {
-		ReservationMrg reservationMrg = new ReservationMrg();
-		return reservationMrg;
-	}
+    /**
+     * Applied Singelton Desgin Pattern in Mrg classes
+     */
+    private static ReservationMrg SINGLE_INSTANCE;
+    public static ReservationMrg getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new ReservationMrg();
+        }
+        return SINGLE_INSTANCE;
+    }
+
+    public ReservationMrg() {
+		reservations = new ArrayList<Reservation>();
+    }
 
 	public void createNewReservation() {
 		reservation = new Reservation();
@@ -343,6 +353,7 @@ public class ReservationMrg {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
+			if(!data.isEmpty()){
 			String[] temp = data.split(",");
 			Reservation r = new Reservation();
 			r.setReservationCode(temp[0]);
@@ -359,6 +370,7 @@ public class ReservationMrg {
 			reservations.add(r);
 		}
 		checkExpiredReservations();
+	}
 		sc.close();
 	}
 

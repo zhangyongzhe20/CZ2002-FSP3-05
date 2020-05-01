@@ -17,12 +17,23 @@ public class PaymentMrg {
     /**
      * Consider the guest could visit the hotel more than once
      */
-	private static List<Payment> payments = new ArrayList<Payment>();
-	private final static String FILENAME = "payment_data.txt";
+	private static List<Payment> payments;
 	private Payment payment;
+	private final static String FILENAME = "payment_data.txt";
+
+	/**
+     * Applied Singelton Desgin Pattern in Mrg classes
+     */
+    private static PaymentMrg SINGLE_INSTANCE;
+    public static PaymentMrg getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new PaymentMrg();
+        }
+        return SINGLE_INSTANCE;
+	}
 	
-	public static PaymentMrg getInstance() {
-		return new PaymentMrg();
+	public PaymentMrg() {
+		payments = new ArrayList<Payment>();
 	}
 	
 	public void createNewPayment(String reservationCode, String promoCode, double roomCharge, double roomServiceCharge, double tax,
@@ -68,6 +79,7 @@ public class PaymentMrg {
 		String data;
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
+			if(!data.isEmpty()){
 			String[] temp = data.split(",");
 			String reservationCode = temp[0];
 			String promoCode;
@@ -91,6 +103,7 @@ public class PaymentMrg {
 			Payment p = new Payment(reservationCode,promoCode,roomCharge,roomServiceCharge,tax,discount,totalPay,strToPaymentMethod(paymentMethod),creditCard);
 			payments.add(p);
 		}
+	}
 		sc.close();
 	}
 

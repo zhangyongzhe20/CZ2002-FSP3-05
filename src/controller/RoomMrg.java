@@ -8,8 +8,6 @@ import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -20,13 +18,25 @@ import entity.Room.RoomStatus;
 import entity.Room.RoomType;
 
 public class RoomMrg {
-	private static List<Room> rooms = new ArrayList<Room>();
+	private static List<Room> rooms;
 	private final static String fileName = "room_data.txt";
 	private Room room;
 
-	public static RoomMrg getInstance() {
-		return new RoomMrg();
+	    /**
+     * Applied Singelton Desgin Pattern in Mrg classes
+     */
+    private static RoomMrg SINGLE_INSTANCE;
+    public static RoomMrg getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new RoomMrg();
+        }
+        return SINGLE_INSTANCE;
+    }
+
+    public RoomMrg() {
+		rooms = new ArrayList<Room>();
 	}
+	
 
 	public void createNewRoom() {
 		room = new Room();
@@ -224,7 +234,7 @@ public class RoomMrg {
 		double total_price = 0;
 
 		List<Integer> days = new ArrayList<Integer>();
-		long duration = Duration.between(checkInDate, checkOutDate).toDays();
+		long duration = Duration.between(checkInDate, checkOutDate).toDays() + 1;
 		int checkin_ = checkInDate.getDayOfWeek().getValue();
 
 		for (int i = 0; i < duration; i++) {
@@ -421,6 +431,7 @@ public class RoomMrg {
 		if (sc.hasNextLine()) {
 			while (sc.hasNextLine()) {
 				data = sc.nextLine();
+				if(!data.isEmpty()){
 				String[] temp = data.split(",");
 				Room r = new Room();
 				r.setRoomNumber(temp[0]);
@@ -433,6 +444,7 @@ public class RoomMrg {
 				r.setAllowSmoking(Boolean.parseBoolean(temp[7]));
 				r.setRoomStatus(strToRoomStatus(temp[8]));
 				rooms.add(r);
+				}
 			}
 		} else {
 			for (int i = 2; i < 8; i++) {

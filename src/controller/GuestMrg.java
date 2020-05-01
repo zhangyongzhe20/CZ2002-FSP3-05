@@ -13,14 +13,26 @@ import entity.Guest.IdentityType;
 
 public class GuestMrg {
 
-	private static List<Guest> guests = new ArrayList<Guest>();;
+	private static List<Guest> guests;
+	private static Guest guest;
 	private final static String FILENAME = "guest_data.txt";
-	private static Guest guest = new Guest();
 
-	public static GuestMrg getInstance() {
-		return new GuestMrg();
+	    /**
+     * Applied Singelton Desgin Pattern in Mrg classes
+     */
+    private static GuestMrg SINGLE_INSTANCE;
+    public static GuestMrg getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new GuestMrg();
+        }
+        return SINGLE_INSTANCE;
 	}
-
+	
+	public GuestMrg() {
+        guests = new ArrayList<Guest>();
+        guest = new Guest();
+	}
+	
 	public void createNewGuest() {
 		guest = new Guest();
 	}
@@ -140,6 +152,7 @@ public class GuestMrg {
 		String data;
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
+			if(!data.isEmpty()){
 			String[] temp = data.split(",");
 			Guest guest = new Guest();
 			guest.setGuestName(temp[0]);
@@ -153,6 +166,7 @@ public class GuestMrg {
 			guest.setContact(temp[8]);
 			guests.add(guest);
 		}
+	}
 		sc.close();
 	}
 

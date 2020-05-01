@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public abstract class Boundary {
 	Scanner sc = new Scanner(System.in);
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_RED = "\u001B[31m";
+	// public static final String ANSI_RESET = "\u001B[0m";
+	// public static final String ANSI_RED = "\u001B[31m";
     public abstract void displayMain();
 	public abstract void loadData() throws FileNotFoundException;
 
@@ -20,7 +20,7 @@ public abstract class Boundary {
     public String readInputString(String message) {
 		System.out.println(message);
 	//	System.out.print(ANSI_RED);
-		String input = sc.nextLine();
+		String input = sc.nextLine().replace(",", " ").replace("-", "");
 		//System.out.print(ANSI_RESET);
 		return input;
     }

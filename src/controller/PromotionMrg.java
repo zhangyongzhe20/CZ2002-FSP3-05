@@ -15,13 +15,26 @@ import entity.Promotion;
 import entity.Reservation;
 
 public class PromotionMrg {
-	private static List<Promotion> promotions = new ArrayList<Promotion>();
-	private final static String FILENAME = "promotion_data.txt";
+	private static List<Promotion> promotions;
 	private Promotion promotion;
-	public static PromotionMrg getInstance() {
-		PromotionMrg promotionMrg = new PromotionMrg();
-		return promotionMrg;
-	}
+	private final static String FILENAME = "promotion_data.txt";
+
+    /**
+     * Applied Singelton Desgin Pattern in Mrg classes
+     */
+    private static PromotionMrg SINGLE_INSTANCE;
+    public static PromotionMrg getInstance() {
+        if (SINGLE_INSTANCE == null) {
+            SINGLE_INSTANCE = new PromotionMrg();
+        }
+        return SINGLE_INSTANCE;
+    }
+
+    public PromotionMrg() {
+        promotions = new ArrayList<Promotion>();
+    }
+
+	
 
 	public boolean checkValidPromotionExist(String promotionCode) {
 		for (Promotion promotion : promotions) {
@@ -146,6 +159,7 @@ public class PromotionMrg {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		while (sc.hasNextLine()) {
 			data = sc.nextLine();
+			if(!data.isEmpty()){
 			String[] temp = data.split(",");
 			Promotion p = new Promotion();
 			p.setPromotionCode(temp[0]);
@@ -155,6 +169,7 @@ public class PromotionMrg {
 			p.setPromoEndDate(LocalDateTime.parse(temp[4], formatter));
 			promotions.add(p);
 		}
+	}
 		sc.close();
 	}
 

@@ -280,7 +280,7 @@ public class Reservation_Boundary extends Boundary {
 		do {
 			System.out.println("Reservation System\n" + "0. Return to Main Menu\n"
 					+ "1. Search reservation by reservation code\n" + "2. Display all reservation");
-
+            reservationMrg.checkExpiredReservations();
 			choice = readInputString("Enter choice :");
 			switch (choice) {
 			case "0":

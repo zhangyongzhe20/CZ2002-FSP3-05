@@ -77,6 +77,7 @@ public class OrderMrg {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         while (sc.hasNextLine()) {
             data = sc.nextLine();
+            if(!data.isEmpty()){
             String[] temp = data.split(",");
             Order order = new Order();
             order.setOrderId(temp[0]);
@@ -100,6 +101,7 @@ public class OrderMrg {
             }
             roomOrders.add(order);
         }
+    }
         sc.close();
     }
 
@@ -138,10 +140,12 @@ public class OrderMrg {
         String data;
         while (sc.hasNextLine()) {
             data = sc.nextLine();
+            if(!data.isEmpty()){
             String[] temp = data.split(",");
             MenuItem menuItem_ = new MenuItem(temp[0], temp[1], Double.parseDouble(temp[2]));
             menu.addItem(menuItem_);
         }
+    }
         sc.close();
     }
 
